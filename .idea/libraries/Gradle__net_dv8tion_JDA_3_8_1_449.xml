@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: net.dv8tion:JDA:3.8.1_449">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.dv8tion/JDA/3.8.1_449/9233ba9c29970c342110c9041c02f46086937d5c/JDA-3.8.1_449.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.dv8tion/JDA/3.8.1_449/f41fa08147fa89719ce3abe663fd9321c4dd23ca/JDA-3.8.1_449-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

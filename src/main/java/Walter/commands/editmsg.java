@@ -1,0 +1,42 @@
+package Walter.commands;
+
+import Walter.Command;
+import Walter.Helper;
+import net.dv8tion.jda.core.events.Event;
+
+import java.util.List;
+
+public class editmsg extends Command {
+
+    String[] keywords = {"editmsg"};
+
+    @Override
+    public String[] getHelp() {
+        return new String[]{
+                " ID TEXT",
+                "Dieser Command ändert den Inhalt der Nachricht mit der ID **ID** zu **TEXT**. Um die ID von Nachrichten " +
+                        "auszulesen zu können musst du die Developer-Settings aktivieren unter User Settings > Appearance " +
+                        "> Developer Mode. Dann kannst du mit einem Rechtsklick die ID von Nachrichten auslesen. Du " +
+                        "kannst hiermit nur Nachrichten editieren, die von mir verfasst worden sind."};
+    }
+
+    @Override
+    public String[] getHelpEnglish() {
+        return new String[]{
+                " ID TEXT",
+                "This command changes the content of the messag ewith the ID **ID** to **TEXT**. To access the IDs " +
+                        "of messages you need to enable the developer settings under User Settings > Appearance > " +
+                        "Developer Mode. Then you can right click any message to access its ID. With this command you " +
+                        "can only edit messages that were sent by me."};
+    }
+
+    @Override
+    public String[] getKeywords() {
+        return keywords;
+    }
+
+    @Override
+    public int execute(List<String> args, Event event, Helper helper) {
+        return -1;
+    }
+}
