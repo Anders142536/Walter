@@ -9,10 +9,18 @@ import java.util.List;
 public abstract class Command {
 
     //returns the help string
-    public abstract String[] getHelp();
+    public String[] getHelp() {
+        return new String[]{
+                "",
+                "Dieser Command hat keinen eigenen Hilfe-Text."};
+    }
 
     //returns the english help string
-    public abstract String[] getHelpEnglish();
+    public String[] getHelpEnglish() {
+        return new String[]{
+                "",
+                "This command does not have a help text."};
+    }
 
     //returns a string array of keywords
     public abstract String[] getKeywords();
