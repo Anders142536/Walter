@@ -8,6 +8,8 @@ import java.util.List;
 //this class represents a command, including help texts
 public abstract class Command {
 
+    String[] keywords = {"(╯°Д°）╯︵ ┻━┻"};
+
     //returns the help string
     public String[] getHelp() {
         return new String[]{
@@ -23,7 +25,9 @@ public abstract class Command {
     }
 
     //returns a string array of keywords
-    public abstract String[] getKeywords();
+    public String[] getKeywords() {
+        return keywords;
+    }
 
     //executes the command with the given parameters
     //returns an integer number indicating how the command executed
