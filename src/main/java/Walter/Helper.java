@@ -1,7 +1,8 @@
 package Walter;
 
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.*;
+
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.*;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -51,7 +52,7 @@ public class Helper {
         //getting the message history in the given channel
         //unfortunately retrievePast() does not terminate .complete() if more messages are asked for than there are,
         //therefore the forced return after 1 seconds.
-        List<Message> pinned = channel.getPinnedMessages().completeAfter(1, TimeUnit.SECONDS);  //TODO see if the wait on time basis can be avoided
+        List<Message> pinned = channel.retrievePinnedMessages().completeAfter(1, TimeUnit.SECONDS);  //TODO see if the wait on time basis can be avoided
         List<Message> history = channel.getHistory().retrievePast(limit + pinned.size() + catchAmount).completeAfter(1, TimeUnit.SECONDS);
 
 

@@ -2,7 +2,7 @@ package Walter.commands;
 
 import Walter.Command;
 import Walter.Helper;
-import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.api.events.Event;
 
 import java.util.List;
 

@@ -1,2 +1,2 @@
-java -jar Walter-1.0-all.jar 
+java -jar Walter-1.0.jar 
 pause

@@ -1,19 +1,14 @@
 package Walter;
 
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.events.ReadyEvent;
-import net.dv8tion.jda.core.events.ShutdownEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberRoleAddEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceMoveEvent;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+
+
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.*;
+import net.dv8tion.jda.api.events.guild.member.*;
+import net.dv8tion.jda.api.events.guild.voice.*;
+import net.dv8tion.jda.api.events.message.*;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -27,13 +22,17 @@ public class Listener extends ListenerAdapter {
     //required objects
     private JDA jda;
     private Helper helper;
-    private CommandHandler commandHandler;
+//    private CommandHandler commandHandler;
     private TwitterFeed fortniteFeed;
+//    private Path location;
 
     //settings
     private int dropzoneLimit;
-    private int pullrateFortnite;
-    private String idLastPostFortnite;
+    private int pullrateTwitterFeed;
+
+    public Listener () {
+
+    }
 
     /* ******** *
      *  EVENTS  *
@@ -45,6 +44,7 @@ public class Listener extends ListenerAdapter {
         //fetching required objects
         TextChannel general = helper.getTextChannel(Collection.GENERAL_CHANNEL_ID);
         Role admin = helper.getRole(Collection.ADMIN_ROLE_ID);
+
 
         //sending the message. it shall look like this:
         //  @admin: NewMember hat sich im #foyer eingefunden.
@@ -126,9 +126,10 @@ public class Listener extends ListenerAdapter {
     //does stuff that only needs to be done when walter is started
     @Override
     public void onReady(ReadyEvent event) {
+        System.out.println("wooooohoooooo!!!!");
         jda = event.getJDA();
         helper = new Helper(jda);
-        commandHandler = new CommandHandler(helper);
+//        commandHandler = new CommandHandler(helper);
         //TODO: Twitterfeeds
     }
 

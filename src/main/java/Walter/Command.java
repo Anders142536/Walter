@@ -1,14 +1,13 @@
 package Walter;
 
-
-import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.api.events.Event;
 
 import java.util.List;
 
 //this class represents a command, including help texts
 public abstract class Command {
 
-    String[] keywords = {"(╯°Д°）╯︵ ┻━┻"};
+    protected String[] keywords = {"(╯°Д°）╯︵ ┻━┻"};
 
     //returns the help string
     public String[] getHelp() {
@@ -31,5 +30,7 @@ public abstract class Command {
 
     //executes the command with the given parameters
     //returns an integer number indicating how the command executed
-    public abstract int execute(List<String> args, Event event, Helper helper);
+    public int execute(List<String> args, Event event, Helper helper) {
+        return -1;
+    }
 }

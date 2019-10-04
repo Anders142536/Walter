@@ -1,9 +1,9 @@
 package Walter;
 
-import Walter.Walter;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+
+
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.message.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +70,7 @@ class CommandHandler {
                 String[] helpText = toExecute.getHelp();
             }
 
-            String result = "```!" + arguments.get(0) + "```"
+            String result = "```!" + arguments.get(0) + "```";
         } else {
             //TODO: Error, something went terribly wrong
         }
