@@ -1,58 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b1a64dd8-69f8-46ea-b1f1-36704544d160" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_annotations_2_9_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_core_2_9_8.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_databind_2_9_8.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_squareup_okhttp3_okhttp_3_13_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_squareup_okio_okio_1_17_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_dv8tion_JDA_4_0_0_48.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/built.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_squareup_okhttp3_okhttp_3_12_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_squareup_okio_okio_1_15_0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__net_dv8tion_JDA_3_8_1_449.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_json_json_20160810.xml" beforeDir="false" />
+    <list default="true" id="b1a64dd8-69f8-46ea-b1f1-36704544d160" name="Default" comment="added dependencies to get add the logger and reflection&#10;changed prints in Walter">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_guava_guava_20_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_logging_log4j_log4j_api_2_12_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_logging_log4j_log4j_core_2_12_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_logging_log4j_log4j_slf4j_impl_2_12_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_javassist_javassist_3_21_0_GA.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_reflections_reflections_0_9_11.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/Walter_main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/Walter_main.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/Walter_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/Walter_test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/libs/Walter-1.0-all.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/libs/Walter.bat" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/Walter.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/libs/walter.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/shadowJar/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/shadowJar/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/Command.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/CommandHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/CommandHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/CommandHandlerOld.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/Helper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/Listener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/Listener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/ListenerOld.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Walter/Walter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/Walter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/analyze.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/analyze.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/commands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/config.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/editmsg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/editmsg.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/english.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/english.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/file.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/file.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/german.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/german.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/getmsg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/getmsg.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/guest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/guest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/hello.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/hello.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/help.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/help.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/listening.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/listening.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/member.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/patch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/patch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/pimmel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/pimmel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/playing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/playing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/reprint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/reprint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/roll.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/roll.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/say.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/say.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/shutdown.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/shutdown.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/watching.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/watching.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -288,6 +249,14 @@
       <option name="presentableId" value="Default" />
       <updated>1513958265682</updated>
     </task>
+    <task id="LOCAL-00001" summary="made the bot reconnect to the server again.&#10;now the bot reads the token from a file and all dependency issues have been solved">
+      <created>1570211776190</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1570211776190</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TodoView">
@@ -307,5 +276,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="made the bot reconnect to the server again.&#10;now the bot reads the token from a file and all dependency issues have been solved" />
+    <MESSAGE value="added dependencies to get add the logger and reflection&#10;changed prints in Walter" />
+    <option name="LAST_COMMIT_MESSAGE" value="added dependencies to get add the logger and reflection&#10;changed prints in Walter" />
   </component>
 </project>
