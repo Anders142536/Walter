@@ -1,5 +1,8 @@
 package Walter;
 
+import Walter.exceptions.PathNotFoundException;
+import Walter.exceptions.TokenNotFoundException;
+import jdk.nashorn.internal.parser.Token;
 import net.dv8tion.jda.api.*;
 import org.slf4j.Logger;
 
@@ -9,43 +12,33 @@ import java.io.FileReader;
 
 public class Walter {
 
-    public static void main(String[] args)  throws Exception {
+    public static void main(String[] args) {
         //TODO add logging
-        String path = getLocation();
-
-        if (path.equals("")) {
-            System.out.println("path was not found");
-            return;
-        }
-
-        String token = fetchToken(path);
-        if (token == null || token.equals("")) {
-            System.out.println("token was not found");
-        }
-
-        System.out.println("token: >" + token + "<");
-//        Logger logger = ;
-        JDA api = new JDABuilder()
-                .setToken(token)
-//                .addEventListeners(new Listener())
-                .build();
-
-    }
-
-    //TODO: read the token from a file
-    private static String fetchToken(String path) {
         try {
-            BufferedReader file = new BufferedReader(new FileReader(path + "token"));
-            return file.readLine();
+            String path = getLocation();
+            String token = fetchToken(path);
 
+            JDA bot = new JDABuilder()
+                    .setToken(token)
+//                .addEventListeners(new Listener())
+                    .build();
         } catch (Exception e) {
+            System.out.println("Serious exception blocked bot from starting!");
             e.printStackTrace();
         }
-        return null;
     }
 
-    private static String getLocation() {
-        File path = new File (Walter.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        return path.getParent() + "/";
+    private static String fetchToken(String path) throws Exception {
+        BufferedReader file = new BufferedReader(new FileReader(path + "token"));
+        String token = file.readLine();
+        if (token == null || token.equals("")) throw new TokenNotFoundException();
+        return token;
+    }
+
+    private static String getLocation() throws PathNotFoundException {
+        File jarLocation = new File (Walter.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        String path = jarLocation.getParent();
+        if (path == null || path.equals("")) throw new PathNotFoundException();
+        return path + "/";
     }
 }

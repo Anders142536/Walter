@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b1a64dd8-69f8-46ea-b1f1-36704544d160" name="Default" comment="added dependencies to get add the logger and reflection&#10;changed prints in Walter">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_guava_guava_20_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_logging_log4j_log4j_api_2_12_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_logging_log4j_log4j_core_2_12_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_logging_log4j_log4j_slf4j_impl_2_12_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_javassist_javassist_3_21_0_GA.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_reflections_reflections_0_9_11.xml" afterDir="false" />
+    <list default="true" id="d7c72bba-1365-46b6-bc44-ee6d486b1323" name="Default Changelist" comment="changed methods in Walter.java to throw exceptions instead of returning null and checking that in main">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Walter/exceptions/PathNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Walter/exceptions/TokenNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/Walter_main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/Walter_main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/Walter_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/Walter_test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/shadowJar/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/shadowJar/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Walter/Walter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/Walter.java" afterDir="false" />
     </list>
@@ -259,11 +254,6 @@
     <option name="localTasksCounter" value="2" />
     <servers />
   </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -280,6 +270,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="made the bot reconnect to the server again.&#10;now the bot reads the token from a file and all dependency issues have been solved" />
     <MESSAGE value="added dependencies to get add the logger and reflection&#10;changed prints in Walter" />
-    <option name="LAST_COMMIT_MESSAGE" value="added dependencies to get add the logger and reflection&#10;changed prints in Walter" />
+    <MESSAGE value="changed methods in Walter.java to throw exceptions instead of returning null and checking that in main" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed methods in Walter.java to throw exceptions instead of returning null and checking that in main" />
   </component>
 </project>
