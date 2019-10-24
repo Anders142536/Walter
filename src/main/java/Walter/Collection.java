@@ -9,7 +9,8 @@ public class Collection {
      */
 
     //role IDs on our server
-    final public static long BOT_ROLE_ID           = 391285765893783554L;
+    final public static long WALTER_ROLE_ID        = 391285765893783554L;
+    final public static long BOT_ROLE_ID           = 0L;
     final public static long ADMIN_ROLE_ID         = 254264388209475584L;
     final public static long MEMBER_ROLE_ID        = 254264987294498817L;
     final public static long GUEST_ROLE_ID         = 401876564154777620L;
@@ -38,11 +39,12 @@ public class Collection {
     //Strings used by commands
     public static String NOT_ENOUGH_ARGUMENTS_ENGLISH = "I am utterly sorry, but I was not given enough arguments.";
     public static String TOO_MANY_ARGUMENTS_ENGLISH = "I am utterly sorry, but I was given too many arguments.";
-    public static String NOT_YET_IMPLEMENTED = "I am utterly sorry, but this is not yet implemented. Please report to <@!151010441043116032> so he can implement this.";
+    public static String NOT_YET_IMPLEMENTED = "Es tut mir Leid, doch dies ist noch nicht implementiert. Bitte melde dies <@!151010441043116032> damit er es implementieren kann.";
+    public static String NOT_YET_IMPLEMENTED_ENGLISH = "I am utterly sorry, but this is not yet implemented. Please report to <@!151010441043116032> so he can implement this.";
     /*public static String KEYWORDS = "\n\nSchlüsselworte für diesen Command sind:```";
     public static String KEYWORDS_ENGLISH = "\n\nKeywords for this Command are:```";
     public static String CAUTION_CASEINSENSITIVE = "Achtung:\nDie Groß- und Kleinschreibung ist irrelevant.";
-    public static String CAUTION_CASEINSENSITIVE_ENGLISH = "Caution:\nThses are not case-sensitive.";*/
+    public static String CAUTION_CASEINSENSITIVE_ENGLISH = "Caution:\nThese are not case-sensitive.";*/
     public static String CAUTION_QUOTES_FOR_WHITESPACE = ERROR_NOT_YET_IMPLEMENTED;
     public static String CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH = ERROR_NOT_YET_IMPLEMENTED;
 

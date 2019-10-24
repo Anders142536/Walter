@@ -22,17 +22,12 @@ public class Listener extends ListenerAdapter {
     //required objects
     private JDA jda;
     private Helper helper;
-//    private CommandHandler commandHandler;
+    private CommandHandler commandHandler;
     private TwitterFeed fortniteFeed;
-//    private Path location;
 
     //settings
     private int dropzoneLimit;
     private int pullrateTwitterFeed;
-
-    public Listener () {
-
-    }
 
     /* ******** *
      *  EVENTS  *
@@ -44,7 +39,6 @@ public class Listener extends ListenerAdapter {
         //fetching required objects
         TextChannel general = helper.getTextChannel(Collection.GENERAL_CHANNEL_ID);
         Role admin = helper.getRole(Collection.ADMIN_ROLE_ID);
-
 
         //sending the message. it shall look like this:
         //  @admin: NewMember hat sich im #foyer eingefunden.
@@ -120,7 +114,11 @@ public class Listener extends ListenerAdapter {
     //TODO: write comment about what exactly is done here
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        //TODO: this
+        if (event.getAuthor().isBot()) return;
+        String messageContent = event.getMessage().getContentRaw();
+
+        if (messageContent.charAt(0) == '!') commandHandler.execute(event);
+        if (messageContent.charAt(0) == '?') commandHandler.printHelp(event);
     }
 
     //does stuff that only needs to be done when walter is started
@@ -129,7 +127,7 @@ public class Listener extends ListenerAdapter {
         System.out.println("wooooohoooooo!!!!");
         jda = event.getJDA();
         helper = new Helper(jda);
-//        commandHandler = new CommandHandler(helper);
+        commandHandler = new CommandHandler(helper);
         //TODO: Twitterfeeds
     }
 

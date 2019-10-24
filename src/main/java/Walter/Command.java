@@ -1,6 +1,7 @@
 package Walter;
 
-import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
@@ -8,6 +9,7 @@ import java.util.List;
 public abstract class Command {
 
     protected String[] keywords = {"(╯°Д°）╯︵ ┻━┻"};
+    protected long minimumRequiredRole = Collection.ADMIN_ROLE_ID;
 
     //returns the help string
     public String[] getHelp() {
@@ -30,7 +32,9 @@ public abstract class Command {
 
     //executes the command with the given parameters
     //returns an integer number indicating how the command executed
-    public int execute(List<String> args, Event event, Helper helper) {
-        return -1;
+    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
+        System.out.println("default execution of command");
+        Member author = helper.getMember(event.getAuthor());
+        helper.respond(author, event.getChannel(), Collection.NOT_YET_IMPLEMENTED, Collection.NOT_YET_IMPLEMENTED_ENGLISH);
     }
 }

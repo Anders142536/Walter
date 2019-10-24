@@ -2,7 +2,7 @@ package Walter.commands;
 
 import Walter.Command;
 import Walter.Helper;
-import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
@@ -32,7 +32,6 @@ public class english extends Command {
     }
 
     @Override
-    public int execute(List<String> args, Event event, Helper helper) {
-        return -1;
+    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
     }
 }

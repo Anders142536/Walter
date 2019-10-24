@@ -20,7 +20,7 @@ public class Walter {
 
             JDA bot = new JDABuilder()
                     .setToken(token)
-//                .addEventListeners(new Listener())
+                    .addEventListeners(new Listener())
                     .build();
         } catch (Exception e) {
             System.out.println("Serious exception blocked bot from starting!");

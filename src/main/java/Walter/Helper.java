@@ -3,7 +3,6 @@ package Walter;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
-
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -21,7 +20,8 @@ public class Helper {
      *  JDA Getters  *
      * ************* */
 
-    Guild getGuild() {
+    //this is not stashed as instances are invalidated after a certain period of time
+    private Guild getGuild() {
         return jda.getGuildById(Collection.GUILD_ID);
     }
 
@@ -37,14 +37,49 @@ public class Helper {
         return getGuild().getRoleById(roleID);
     }
 
+    Member getMember(User user) {
+        return getGuild().getMember(user);
+    }
 
 
     /* ******************* *
      *  Other Helpmethods  *
      * ******************* */
 
-    boolean checkRole(Member member, Role role) {
+    boolean hasRole(Member member, Role role) {
         return member.getRoles().contains(role);
+    }
+
+    boolean hasRole(Member member, long roleID) {
+        return member.getRoles().contains(getRole(roleID));
+    }
+
+    boolean hasMinimumRequiredRole(Member member, long roleID) {
+        System.out.println("checking minimum required role: " + getRole(roleID).getName());
+        boolean hasMinimumRequiredRole = false;
+        switch (roleID + "") {
+            case Collection.GUEST_ROLE_ID + "":
+                if (hasRole(member, Collection.GUEST_ROLE_ID)) hasMinimumRequiredRole = true;
+            case Collection.MEMBER_ROLE_ID + "":
+                if (hasRole(member, Collection.MEMBER_ROLE_ID)) hasMinimumRequiredRole = true;
+            case Collection.ADMIN_ROLE_ID + "":
+                if (hasRole(member, Collection.ADMIN_ROLE_ID)) hasMinimumRequiredRole = true;
+        }
+        System.out.println("has minimum required role: " + hasMinimumRequiredRole);
+        return hasMinimumRequiredRole;
+    }
+
+    void respond(Member member, MessageChannel channel, String german, String english) {
+        System.out.println("responding");
+        if (hasRole(member, Collection.ENGLISH_ROLE_ID))
+            channel.sendMessage(english).queue();
+        else
+            channel.sendMessage(german).queue();
+    }
+
+    void respond (MessageChannel channel, String text) {
+        System.out.println("responding");
+        channel.sendMessage(text).queue();
     }
 
     void deleteMessagesOlderThan(MessageChannel channel, int limit, int catchAmount) {
