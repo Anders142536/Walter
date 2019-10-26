@@ -6,9 +6,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
-public class analyze extends Command {
+public class analyse extends Command {
 
-    String[] keywords = {"analyze"};
+    public analyse() {
+        keywords = new String[]{"analyse", "analyze"};
+    }
 
     @Override
     public String[] getHelp() {
@@ -22,7 +24,7 @@ public class analyze extends Command {
     public String[] getHelpEnglish() {
         return new String[]{
                 "",
-                "I analyze the log files I have written and write the result both into a respective result file and the chat."};
+                "I analyse the log files I have written and write the result both into a respective result file and the chat."};
     }
 
     @Override

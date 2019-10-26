@@ -3,6 +3,7 @@ package Walter;
 //this is a static collection of constants that may be called anywhere in the project
 public class Collection {
 
+
     /* TODO: Write a function initialize() that loads all values from a file.
         This is to make typos or changes in the texts in general easier to do. Otherwise there may be changes
         to this project, rendering it uncompilable and we could not change the respective value. :<

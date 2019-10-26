@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class Helper {
 
     private JDA jda;
+    private CommandHandler commandHandler;
 
     public Helper(JDA jda) {
         this.jda = jda;
@@ -41,6 +42,17 @@ public class Helper {
         return getGuild().getMember(user);
     }
 
+    /* ******************* *
+     *  Setters & Getters  *
+     * ******************* */
+
+    public CommandHandler getCommandHandler() {
+        return commandHandler;
+    }
+
+    void setCommandHandler(CommandHandler commandHandler) {
+        this.commandHandler = commandHandler;
+    }
 
     /* ******************* *
      *  Other Helpmethods  *
@@ -54,7 +66,7 @@ public class Helper {
         return member.getRoles().contains(getRole(roleID));
     }
 
-    boolean hasMinimumRequiredRole(Member member, long roleID) {
+    public boolean hasMinimumRequiredRole(Member member, long roleID) {
         System.out.println("checking minimum required role: " + getRole(roleID).getName());
         boolean hasMinimumRequiredRole = false;
         switch (roleID + "") {
@@ -69,7 +81,7 @@ public class Helper {
         return hasMinimumRequiredRole;
     }
 
-    void respond(Member member, MessageChannel channel, String german, String english) {
+    public void respond(Member member, MessageChannel channel, String german, String english) {
         System.out.println("responding");
         if (hasRole(member, Collection.ENGLISH_ROLE_ID))
             channel.sendMessage(english).queue();

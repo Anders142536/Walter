@@ -8,8 +8,9 @@ import java.util.List;
 //this class represents a command, including help texts
 public abstract class Command {
 
-    protected String[] keywords = {"(╯°Д°）╯︵ ┻━┻"};
+    protected String[] keywords;
     protected long minimumRequiredRole = Collection.ADMIN_ROLE_ID;
+    Helper helper;
 
     //returns the help string
     public String[] getHelp() {
@@ -28,6 +29,10 @@ public abstract class Command {
     //returns a string array of keywords
     public String[] getKeywords() {
         return keywords;
+    }
+
+    public long getMinimumRequiredRole() {
+        return minimumRequiredRole;
     }
 
     //executes the command with the given parameters

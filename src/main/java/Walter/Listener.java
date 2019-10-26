@@ -36,7 +36,6 @@ public class Listener extends ListenerAdapter {
     //new members are announced in the general channel, tagging the admins
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        //fetching required objects
         TextChannel general = helper.getTextChannel(Collection.GENERAL_CHANNEL_ID);
         Role admin = helper.getRole(Collection.ADMIN_ROLE_ID);
 
@@ -117,8 +116,7 @@ public class Listener extends ListenerAdapter {
         if (event.getAuthor().isBot()) return;
         String messageContent = event.getMessage().getContentRaw();
 
-        if (messageContent.charAt(0) == '!') commandHandler.execute(event);
-        if (messageContent.charAt(0) == '?') commandHandler.printHelp(event);
+        if (messageContent.charAt(0) == '!' || messageContent.charAt(0) == '?') commandHandler.process(event);
     }
 
     //does stuff that only needs to be done when walter is started
