@@ -65,8 +65,6 @@ public class CommandHandler {
         commandList.add(new test());
         commandList.add(new watching());
 
-        commandList.sort(new CommandComparator());
-
         System.out.println("length of commandlist: " + commandList.size());
         return commandList;
     }
@@ -88,6 +86,8 @@ public class CommandHandler {
             return;
         }
 
+        System.out.println("> COMM: " + author.getEffectiveName() + " issued the following command:\n" + messageContent);
+
         //if there was no command found with the given keyword
         if (toExecute == null) {
             helper.respond(author, event.getChannel(),
@@ -99,7 +99,6 @@ public class CommandHandler {
         if (messageContent.charAt(0) == '!') {
             String minimumRequiredRole = helper.getRole(toExecute.getMinimumRequiredRole()).getName();
             if (helper.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
-                System.out.println("Minimum required Role: " + minimumRequiredRole);
                 toExecute.execute(arguments, event, helper);
             } else
                 helper.respond(author, channel,

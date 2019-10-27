@@ -1,7 +1,6 @@
 package Walter.commands;
 
 import Walter.Collection;
-import Walter.Command;
 import Walter.Helper;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -9,7 +8,9 @@ import java.util.List;
 
 public class patch extends Command {
 
-    String[] keywords = {"patch"};
+    public patch() {
+        keywords = new String[]{"patch"};
+    }
 
     @Override
     public String[] getHelp() {
@@ -29,8 +30,8 @@ public class patch extends Command {
     public String[] getKeywords() {
         return keywords;
     }
-
-    @Override
-    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
-    }
+//
+//    @Override
+//    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
+//    }
 }

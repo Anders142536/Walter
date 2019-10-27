@@ -1,7 +1,6 @@
 package Walter.commands;
 
 import Walter.Collection;
-import Walter.Command;
 import Walter.Helper;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -9,7 +8,11 @@ import java.util.List;
 
 public class pimmel extends Command {
 
-    String[] keywords = {"pimmel", "pimmelberger", "dick", "dickhead"};
+    public pimmel() {
+        keywords = new String[]{"pimmel", "pimmelberger", "dick", "dickhead"};
+        mainKeywordEnglish = 2;
+        minimumRequiredRole = Collection.GUEST_ROLE_ID;
+    }
 
     @Override
     public String[] getHelp() {
@@ -34,7 +37,7 @@ public class pimmel extends Command {
         return keywords;
     }
 
-    @Override
-    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
-    }
+//    @Override
+//    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
+//    }
 }

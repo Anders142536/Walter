@@ -1,5 +1,7 @@
-package Walter;
+package Walter.commands;
 
+import Walter.Helper;
+import Walter.Collection;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -9,7 +11,9 @@ import java.util.List;
 public abstract class Command {
 
     protected String[] keywords;
-    protected long minimumRequiredRole = Collection.ADMIN_ROLE_ID;
+    long minimumRequiredRole = Collection.ADMIN_ROLE_ID;
+    int mainKeywordGerman;
+    int mainKeywordEnglish;
     Helper helper;
 
     //returns the help string

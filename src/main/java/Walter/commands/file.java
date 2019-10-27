@@ -1,6 +1,5 @@
 package Walter.commands;
 
-import Walter.Command;
 import Walter.Helper;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -8,7 +7,10 @@ import java.util.List;
 
 public class file extends Command {
 
-    String[] keywords = {"file", "datei"};
+    public file() {
+        keywords = new String[]{"file", "datei"};
+        mainKeywordGerman = 1;
+    }
 
     @Override
     public String[] getHelp() {
@@ -30,8 +32,8 @@ public class file extends Command {
     public String[] getKeywords() {
         return keywords;
     }
-
-    @Override
-    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
-    }
+//
+//    @Override
+//    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
+//    }
 }

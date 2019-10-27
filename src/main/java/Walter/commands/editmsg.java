@@ -1,6 +1,5 @@
 package Walter.commands;
 
-import Walter.Command;
 import Walter.Helper;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -8,7 +7,9 @@ import java.util.List;
 
 public class editmsg extends Command {
 
-    String[] keywords = {"editmsg"};
+    public editmsg() {
+        keywords = new String[]{"editmsg"};
+    }
 
     @Override
     public String[] getHelp() {
@@ -35,7 +36,7 @@ public class editmsg extends Command {
         return keywords;
     }
 
-    @Override
-    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
-    }
+//    @Override
+//    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
+//    }
 }

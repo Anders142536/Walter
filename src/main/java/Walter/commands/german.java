@@ -1,6 +1,6 @@
 package Walter.commands;
 
-import Walter.Command;
+import Walter.Collection;
 import Walter.Helper;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -8,7 +8,11 @@ import java.util.List;
 
 public class german extends Command {
 
-    String[] keywords = {"deutsch", "german"};
+    public german() {
+        keywords = new String[]{"deutsch", "german"};
+        minimumRequiredRole = Collection.GUEST_ROLE_ID;
+        mainKeywordEnglish = 1;
+    }
 
     @Override
     public String[] getHelp() {
@@ -30,8 +34,8 @@ public class german extends Command {
     public String[] getKeywords() {
         return keywords;
     }
-
-    @Override
-    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
-    }
+//
+//    @Override
+//    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
+//    }
 }

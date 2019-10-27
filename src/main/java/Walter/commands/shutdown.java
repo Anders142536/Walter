@@ -1,6 +1,5 @@
 package Walter.commands;
 
-import Walter.Command;
 import Walter.Helper;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -8,7 +7,9 @@ import java.util.List;
 
 public class shutdown extends Command {
 
-    String[] keywords = {"shutdown"};
+    public shutdown() {
+        keywords = new String[]{"shutdown"};
+    }
 
     @Override
     public String[] getHelp() {
@@ -29,7 +30,7 @@ public class shutdown extends Command {
         return keywords;
     }
 
-    @Override
-    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
-    }
+//    @Override
+//    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
+//    }
 }

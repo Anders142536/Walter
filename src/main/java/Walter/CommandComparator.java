@@ -1,5 +1,7 @@
 package Walter;
 
+import Walter.commands.Command;
+
 import java.util.Comparator;
 
 public class CommandComparator implements Comparator<Command> {

@@ -38,8 +38,12 @@ public class Helper {
         return getGuild().getRoleById(roleID);
     }
 
-    Member getMember(User user) {
+    public Member getMember(User user) {
         return getGuild().getMember(user);
+    }
+
+    public List<Member> getMembersByName(String name) {
+        return getGuild().getMembersByEffectiveName(name, true);
     }
 
     /* ******************* *
@@ -62,12 +66,11 @@ public class Helper {
         return member.getRoles().contains(role);
     }
 
-    boolean hasRole(Member member, long roleID) {
+    public boolean hasRole(Member member, long roleID) {
         return member.getRoles().contains(getRole(roleID));
     }
 
-    public boolean hasMinimumRequiredRole(Member member, long roleID) {
-        System.out.println("checking minimum required role: " + getRole(roleID).getName());
+    boolean hasMinimumRequiredRole(Member member, long roleID) {
         boolean hasMinimumRequiredRole = false;
         switch (roleID + "") {
             case Collection.GUEST_ROLE_ID + "":
@@ -77,12 +80,18 @@ public class Helper {
             case Collection.ADMIN_ROLE_ID + "":
                 if (hasRole(member, Collection.ADMIN_ROLE_ID)) hasMinimumRequiredRole = true;
         }
-        System.out.println("has minimum required role: " + hasMinimumRequiredRole);
         return hasMinimumRequiredRole;
     }
 
+    public void assignRole(Member member, long roleID) {
+        getGuild().addRoleToMember(member, getRole(roleID)).queue();
+    }
+
+    public void removeRole(Member member, long roleID) {
+        getGuild().removeRoleFromMember(member, getRole(roleID)).queue();
+    }
+
     public void respond(Member member, MessageChannel channel, String german, String english) {
-        System.out.println("responding");
         if (hasRole(member, Collection.ENGLISH_ROLE_ID))
             channel.sendMessage(english).queue();
         else
@@ -90,7 +99,6 @@ public class Helper {
     }
 
     void respond (MessageChannel channel, String text) {
-        System.out.println("responding");
         channel.sendMessage(text).queue();
     }
 

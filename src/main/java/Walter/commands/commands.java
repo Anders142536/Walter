@@ -1,7 +1,6 @@
 package Walter.commands;
 
 import Walter.Collection;
-import Walter.Command;
 import Walter.Helper;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -12,12 +11,15 @@ import java.util.List;
 
 public class commands extends Command {
 
-    List<Command> guestCommands;
-    List<Command> memberCommands;
-    List<Command> adminCommands;
+    private String guestCommands;
+    private String memberCommands;
+    private String adminCommands;
+    private String guestCommandsEnglish;
+    private String memberCommandsEnglish;
+    private String adminCommandsEnglish;
 
     public commands() {
-        keywords = new String[]{"command", "commands"};
+        keywords = new String[]{"commands", "command"};
         minimumRequiredRole = Collection.GUEST_ROLE_ID;
     }
 
@@ -43,50 +45,88 @@ public class commands extends Command {
 
      @Override
      public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
-         Member author = event.getMember();
+         Member author = helper.getMember(event.getAuthor());
          MessageChannel channel = event.getChannel();
 
          if (adminCommands == null) {
-             checkCommandLists(helper);
+             fillCommandStrings(helper);
          }
 
-         helper.respond(author, channel, createCommandList(author, helper), createCommandListEnglish(author, helper));
-
+         if (helper.hasRole(author, Collection.ADMIN_ROLE_ID))
+             helper.respond(author, channel, adminCommands, adminCommandsEnglish);
+         else if (helper.hasRole(author, Collection.MEMBER_ROLE_ID))
+             helper.respond(author, channel, memberCommands, memberCommandsEnglish);
+         else if (helper.hasRole(author, Collection.GUEST_ROLE_ID))
+             helper.respond(author, channel, guestCommands, guestCommandsEnglish);
+         else
+             //TODO: print error message
+             helper.respond(author, channel, "", "");
      }
 
-     private void checkCommandLists(Helper helper) {
+     private void fillCommandStrings(Helper helper) {
          List<Command> commands = helper.getCommandHandler().getListOfCommands();
-         guestCommands = new ArrayList<Command>();
-         memberCommands = new ArrayList<Command>();
-         adminCommands = new ArrayList<Command>();
+         List<Command> guestCommandsList = new ArrayList<Command>();
+         List<Command> memberCommandsList = new ArrayList<Command>();
+         List<Command> adminCommandsList = new ArrayList<Command>();
+
+         //filling the command lists
          for (Command command :
                  commands) {
-             if (command.getMinimumRequiredRole() == Collection.GUEST_ROLE_ID) guestCommands.add(command);
-             else if (command.getMinimumRequiredRole() == Collection.MEMBER_ROLE_ID) memberCommands.add(command);
-             else adminCommands.add(command);
+             if (command.getMinimumRequiredRole() == Collection.GUEST_ROLE_ID) guestCommandsList.add(command);
+             else if (command.getMinimumRequiredRole() == Collection.MEMBER_ROLE_ID) memberCommandsList.add(command);
+             else adminCommandsList.add(command);
          }
+
+         String header = "Dies sind die Commands die dir zur Verfügung stehen:\n\n";
+         String headerEnglish = "These are the commands at your disposal:\n\n";
+         String footer = "Bitte bedenke, dass viele der hier gelisteten Commands Synonyme haben. Für eine " +
+                 "genaue Erklärung eines Commands rufe ihn bitte mit einem ? anstelle eines ! auf.";
+         String footerEnglish = "Please keep in mind that many of the commands listet here have synonyms. For a" +
+                 "detailed explanation of a command please call the command with a ? instead of a !.";
+
+         String guestCommandsListString = createStringFromList("__Guest-Commands:__",guestCommandsList);
+         String memberCommandsListString = createStringFromList("__Member-Commands:__", memberCommandsList);
+         String adminCommandListString = createStringFromList("__Admin-Commands:__", adminCommandsList);
+         String guestCommandsListStringEnglish = createStringFromListEnglish("__Guest-Commands:__", guestCommandsList);
+         String memberCommandsListStringEnglish = createStringFromListEnglish("__Member-Commands:__", memberCommandsList);
+         String adminCommandsListStringEnglish = createStringFromListEnglish("__Admin-Commands:__", adminCommandsList);
+
+         guestCommands = header + guestCommandsListString + footer;
+         memberCommands = header + guestCommandsListString + memberCommandsListString + footer;
+         adminCommands = header + guestCommandsListString + memberCommandsListString + adminCommandListString + footer;
+         guestCommandsEnglish = headerEnglish + guestCommandsListStringEnglish + footerEnglish;
+         memberCommandsEnglish = headerEnglish + guestCommandsListStringEnglish + memberCommandsListStringEnglish + footerEnglish;
+         adminCommandsEnglish = headerEnglish + guestCommandsListStringEnglish + memberCommandsListStringEnglish + adminCommandsListStringEnglish + footerEnglish;
      }
 
-     private String createCommandList(Member author, Helper helper) {
-        StringBuilder result = new StringBuilder();
-        result.append("Dies sind die Commands die dir zur Verfügung stehen:\n");
-        if (helper.hasMinimumRequiredRole(author, Collection.GUEST_ROLE_ID))  result.append(createStringFromList(guestCommands));
-        if (helper.hasMinimumRequiredRole(author, Collection.MEMBER_ROLE_ID)) result.append(createStringFromList(memberCommands));
-        if (helper.hasMinimumRequiredRole(author, Collection.ADMIN_ROLE_ID)) result.append(createStringFromList(adminCommands));c
+     private String createStringFromList(String header, List<Command> list) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(header);
+        builder.append("\n```diff");
 
-        return "";
+         for (Command command :
+                 list) {
+             if (command.keywords == null) continue;
+             builder.append("\n!");
+             builder.append(command.keywords[command.mainKeywordGerman]);
+         }
+         builder.append("```\n");
+        return builder.toString();
      }
 
-     private String createStringFromList(List<Command> list) {
-        return "";
-     }
+     private String createStringFromListEnglish(String header, List<Command> list) {
+         StringBuilder builder = new StringBuilder();
+         builder.append(header);
+         builder.append("\n```diff");
 
-     private String createCommandListEnglish(Helper helper) {
-        return "";
-     }
-
-     private String createStringFromListEnglish(List<Command> list) {
-        return "";
+         for (Command command :
+                 list) {
+             if (command.keywords == null) continue;
+             builder.append("\n!");
+             builder.append(command.keywords[command.mainKeywordEnglish]);
+         }
+         builder.append("```\n");
+         return builder.toString();
      }
 
 }
