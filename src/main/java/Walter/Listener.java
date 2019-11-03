@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 //handles events and, for reasons of simplicity, holds settings.
 public class Listener extends ListenerAdapter {
@@ -66,26 +67,7 @@ public class Listener extends ListenerAdapter {
     //log functionality to monitor the usage of voice channels and to see who are the most active members
     @Override
     public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
-        //getting all the data to log
-        long IDmemberJoined = event.getMember().getUser().getIdLong();
         long IDvoiceJoined = event.getChannelJoined().getIdLong();
-
-
-        //logging voice activity
-        try {
-            File logFile = new File("./voice.logs");    //TODO: rename voicelogs file to voice.logs
-
-            if (logFile.exists()) {
-                FileWriter fw = new FileWriter(logFile, true);  //this only adds to the text file
-                fw.write("1 " + IDmemberJoined + " " + IDvoiceJoined + " " + System.currentTimeMillis() + "\n");
-                fw.close();
-            } else {
-                //TODO: log Collection.N;
-            }
-        } catch (IOException e) {
-            //TODO: log e.toString();
-            e.printStackTrace();
-        }
 
         //if the channel joined is the cinema channel
         if (IDvoiceJoined == Collection.CINEMA_CHANNEL_ID) {
@@ -101,13 +83,33 @@ public class Listener extends ListenerAdapter {
     //log functionality to monitor the usage of voice channels and to see who are the most active members
     @Override
     public void onGuildVoiceMove(GuildVoiceMoveEvent event) {
-        //TODO: this
+        long IDvoiceLeft = event.getChannelLeft().getIdLong();
+        long IDvoiceJoined = event.getChannelJoined().getIdLong();
+        if (IDvoiceLeft == Collection.CINEMA_CHANNEL_ID) {
+            VoiceChannel channel = helper.getVoiceChannel(IDvoiceLeft);
+            if (channel.getMembers().size() == 0)
+                channel.getManager().setName("\uD83C\uDF7F Cinema").complete();
+        } else if (IDvoiceJoined == Collection.CINEMA_CHANNEL_ID) {
+            VoiceChannel channel = helper.getVoiceChannel(IDvoiceJoined);
+            if (channel.getMembers().size() == 1) {
+                //gets the current time and truncates it to only show hours and minutes
+                LocalTime currentTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
+                channel.getManager().setName("\uD83C\uDF7F Cinema (" + currentTime + ")").complete();
+            }
+        }
     }
 
     //log functionality to monitor the usage of voice channels and to see who are the most active members
     @Override
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent event) {
-        //TODO: this
+        long IDvoiceLeft = event.getChannelLeft().getIdLong();
+
+        //if the channel joined is the cinema channel
+        if (IDvoiceLeft == Collection.CINEMA_CHANNEL_ID) {
+            VoiceChannel channel = helper.getVoiceChannel(IDvoiceLeft);
+            if (channel.getMembers().size() == 0)
+                channel.getManager().setName("\uD83C\uDF7F Cinema").complete();
+        }
     }
 
     //TODO: write comment about what exactly is done here
@@ -115,8 +117,29 @@ public class Listener extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return;
         String messageContent = event.getMessage().getContentRaw();
+        MessageChannel channel = event.getChannel();
+        long channelID = channel.getIdLong();
 
-        if (messageContent.charAt(0) == '!' || messageContent.charAt(0) == '?') commandHandler.process(event);
+        if (messageContent.length() != 0 && messageContent.charAt(0) == '!' || messageContent.charAt(0) == '?') commandHandler.process(event);
+
+        if (channelID == Collection.DROPZONE_CHANNEL_ID) {
+            Member author = event.getMember();
+            mentionVoiceChat(author, channel);
+        }
+    }
+
+    private void mentionVoiceChat(Member author, MessageChannel channel) {
+        StringBuilder mentions = new StringBuilder();
+
+        //get a list of all the members that are in the same voice channel as the author of the message
+        if (author.getVoiceState().inVoiceChannel()) {
+            VoiceChannel voice = author.getVoiceState().getChannel();
+            List<Member> vmembers = voice.getMembers();
+            for (Member temp : vmembers) {
+                if (author != temp) mentions.append(temp.getAsMention() + " ");
+            }
+            if (mentions.length() > 0) channel.sendMessage(mentions).queue();
+        }
     }
 
     //does stuff that only needs to be done when walter is started
