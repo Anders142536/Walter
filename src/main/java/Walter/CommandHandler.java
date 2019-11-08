@@ -63,6 +63,7 @@ public class CommandHandler {
         commandList.add(new say());
         commandList.add(new shutdown());
         commandList.add(new test());
+        commandList.add(new version());
         commandList.add(new watching());
 
         System.out.println("length of commandlist: " + commandList.size());

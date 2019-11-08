@@ -98,7 +98,7 @@ public class Helper {
             channel.sendMessage(german).queue();
     }
 
-    void respond (MessageChannel channel, String text) {
+    public void respond (MessageChannel channel, String text) {
         channel.sendMessage(text).queue();
     }
 

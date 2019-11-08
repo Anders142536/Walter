@@ -8,6 +8,7 @@ public class Collection {
         This is to make typos or changes in the texts in general easier to do. Otherwise there may be changes
         to this project, rendering it uncompilable and we could not change the respective value. :<
      */
+    final public static String VERSION = "2.2.0";   //REWRITES . NEW FEATURES . BUILD
 
     //role IDs on our server
     final public static long WALTER_ROLE_ID        = 391285765893783554L;

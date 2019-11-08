@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.List;
 
 //handles events and, for reasons of simplicity, holds settings.
@@ -120,8 +121,18 @@ public class Listener extends ListenerAdapter {
         MessageChannel channel = event.getChannel();
         long channelID = channel.getIdLong();
 
-        if (messageContent.length() != 0 && messageContent.charAt(0) == '!' || messageContent.charAt(0) == '?') commandHandler.process(event);
-
+        try {
+            if (messageContent.length() != 0 && messageContent.charAt(0) == '!' || messageContent.charAt(0) == '?')
+                commandHandler.process(event);
+        } catch (Exception e) {
+            Calendar now = Calendar.getInstance();
+            System.out.println("> ERROR An exception was thrown!" +
+                    "\ntime and date:  " + now.get(Calendar.YEAR) + "/" + now.get(Calendar.MONTH) + "/" + now.get(Calendar.DAY_OF_MONTH) + " " + now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE) +
+                    "\nchannel:        " + channel.getName() +
+                    "\nauthor:         " + event.getAuthor().getName() +
+                    "\nmessageContent: \"" + messageContent + "\"\n");
+            e.printStackTrace();
+        }
         if (channelID == Collection.DROPZONE_CHANNEL_ID) {
             Member author = event.getMember();
             mentionVoiceChat(author, channel);

@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d7c72bba-1365-46b6-bc44-ee6d486b1323" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/version.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/Collection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/Collection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/CommandHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/CommandHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/Helper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Walter/Listener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/Listener.java" afterDir="false" />
     </list>
     <list id="f41df16c-e413-45c6-8a53-8cd5da183eb0" name="Revert: " comment="" />
@@ -254,7 +258,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572181002084</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="the dropzone now tags people again as usual&#10;the cinema now adds and removes the timestamp as usual">
+      <created>1572799585558</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1572799585558</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -276,6 +287,7 @@
     <MESSAGE value="changed methods in Walter.java to throw exceptions instead of returning null and checking that in main" />
     <MESSAGE value="Finished implementation of Command Handler&#10;Added new methods to helper class&#10;added minimum required role to Commands and respective checks to command handler" />
     <MESSAGE value="implemented following commands:&#10;member&#10;commands&#10;added some methods to helper" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented following commands:&#10;member&#10;commands&#10;added some methods to helper" />
+    <MESSAGE value="the dropzone now tags people again as usual&#10;the cinema now adds and removes the timestamp as usual" />
+    <option name="LAST_COMMIT_MESSAGE" value="the dropzone now tags people again as usual&#10;the cinema now adds and removes the timestamp as usual" />
   </component>
 </project>
