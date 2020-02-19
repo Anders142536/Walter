@@ -2,6 +2,8 @@ package Walter.commands;
 
 import Walter.Collection;
 import Walter.Helper;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
@@ -34,8 +36,21 @@ public class german extends Command {
     public String[] getKeywords() {
         return keywords;
     }
-//
-//    @Override
-//    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
-//    }
+
+    @Override
+    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
+        Member author = event.getMember();
+        MessageChannel channel = event.getChannel();
+
+        if (helper.hasRole(author, Collection.ENGLISH_ROLE_ID)) {
+            helper.removeRole(author, Collection.ENGLISH_ROLE_ID);
+            helper.respond(author, channel,
+                "Ich kommuniziere nun mit dir in Deutsch.",
+                "I will now communicate with you in german.");
+        } else 
+            helper.respond(author, channel,
+                "Ich kommuniziere bereits mit dir in Deutsch.",
+                "I already communicate with you in german.");
+
+    }
 }

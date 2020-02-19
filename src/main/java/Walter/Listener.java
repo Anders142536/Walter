@@ -45,7 +45,7 @@ public class Listener extends ListenerAdapter {
         //  @admin: NewMember hat sich im #foyer eingefunden.
         general.sendMessage(admin.getAsMention() + ": " + event.getMember().getEffectiveName() +
                 " hat sich im <#" + Collection.FOYER_CHANNEL_ID + "> eingefunden.").queue();
-    }
+    // 
 
     //leaving members will be announced in the admin channel
     //furthermore they will receive a polite farewell by walter with a link to join the server in case they want to come back

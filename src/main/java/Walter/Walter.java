@@ -31,6 +31,7 @@ public class Walter {
     private static String fetchToken(String path) throws Exception {
         BufferedReader file = new BufferedReader(new FileReader(path + "token"));
         String token = file.readLine();
+        file.close();
         if (token == null || token.equals("")) throw new TokenNotFoundException();
         return token;
     }
