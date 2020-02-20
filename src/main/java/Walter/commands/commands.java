@@ -21,6 +21,8 @@ public class commands extends Command {
     public commands() {
         keywords = new String[]{"commands", "command"};
         minimumRequiredRole = Collection.GUEST_ROLE_ID;
+        
+        fillCommandStrings(helper);
     }
 
     @Override
@@ -47,10 +49,6 @@ public class commands extends Command {
      public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
          Member author = helper.getMember(event.getAuthor());
          MessageChannel channel = event.getChannel();
-
-         if (adminCommands == null) {
-             fillCommandStrings(helper);
-         }
 
          if (helper.hasRole(author, Collection.ADMIN_ROLE_ID))
              helper.respond(author, channel, adminCommands, adminCommandsEnglish);
