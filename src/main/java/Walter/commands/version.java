@@ -16,8 +16,8 @@ public class version extends Command {
     }
 
     @Override
-    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
+    public void execute(List<String> args, MessageReceivedEvent event) {
         MessageChannel channel = event.getChannel();
-        helper.respond(channel, Collection.VERSION);
+        Helper.instance.respond(channel, Collection.VERSION);
     }
 }

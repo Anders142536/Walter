@@ -9,13 +9,13 @@ import java.util.concurrent.TimeUnit;
 //bundles certain functionalities that are needed all over the place
 public class Helper {
 
+    public static Helper instance;
     private JDA jda;
     private CommandHandler commandHandler;
 
-    public Helper(JDA jda) {
+    public Helper (JDA jda) {
         this.jda = jda;
     }
-
 
     /* ************* *
      *  JDA Getters  *

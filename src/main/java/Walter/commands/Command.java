@@ -1,7 +1,7 @@
 package Walter.commands;
 
-import Walter.Helper;
 import Walter.Collection;
+import Walter.Helper;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -14,7 +14,6 @@ public abstract class Command {
     long minimumRequiredRole = Collection.ADMIN_ROLE_ID;
     int mainKeywordGerman;
     int mainKeywordEnglish;
-    Helper helper;
 
     //returns the help string
     public String[] getHelp() {
@@ -41,9 +40,9 @@ public abstract class Command {
 
     //executes the command with the given parameters
     //returns an integer number indicating how the command executed
-    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
+    public void execute(List<String> args, MessageReceivedEvent event) {
         System.out.println("default execution of command");
-        Member author = helper.getMember(event.getAuthor());
-        helper.respond(author, event.getChannel(), Collection.NOT_YET_IMPLEMENTED, Collection.NOT_YET_IMPLEMENTED_ENGLISH);
+        Member author = Helper.instance.getMember(event.getAuthor());
+        Helper.instance.respond(author, event.getChannel(), Collection.NOT_YET_IMPLEMENTED, Collection.NOT_YET_IMPLEMENTED_ENGLISH);
     }
 }

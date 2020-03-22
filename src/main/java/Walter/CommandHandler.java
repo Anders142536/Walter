@@ -17,11 +17,9 @@ public class CommandHandler {
 
     private HashMap<String, Command>  commands = new HashMap<>();
     private List<Command> commandList;
-    private Helper helper;
 
-    CommandHandler(Helper helper) {
-        this.helper = helper;
-        helper.setCommandHandler(this);
+    CommandHandler() {
+        Helper.instance.setCommandHandler(this);
         loadCommandsToHashMap();
     }
 
@@ -78,12 +76,12 @@ public class CommandHandler {
         String messageContent = event.getMessage().getContentRaw();
         List<String> arguments = parseCommand(messageContent);
         Command toExecute = commands.get(arguments.get(0));
-        Member author = helper.getMember(event.getAuthor());
+        Member author = Helper.instance.getMember(event.getAuthor());
         MessageChannel channel = event.getChannel();
 
         //happens if author is not member of server
         if (author == null) {
-            helper.respond(event.getChannel(), "I am utterly sorry, but my services are strictly limited to members of our server.");
+            Helper.instance.respond(event.getChannel(), "I am utterly sorry, but my services are strictly limited to members of our server.");
             return;
         }
 
@@ -91,25 +89,25 @@ public class CommandHandler {
 
         //if there was no command found with the given keyword
         if (toExecute == null) {
-            helper.respond(author, event.getChannel(),
+            Helper.instance.respond(author, event.getChannel(),
                     "Es tut mir Leid, doch ich habe keinen Command für " + arguments.get(0) + " gefunden.",
                     "I am utterly sorry, but I did not find a command for " + arguments.get(0) + ".");
             return;
         }
 
         if (messageContent.charAt(0) == '!') {
-            String minimumRequiredRole = helper.getRole(toExecute.getMinimumRequiredRole()).getName();
-            if (helper.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
-                toExecute.execute(arguments, event, helper);
+            String minimumRequiredRole = Helper.instance.getRole(toExecute.getMinimumRequiredRole()).getName();
+            if (Helper.instance.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
+                toExecute.execute(arguments, event);
             } else
-                helper.respond(author, channel,
+                Helper.instance.respond(author, channel,
                         "Es tut mir Leid, doch du hast nicht die minimale benötigte Rolle \"" + minimumRequiredRole + "\" für diesen Command.",
                         "I am utterly sorry, but you do not have the minimum required role \"" + minimumRequiredRole + "\" for this command.");
         } else {
-            if (helper.hasRole(author, Collection.ENGLISH_ROLE_ID)) {
-                helper.respond(channel, getEnglishHelpText(arguments.get(0), toExecute));
+            if (Helper.instance.hasRole(author, Collection.ENGLISH_ROLE_ID)) {
+                Helper.instance.respond(channel, getEnglishHelpText(arguments.get(0), toExecute));
             } else {
-                helper.respond(channel, getGermanHelpText(arguments.get(0), toExecute));
+                Helper.instance.respond(channel, getGermanHelpText(arguments.get(0), toExecute));
             }
         }
     }
@@ -130,7 +128,7 @@ public class CommandHandler {
         }
 
         result.append("```\n**Minimale benötigte Rolle:** ")
-                .append(helper.getRole(toExecute.getMinimumRequiredRole()).getName())
+                .append(Helper.instance.getRole(toExecute.getMinimumRequiredRole()).getName())
                 .append("\n\n")
                 .append(helpReturn[1]);
         return result.toString();
@@ -152,7 +150,7 @@ public class CommandHandler {
         }
 
         result.append("```\n**Minimum required Role:** ")
-                .append(helper.getRole(toExecute.getMinimumRequiredRole()).getName())
+                .append(Helper.instance.getRole(toExecute.getMinimumRequiredRole()).getName())
                 .append("\n\n")
                 .append(helpReturn[1]);
         return result.toString();

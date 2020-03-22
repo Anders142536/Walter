@@ -31,6 +31,6 @@ public class say extends Command {
     }
 
 //    @Override
-//    public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
+//    public void execute(List<String> args, MessageReceivedEvent event) {
 //    }
 }

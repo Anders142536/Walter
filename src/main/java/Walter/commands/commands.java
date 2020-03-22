@@ -44,27 +44,27 @@ public class commands extends Command {
      }
 
      @Override
-     public void execute(List<String> args, MessageReceivedEvent event, Helper helper) {
-         Member author = helper.getMember(event.getAuthor());
+     public void execute(List<String> args, MessageReceivedEvent event) {
+         Member author = Helper.instance.getMember(event.getAuthor());
          MessageChannel channel = event.getChannel();
 
          if (adminCommands == null) {
-             fillCommandStrings(helper);
+             fillCommandStrings();
          }
 
-         if (helper.hasRole(author, Collection.ADMIN_ROLE_ID))
-             helper.respond(author, channel, adminCommands, adminCommandsEnglish);
-         else if (helper.hasRole(author, Collection.MEMBER_ROLE_ID))
-             helper.respond(author, channel, memberCommands, memberCommandsEnglish);
-         else if (helper.hasRole(author, Collection.GUEST_ROLE_ID))
-             helper.respond(author, channel, guestCommands, guestCommandsEnglish);
+         if (Helper.instance.hasRole(author, Collection.ADMIN_ROLE_ID))
+             Helper.instance.respond(author, channel, adminCommands, adminCommandsEnglish);
+         else if (Helper.instance.hasRole(author, Collection.MEMBER_ROLE_ID))
+             Helper.instance.respond(author, channel, memberCommands, memberCommandsEnglish);
+         else if (Helper.instance.hasRole(author, Collection.GUEST_ROLE_ID))
+             Helper.instance.respond(author, channel, guestCommands, guestCommandsEnglish);
          else
              //TODO: print error message
-             helper.respond(author, channel, "", "");
+             Helper.instance.respond(author, channel, "", "");
      }
 
-     private void fillCommandStrings(Helper helper) {
-         List<Command> commands = helper.getCommandHandler().getListOfCommands();
+     private void fillCommandStrings() {
+         List<Command> commands = Helper.instance.getCommandHandler().getListOfCommands();
          List<Command> guestCommandsList = new ArrayList<Command>();
          List<Command> memberCommandsList = new ArrayList<Command>();
          List<Command> adminCommandsList = new ArrayList<Command>();

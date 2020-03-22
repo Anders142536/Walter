@@ -10,9 +10,6 @@ import net.dv8tion.jda.api.events.guild.voice.*;
 import net.dv8tion.jda.api.events.message.*;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
@@ -23,7 +20,6 @@ public class Listener extends ListenerAdapter {
 
     //required objects
     private JDA jda;
-    private Helper helper;
     private CommandHandler commandHandler;
     private TwitterFeed fortniteFeed;
 
@@ -38,8 +34,8 @@ public class Listener extends ListenerAdapter {
     //new members are announced in the general channel, tagging the admins
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        TextChannel general = helper.getTextChannel(Collection.GENERAL_CHANNEL_ID);
-        Role admin = helper.getRole(Collection.ADMIN_ROLE_ID);
+        TextChannel general = Helper.instance.getTextChannel(Collection.GENERAL_CHANNEL_ID);
+        Role admin = Helper.instance.getRole(Collection.ADMIN_ROLE_ID);
 
         //sending the message. it shall look like this:
         //  @admin: NewMember hat sich im #foyer eingefunden.
@@ -51,7 +47,7 @@ public class Listener extends ListenerAdapter {
     //furthermore they will receive a polite farewell by walter with a link to join the server in case they want to come back
     @Override
     public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
-        TextChannel admin = helper.getTextChannel(Collection.ADMIN_CHANNEL_ID);
+        TextChannel admin = Helper.instance.getTextChannel(Collection.ADMIN_CHANNEL_ID);
 
         admin.sendMessage(event.getMember().getEffectiveName() + " hat unseren Server verlassen.").queue();
         //TODO: this
@@ -72,7 +68,7 @@ public class Listener extends ListenerAdapter {
 
         //if the channel joined is the cinema channel
         if (IDvoiceJoined == Collection.CINEMA_CHANNEL_ID) {
-            VoiceChannel channel = helper.getVoiceChannel(IDvoiceJoined);
+            VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceJoined);
             if (channel.getMembers().size() == 1) {
                 //gets the current time and truncates it to only show hours and minutes
                 LocalTime currentTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
@@ -87,11 +83,11 @@ public class Listener extends ListenerAdapter {
         long IDvoiceLeft = event.getChannelLeft().getIdLong();
         long IDvoiceJoined = event.getChannelJoined().getIdLong();
         if (IDvoiceLeft == Collection.CINEMA_CHANNEL_ID) {
-            VoiceChannel channel = helper.getVoiceChannel(IDvoiceLeft);
+            VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceLeft);
             if (channel.getMembers().size() == 0)
                 channel.getManager().setName("\uD83C\uDF7F Cinema").complete();
         } else if (IDvoiceJoined == Collection.CINEMA_CHANNEL_ID) {
-            VoiceChannel channel = helper.getVoiceChannel(IDvoiceJoined);
+            VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceJoined);
             if (channel.getMembers().size() == 1) {
                 //gets the current time and truncates it to only show hours and minutes
                 LocalTime currentTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
@@ -107,7 +103,7 @@ public class Listener extends ListenerAdapter {
 
         //if the channel joined is the cinema channel
         if (IDvoiceLeft == Collection.CINEMA_CHANNEL_ID) {
-            VoiceChannel channel = helper.getVoiceChannel(IDvoiceLeft);
+            VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceLeft);
             if (channel.getMembers().size() == 0)
                 channel.getManager().setName("\uD83C\uDF7F Cinema").complete();
         }
@@ -122,7 +118,7 @@ public class Listener extends ListenerAdapter {
         long channelID = channel.getIdLong();
 
         try {
-            if (messageContent.length() != 0 && messageContent.charAt(0) == '!' || messageContent.charAt(0) == '?')
+            if (messageContent.length() != 0 && (messageContent.charAt(0) == '!' || messageContent.charAt(0) == '?'))
                 commandHandler.process(event);
         } catch (Exception e) {
             Calendar now = Calendar.getInstance();
@@ -158,8 +154,8 @@ public class Listener extends ListenerAdapter {
     public void onReady(ReadyEvent event) {
         System.out.println("wooooohoooooo!!!!");
         jda = event.getJDA();
-        helper = new Helper(jda);
-        commandHandler = new CommandHandler(helper);
+        Helper.instance = new Helper(jda);
+        commandHandler = new CommandHandler();
         //TODO: Twitterfeeds
     }
 
