@@ -15,11 +15,12 @@ import java.util.List;
 //this class handles the recognition of commands and their execution, as well as their loading
 public class CommandHandler {
 
+    public static CommandHandler instance;
     private HashMap<String, Command>  commands = new HashMap<>();
     private List<Command> commandList;
 
     CommandHandler() {
-        Helper.instance.setCommandHandler(this);
+        instance = this;
         loadCommandsToHashMap();
     }
 

@@ -1,6 +1,7 @@
 package Walter.commands;
 
 import Walter.Collection;
+import Walter.CommandHandler;
 import Walter.Helper;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -64,7 +65,7 @@ public class commands extends Command {
     }
 
     private void fillCommandStrings() {
-        List<Command> commands = Helper.instance.getCommandHandler().getListOfCommands();
+        List<Command> commands = CommandHandler.instance.getListOfCommands();
         List<Command> guestCommandsList = new ArrayList<Command>();
         List<Command> memberCommandsList = new ArrayList<Command>();
         List<Command> adminCommandsList = new ArrayList<Command>();

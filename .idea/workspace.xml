@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Walter:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="d7c72bba-1365-46b6-bc44-ee6d486b1323" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Walter/RoleHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Walter/RoleID.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Walter_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/Walter_main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/Walter_main.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Walter/Collection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/Collection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/Helper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/Listener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/Listener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/CommandHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/CommandHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/commands/commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/commands.java" afterDir="false" />
     </list>
     <list id="f41df16c-e413-45c6-8a53-8cd5da183eb0" name="Revert: " comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,28 +34,7 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Walter" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Walter" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Walter" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="shadow" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Walter" type="f1a62948:ProjectNode" />
-                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -73,12 +57,14 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1RNvtXRXKlj7fdNLrdeY3wcQsC6" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550446868888" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
