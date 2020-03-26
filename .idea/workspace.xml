@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d7c72bba-1365-46b6-bc44-ee6d486b1323" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/commands.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/english.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/german.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Walter/commands/roll.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Walter/RoleHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Walter/RoleID.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/Collection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/Collection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/Helper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Walter/Listener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Walter/Listener.java" afterDir="false" />
     </list>
     <list id="f41df16c-e413-45c6-8a53-8cd5da183eb0" name="Revert: " comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -84,6 +85,9 @@
     <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="Walter" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="me.Anders.Bot" />
     </key>

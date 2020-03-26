@@ -11,7 +11,7 @@ public class Helper {
 
     public static Helper instance;
     private JDA jda;
-    private CommandHandler commandHandler;
+
 
     public Helper (JDA jda) {
         this.jda = jda;
@@ -22,7 +22,7 @@ public class Helper {
      * ************* */
 
     //this is not stashed as instances are invalidated after a certain period of time
-    private Guild getGuild() {
+    Guild getGuild() {
         return jda.getGuildById(Collection.GUILD_ID);
     }
 
@@ -47,24 +47,9 @@ public class Helper {
     }
 
     /* ******************* *
-     *  Setters & Getters  *
-     * ******************* */
-
-    public CommandHandler getCommandHandler() {
-        return commandHandler;
-    }
-
-    void setCommandHandler(CommandHandler commandHandler) {
-        this.commandHandler = commandHandler;
-    }
-
-    /* ******************* *
      *  Other Helpmethods  *
      * ******************* */
 
-    boolean hasRole(Member member, Role role) {
-        return member.getRoles().contains(role);
-    }
 
     public boolean hasRole(Member member, long roleID) {
         return member.getRoles().contains(getRole(roleID));
@@ -81,14 +66,6 @@ public class Helper {
                 if (hasRole(member, Collection.ADMIN_ROLE_ID)) hasMinimumRequiredRole = true;
         }
         return hasMinimumRequiredRole;
-    }
-
-    public void assignRole(Member member, long roleID) {
-        getGuild().addRoleToMember(member, getRole(roleID)).queue();
-    }
-
-    public void removeRole(Member member, long roleID) {
-        getGuild().removeRoleFromMember(member, getRole(roleID)).queue();
     }
 
     public void respond(Member member, MessageChannel channel, String german, String english) {
