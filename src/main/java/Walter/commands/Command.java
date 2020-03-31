@@ -2,6 +2,7 @@ package Walter.commands;
 
 import Walter.Collection;
 import Walter.Helper;
+import Walter.RoleID;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public abstract class Command {
 
     protected String[] keywords;
-    long minimumRequiredRole = Collection.ADMIN_ROLE_ID;
+    RoleID minimumRequiredRole = RoleID.ADMIN;
     int mainKeywordGerman;
     int mainKeywordEnglish;
 
@@ -34,7 +35,7 @@ public abstract class Command {
         return keywords;
     }
 
-    public long getMinimumRequiredRole() {
+    public RoleID getMinimumRequiredRole() {
         return minimumRequiredRole;
     }
 

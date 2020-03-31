@@ -23,6 +23,6 @@ public enum RoleID {
 
     //role instances have an expiring life span, therefore we must fetch freshly everytime
     public Role getRoleInstance() {
-        return Helper.instance.getRole(ID);
+        return RoleHandler.instance.getRole(ID);
     }
 }

@@ -1,8 +1,6 @@
 package Walter.commands;
 
-import Walter.Collection;
-import Walter.CommandHandler;
-import Walter.Helper;
+import Walter.*;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -53,11 +51,11 @@ public class commands extends Command {
             fillCommandStrings();
         }
 
-        if (Helper.instance.hasRole(author, Collection.ADMIN_ROLE_ID))
+        if (RoleHandler.instance.hasRole(author, RoleID.ADMIN))
             Helper.instance.respond(author, channel, adminCommands, adminCommandsEnglish);
-        else if (Helper.instance.hasRole(author, Collection.MEMBER_ROLE_ID))
+        else if (RoleHandler.instance.hasRole(author, RoleID.MEMBER))
             Helper.instance.respond(author, channel, memberCommands, memberCommandsEnglish);
-        else if (Helper.instance.hasRole(author, Collection.GUEST_ROLE_ID))
+        else if (RoleHandler.instance.hasRole(author, RoleID.GUEST))
             Helper.instance.respond(author, channel, guestCommands, guestCommandsEnglish);
         else
             //TODO: print error message

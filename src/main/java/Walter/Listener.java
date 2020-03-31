@@ -1,7 +1,5 @@
 package Walter;
 
-
-
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.*;
@@ -35,7 +33,7 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         TextChannel general = Helper.instance.getTextChannel(Collection.GENERAL_CHANNEL_ID);
-        Role admin = Helper.instance.getRole(Collection.ADMIN_ROLE_ID);
+        Role admin = RoleID.ADMIN.getRoleInstance();
 
         //sending the message. it shall look like this:
         //  @admin: NewMember hat sich im #foyer eingefunden.
@@ -121,13 +119,10 @@ public class Listener extends ListenerAdapter {
             if (messageContent.length() != 0 && (messageContent.charAt(0) == '!' || messageContent.charAt(0) == '?'))
                 commandHandler.process(event);
         } catch (Exception e) {
-            Calendar now = Calendar.getInstance();
-            System.out.println("> ERROR An exception was thrown!" +
-                    "\ntime and date:  " + now.get(Calendar.YEAR) + "/" + now.get(Calendar.MONTH) + "/" + now.get(Calendar.DAY_OF_MONTH) + " " + now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE) +
-                    "\nchannel:        " + channel.getName() +
+            String informationToAdd = "channel:        " + channel.getName() +
                     "\nauthor:         " + event.getAuthor().getName() +
-                    "\nmessageContent: \"" + messageContent + "\"\n");
-            e.printStackTrace();
+                    "\nmessageContent: \"" + messageContent + "\"\n";
+            Helper.instance.respondException(channel, informationToAdd, e);
         }
         if (channelID == Collection.DROPZONE_CHANNEL_ID) {
             Member author = event.getMember();

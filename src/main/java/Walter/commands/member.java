@@ -2,6 +2,8 @@ package Walter.commands;
 
 import Walter.Collection;
 import Walter.Helper;
+import Walter.RoleHandler;
+import Walter.RoleID;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -61,13 +63,13 @@ public class member extends Command {
                 "Es tut mir Leid, doch \"" + memberToSearchFor + "\" könnte auf mehrere Benutzer zutreffen.",
                 "I am utterly sorry, but \"" + memberToSearchFor + "\" could mean several users.");
         else {
-            Member toAssign = foundMembers.get(0);
-            if (Helper.instance.hasRole(toAssign, Collection.MEMBER_ROLE_ID)) Helper.instance.respond(author, channel,
+            Member memberToAssignTo = foundMembers.get(0);
+            if (RoleHandler.instance.hasRole(memberToAssignTo, RoleID.MEMBER)) Helper.instance.respond(author, channel,
                     "Es tut mir Leid, doch der Benutzer \"" + memberToSearchFor + "\" ist bereits Member.",
                     "I am utterly sorry, but the user \"" + memberToSearchFor + "\" already is a member.");
             else {
-                Helper.instance.assignRole(toAssign, Collection.MEMBER_ROLE_ID);
-                if (Helper.instance.hasRole(toAssign, Collection.GUEST_ROLE_ID)) Helper.instance.removeRole(toAssign, Collection.GUEST_ROLE_ID);
+                RoleHandler.instance.assignRole(memberToAssignTo, RoleID.MEMBER);
+                if (RoleHandler.instance.hasRole(memberToAssignTo, RoleID.GUEST)) RoleHandler.instance.removeRole(memberToAssignTo, RoleID.GUEST);
             }
         }
     }

@@ -1,8 +1,9 @@
 package Walter;
 
-
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
+
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -34,10 +35,6 @@ public class Helper {
         return getGuild().getVoiceChannelById(channelID);
     }
 
-    Role getRole(long roleID) {
-        return getGuild().getRoleById(roleID);
-    }
-
     public Member getMember(User user) {
         return getGuild().getMember(user);
     }
@@ -50,26 +47,8 @@ public class Helper {
      *  Other Helpmethods  *
      * ******************* */
 
-
-    public boolean hasRole(Member member, long roleID) {
-        return member.getRoles().contains(getRole(roleID));
-    }
-
-    boolean hasMinimumRequiredRole(Member member, long roleID) {
-        boolean hasMinimumRequiredRole = false;
-        switch (roleID + "") {
-            case Collection.GUEST_ROLE_ID + "":
-                if (hasRole(member, Collection.GUEST_ROLE_ID)) hasMinimumRequiredRole = true;
-            case Collection.MEMBER_ROLE_ID + "":
-                if (hasRole(member, Collection.MEMBER_ROLE_ID)) hasMinimumRequiredRole = true;
-            case Collection.ADMIN_ROLE_ID + "":
-                if (hasRole(member, Collection.ADMIN_ROLE_ID)) hasMinimumRequiredRole = true;
-        }
-        return hasMinimumRequiredRole;
-    }
-
     public void respond(Member member, MessageChannel channel, String german, String english) {
-        if (hasRole(member, Collection.ENGLISH_ROLE_ID))
+        if (RoleHandler.instance.hasRole(member, RoleID.ENGLISH))
             channel.sendMessage(english).queue();
         else
             channel.sendMessage(german).queue();
@@ -77,6 +56,18 @@ public class Helper {
 
     public void respond (MessageChannel channel, String text) {
         channel.sendMessage(text).queue();
+    }
+
+    public void respondException(MessageChannel channel, String informationToAdd, Exception e) {
+
+        Calendar now = Calendar.getInstance();
+        String corePrint = "\n<@!151010441043116032>:\nTIME AND DATE:  " +
+                now.get(Calendar.YEAR) + "/" + now.get(Calendar.MONTH) + "/" + now.get(Calendar.DAY_OF_MONTH) + " " + now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+        if (informationToAdd.length() != 0) corePrint += "\n\nADDITIONAL INFORMATION:\n" + informationToAdd;
+        corePrint += "\n\nSTACKTRACE:\n" + e.getStackTrace()[0];
+        channel.sendMessage("I am utterly sorry, but something went seriously wrong here." + corePrint).queue();
+        System.out.println("> ERROR An exception was thrown!" + corePrint);
+        e.printStackTrace();
     }
 
     void deleteMessagesOlderThan(MessageChannel channel, int limit, int catchAmount) {

@@ -1,6 +1,7 @@
 package Walter;
 
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 
 public class RoleHandler {
     public static RoleHandler instance;
@@ -23,6 +24,10 @@ public class RoleHandler {
 
     public boolean hasRole(Member member, RoleID roleToCheck) {
         return member.getRoles().contains(roleToCheck.getRoleInstance());
+    }
+
+    Role getRole(long roleID) {
+        return Helper.instance.getGuild().getRoleById(roleID);
     }
 
     public boolean hasMinimumRequiredRole(Member member, RoleID roleToCheck) {
