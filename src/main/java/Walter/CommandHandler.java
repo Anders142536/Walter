@@ -5,6 +5,8 @@ package Walter;
 import Walter.commands.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.*;
+import net.dv8tion.jda.api.managers.RoleManager;
+import net.dv8tion.jda.internal.managers.RoleManagerImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -20,7 +22,6 @@ public class CommandHandler {
     private List<Command> commandList;
 
     CommandHandler() {
-        instance = this;
         loadCommandsToHashMap();
     }
 
@@ -97,19 +98,18 @@ public class CommandHandler {
         }
 
         if (messageContent.charAt(0) == '!') {
-            String minimumRequiredRole = Helper.instance.getRole(toExecute.getMinimumRequiredRole()).getName();
-            if (Helper.instance.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
+            if (RoleHandler.instance.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
                 toExecute.execute(arguments, event);
-            } else
+            } else {
+                String minimumRequiredRole = toExecute.getMinimumRequiredRole().getRoleInstance().getName();
                 Helper.instance.respond(author, channel,
                         "Es tut mir Leid, doch du hast nicht die minimale benötigte Rolle \"" + minimumRequiredRole + "\" für diesen Command.",
                         "I am utterly sorry, but you do not have the minimum required role \"" + minimumRequiredRole + "\" for this command.");
-        } else {
-            if (Helper.instance.hasRole(author, Collection.ENGLISH_ROLE_ID)) {
-                Helper.instance.respond(channel, getEnglishHelpText(arguments.get(0), toExecute));
-            } else {
-                Helper.instance.respond(channel, getGermanHelpText(arguments.get(0), toExecute));
             }
+        } else {
+            Helper.instance.respond(author, channel,
+                    getEnglishHelpText(arguments.get(0), toExecute),
+                    getGermanHelpText(arguments.get(0), toExecute));
         }
     }
 
@@ -129,7 +129,7 @@ public class CommandHandler {
         }
 
         result.append("```\n**Minimale benötigte Rolle:** ")
-                .append(Helper.instance.getRole(toExecute.getMinimumRequiredRole()).getName())
+                .append(toExecute.getMinimumRequiredRole().getRoleInstance().getName())
                 .append("\n\n")
                 .append(helpReturn[1]);
         return result.toString();
@@ -151,7 +151,7 @@ public class CommandHandler {
         }
 
         result.append("```\n**Minimum required Role:** ")
-                .append(Helper.instance.getRole(toExecute.getMinimumRequiredRole()).getName())
+                .append(toExecute.getMinimumRequiredRole().getRoleInstance().getName())
                 .append("\n\n")
                 .append(helpReturn[1]);
         return result.toString();

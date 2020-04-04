@@ -2,6 +2,7 @@ package Walter.commands;
 
 import Walter.Collection;
 import Walter.Helper;
+import Walter.RoleID;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public class hello extends Command {
     public hello () {
         keywords = new String[]{"hallo", "hello", "hi", "hey", "hola",
                 "moin", "servus", "griaßdi", "grüzi", "tag"};
-        minimumRequiredRole = Collection.GUEST_ROLE_ID;
+        minimumRequiredRole = RoleID.GUEST;
         mainKeywordEnglish = 1;
     }
     @Override

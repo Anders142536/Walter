@@ -12,6 +12,8 @@ import java.io.FileReader;
 
 public class Walter {
 
+    final public static String VERSION = "2.3.0";   //REWRITES . NEW FEATURES . BUILD
+
     public static void main(String[] args) {
         //TODO add logging
         try {

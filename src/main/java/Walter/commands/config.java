@@ -1,5 +1,6 @@
 package Walter.commands;
 
+import Walter.ChannelID;
 import Walter.Collection;
 import Walter.Helper;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -17,8 +18,7 @@ public class config extends Command {
         return new String[]{
                 " SCHLÜSSEL WERT",
                 "Dieser Command ändert den Wert der Variable **SCHLÜSSEL** zum Wert **WERT**. Diese sind in <#" +
-                        Collection.CONFIG_CHANNEL_ID + "> aufgelistet." +
-                        Collection.CAUTION_QUOTES_FOR_WHITESPACE};
+                        ChannelID.CONFIG+ "> aufgelistet."};
     }
 
     @Override
@@ -26,8 +26,7 @@ public class config extends Command {
         return new String[]{
                 " KEY VALUE",
                 "This command changes the variable with the name **KEY** to the value **VALUE**. Those are displayed in <#" +
-                        Collection.CONFIG_CHANNEL_ID + ">." +
-                        Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH};
+                        ChannelID.CONFIG + ">."};
     }
 
     @Override

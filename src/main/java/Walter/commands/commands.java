@@ -19,7 +19,7 @@ public class commands extends Command {
 
     public commands() {
         keywords = new String[]{"commands", "command"};
-        minimumRequiredRole = Collection.GUEST_ROLE_ID;
+        minimumRequiredRole = RoleID.GUEST;
     }
 
     @Override
@@ -71,8 +71,8 @@ public class commands extends Command {
         //filling the command lists
         for (Command command :
                 commands) {
-            if (command.getMinimumRequiredRole() == Collection.GUEST_ROLE_ID) guestCommandsList.add(command);
-            else if (command.getMinimumRequiredRole() == Collection.MEMBER_ROLE_ID) memberCommandsList.add(command);
+            if (command.getMinimumRequiredRole() == RoleID.GUEST) guestCommandsList.add(command);
+            else if (command.getMinimumRequiredRole() == RoleID.MEMBER) memberCommandsList.add(command);
             else adminCommandsList.add(command);
         }
 

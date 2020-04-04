@@ -1,5 +1,6 @@
 package Walter.commands;
 
+import Walter.ChannelID;
 import Walter.Collection;
 import Walter.Helper;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -16,14 +17,14 @@ public class patch extends Command {
     public String[] getHelp() {
         return new String[]{
                 " TEXT",
-                "Dieser Command schreibt den Text **TEXT** in <#" + Collection.NEWS_CHANNEL_ID + "> mit Hilfe des Patchnotes-Webhook."};
+                "Dieser Command schreibt den Text **TEXT** in <#" + ChannelID.NEWS + "> mit Hilfe des Patchnotes-Webhook."};
     }
 
     @Override
     public String[] getHelpEnglish() {
         return new String[]{
                 " TEST",
-                "This command writes the text **TEXT** into <#" + Collection.NEWS_CHANNEL_ID + "> using the Patchnotes webhook."};
+                "This command writes the text **TEXT** into <#" + ChannelID.NEWS + "> using the Patchnotes webhook."};
     }
 
     @Override

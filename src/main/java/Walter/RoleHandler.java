@@ -6,10 +6,6 @@ import net.dv8tion.jda.api.entities.Role;
 public class RoleHandler {
     public static RoleHandler instance;
 
-    public RoleHandler() {
-        instance = this;
-    }
-
     public void assignRole(Member member, RoleID roleToAssign) {
         Helper.instance.getGuild().addRoleToMember(member, roleToAssign.getRoleInstance()).queue();
     }

@@ -2,6 +2,7 @@ package Walter.commands;
 
 import Walter.Collection;
 import Walter.Helper;
+import Walter.RoleID;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public class pimmel extends Command {
     public pimmel() {
         keywords = new String[]{"pimmel", "pimmelberger", "dick", "dickhead"};
         mainKeywordEnglish = 2;
-        minimumRequiredRole = Collection.GUEST_ROLE_ID;
+        minimumRequiredRole = RoleID.GUEST;
     }
 
     @Override

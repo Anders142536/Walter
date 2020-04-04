@@ -18,8 +18,6 @@ public class Listener extends ListenerAdapter {
 
     //required objects
     private JDA jda;
-    private CommandHandler commandHandler;
-    private TwitterFeed fortniteFeed;
 
     //settings
     private int dropzoneLimit;
@@ -32,20 +30,20 @@ public class Listener extends ListenerAdapter {
     //new members are announced in the general channel, tagging the admins
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        TextChannel general = Helper.instance.getTextChannel(Collection.GENERAL_CHANNEL_ID);
+        TextChannel general = Helper.instance.getTextChannel(ChannelID.GENERAL);
         Role admin = RoleID.ADMIN.getRoleInstance();
 
         //sending the message. it shall look like this:
         //  @admin: NewMember hat sich im #foyer eingefunden.
         general.sendMessage(admin.getAsMention() + ": " + event.getMember().getEffectiveName() +
-                " hat sich im <#" + Collection.FOYER_CHANNEL_ID + "> eingefunden.").queue();
+                " hat sich im <#" + ChannelID.FOYER + "> eingefunden.").queue();
     }
 
     //leaving members will be announced in the admin channel
     //furthermore they will receive a polite farewell by walter with a link to join the server in case they want to come back
     @Override
     public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
-        TextChannel admin = Helper.instance.getTextChannel(Collection.ADMIN_CHANNEL_ID);
+        TextChannel admin = Helper.instance.getTextChannel(ChannelID.ADMIN);
 
         admin.sendMessage(event.getMember().getEffectiveName() + " hat unseren Server verlassen.").queue();
         //TODO: this
@@ -65,7 +63,7 @@ public class Listener extends ListenerAdapter {
         long IDvoiceJoined = event.getChannelJoined().getIdLong();
 
         //if the channel joined is the cinema channel
-        if (IDvoiceJoined == Collection.CINEMA_CHANNEL_ID) {
+        if (IDvoiceJoined == ChannelID.CINEMA.ID) {
             VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceJoined);
             if (channel.getMembers().size() == 1) {
                 //gets the current time and truncates it to only show hours and minutes
@@ -80,11 +78,11 @@ public class Listener extends ListenerAdapter {
     public void onGuildVoiceMove(GuildVoiceMoveEvent event) {
         long IDvoiceLeft = event.getChannelLeft().getIdLong();
         long IDvoiceJoined = event.getChannelJoined().getIdLong();
-        if (IDvoiceLeft == Collection.CINEMA_CHANNEL_ID) {
+        if (IDvoiceLeft == ChannelID.CINEMA.ID) {
             VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceLeft);
             if (channel.getMembers().size() == 0)
                 channel.getManager().setName("\uD83C\uDF7F Cinema").complete();
-        } else if (IDvoiceJoined == Collection.CINEMA_CHANNEL_ID) {
+        } else if (IDvoiceJoined == ChannelID.CINEMA.ID) {
             VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceJoined);
             if (channel.getMembers().size() == 1) {
                 //gets the current time and truncates it to only show hours and minutes
@@ -100,7 +98,7 @@ public class Listener extends ListenerAdapter {
         long IDvoiceLeft = event.getChannelLeft().getIdLong();
 
         //if the channel joined is the cinema channel
-        if (IDvoiceLeft == Collection.CINEMA_CHANNEL_ID) {
+        if (IDvoiceLeft == ChannelID.CINEMA.ID) {
             VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceLeft);
             if (channel.getMembers().size() == 0)
                 channel.getManager().setName("\uD83C\uDF7F Cinema").complete();
@@ -117,14 +115,14 @@ public class Listener extends ListenerAdapter {
 
         try {
             if (messageContent.length() != 0 && (messageContent.charAt(0) == '!' || messageContent.charAt(0) == '?'))
-                commandHandler.process(event);
+                CommandHandler.instance.process(event);
         } catch (Exception e) {
             String informationToAdd = "channel:        " + channel.getName() +
                     "\nauthor:         " + event.getAuthor().getName() +
                     "\nmessageContent: \"" + messageContent + "\"\n";
             Helper.instance.respondException(channel, informationToAdd, e);
         }
-        if (channelID == Collection.DROPZONE_CHANNEL_ID) {
+        if (channelID == ChannelID.DROPZONE.ID) {
             Member author = event.getMember();
             mentionVoiceChat(author, channel);
         }
@@ -147,10 +145,12 @@ public class Listener extends ListenerAdapter {
     //does stuff that only needs to be done when walter is started
     @Override
     public void onReady(ReadyEvent event) {
-        System.out.println("wooooohoooooo!!!!");
+        System.out.println("onReady triggered, JDA object launched without exception.");
         jda = event.getJDA();
         Helper.instance = new Helper(jda);
-        commandHandler = new CommandHandler();
+        CommandHandler.instance = new CommandHandler();
+        RoleHandler.instance = new RoleHandler();
+
         //TODO: Twitterfeeds
     }
 

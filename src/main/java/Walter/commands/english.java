@@ -2,6 +2,8 @@ package Walter.commands;
 
 import Walter.Collection;
 import Walter.Helper;
+import Walter.RoleHandler;
+import Walter.RoleID;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -12,7 +14,7 @@ public class english extends Command {
 
     public english() {
         keywords = new String[]{"english", "englisch"};
-        minimumRequiredRole = Collection.GUEST_ROLE_ID;
+        minimumRequiredRole = RoleID.GUEST;
         mainKeywordGerman = 1;
     }
 
@@ -42,8 +44,8 @@ public class english extends Command {
         Member author = event.getMember();
         MessageChannel channel = event.getChannel();
 
-        if (!Helper.instance.hasRole(author, Collection.ENGLISH_ROLE_ID)) {
-            Helper.instance.assignRole(author, Collection.ENGLISH_ROLE_ID);
+        if (!RoleHandler.instance.hasRole(author, RoleID.ENGLISH)) {
+            RoleHandler.instance.assignRole(author, RoleID.ENGLISH);
             Helper.instance.respond(author, channel,
                     "Ich kommuniziere nun mit dir in Englisch.",
                     "I will now communicate with you in english.");

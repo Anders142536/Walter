@@ -14,7 +14,7 @@ public class german extends Command {
 
     public german() {
         keywords = new String[]{"deutsch", "german"};
-        minimumRequiredRole = Collection.GUEST_ROLE_ID;
+        minimumRequiredRole = RoleID.GUEST;
         mainKeywordEnglish = 1;
     }
 

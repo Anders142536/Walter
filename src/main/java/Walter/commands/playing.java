@@ -2,6 +2,7 @@ package Walter.commands;
 
 import Walter.Collection;
 import Walter.Helper;
+import Walter.RoleID;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public class playing extends Command {
 
     public playing() {
         keywords = new String[]{"playing"};
-        minimumRequiredRole = Collection.GUEST_ROLE_ID;
+        minimumRequiredRole = RoleID.GUEST;
     }
 
     @Override

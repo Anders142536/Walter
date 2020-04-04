@@ -27,13 +27,15 @@ public class Helper {
         return jda.getGuildById(Collection.GUILD_ID);
     }
 
-    TextChannel getTextChannel(long channelID) {
-        return getGuild().getTextChannelById(channelID);
+    TextChannel getTextChannel(ChannelID channelID) { return getTextChannel(channelID.ID); }
+
+    TextChannel getTextChannel(long channelID) { return getGuild().getTextChannelById(channelID);}
+
+    VoiceChannel getVoiceChannel(ChannelID channelID) {
+        return getVoiceChannel(channelID.ID);
     }
 
-    VoiceChannel getVoiceChannel(long channelID) {
-        return getGuild().getVoiceChannelById(channelID);
-    }
+    VoiceChannel getVoiceChannel(long channelID) { return getGuild().getVoiceChannelById(channelID); }
 
     public Member getMember(User user) {
         return getGuild().getMember(user);
