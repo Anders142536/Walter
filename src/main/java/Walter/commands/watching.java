@@ -1,17 +1,13 @@
 package Walter.commands;
 
 import Walter.Collection;
-import Walter.Helper;
-import Walter.RoleID;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.List;
+import Walter.enums.BlackRole;
 
 public class watching extends Command {
 
     public watching() {
         keywords = new String[]{"watching"};
-        minimumRequiredRole = RoleID.GUEST;
+        minimumRequiredBlackRole = BlackRole.GUEST;
     }
 
     @Override

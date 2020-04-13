@@ -1,10 +1,7 @@
-
-*.class
-.idea/workspace.xml
-*.bin
-*.lock
-*.bin
-*.properties
-*.xml
-*.iml
-*.class
+.idea/
+.gradle
+gradle/
+build
+out
+Walter.iml
+src/main/java/META-INF/MANIFEST.MF

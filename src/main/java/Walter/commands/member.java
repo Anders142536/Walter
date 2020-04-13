@@ -3,7 +3,7 @@ package Walter.commands;
 import Walter.Collection;
 import Walter.Helper;
 import Walter.RoleHandler;
-import Walter.RoleID;
+import Walter.enums.BlackRole;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -14,7 +14,7 @@ public class member extends Command {
 
     public member() {
         keywords = new String[]{"member", "mitglied"};
-        minimumRequiredRole = RoleID.MEMBER;
+        minimumRequiredBlackRole = BlackRole.MEMBER;
         mainKeywordGerman = 1;
     }
 
@@ -64,12 +64,12 @@ public class member extends Command {
                 "I am utterly sorry, but \"" + memberToSearchFor + "\" could mean several users.");
         else {
             Member memberToAssignTo = foundMembers.get(0);
-            if (RoleHandler.instance.hasRole(memberToAssignTo, RoleID.MEMBER)) Helper.instance.respond(author, channel,
+            if (RoleHandler.instance.hasRole(memberToAssignTo, BlackRole.MEMBER)) Helper.instance.respond(author, channel,
                     "Es tut mir Leid, doch der Benutzer \"" + memberToSearchFor + "\" ist bereits Member.",
                     "I am utterly sorry, but the user \"" + memberToSearchFor + "\" already is a member.");
             else {
-                RoleHandler.instance.assignRole(memberToAssignTo, RoleID.MEMBER);
-                if (RoleHandler.instance.hasRole(memberToAssignTo, RoleID.GUEST)) RoleHandler.instance.removeRole(memberToAssignTo, RoleID.GUEST);
+                RoleHandler.instance.assignRole(memberToAssignTo, BlackRole.MEMBER);
+                if (RoleHandler.instance.hasRole(memberToAssignTo, BlackRole.GUEST)) RoleHandler.instance.removeRole(memberToAssignTo, BlackRole.GUEST);
             }
         }
     }

@@ -96,10 +96,10 @@ public class CommandHandler {
         }
 
         if (messageContent.charAt(0) == '!') {
-            if (RoleHandler.instance.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
+            if (RoleHandler.instance.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredBlackRole())) {
                 toExecute.execute(arguments, event);
             } else {
-                String minimumRequiredRole = toExecute.getMinimumRequiredRole().getName();
+                String minimumRequiredRole = toExecute.getMinimumRequiredBlackRole().getName();
                 Helper.instance.respond(author, channel,
                         "Es tut mir Leid, doch du hast nicht die minimale benötigte Rolle \"" + minimumRequiredRole + "\" für diesen Command.",
                         "I am utterly sorry, but you do not have the minimum required role \"" + minimumRequiredRole + "\" for this command.");
@@ -127,7 +127,7 @@ public class CommandHandler {
         }
 
         result.append("```\n**Minimale benötigte Rolle:** ")
-                .append(toExecute.getMinimumRequiredRole().getName())
+                .append(toExecute.getMinimumRequiredBlackRole().getName())
                 .append("\n\n")
                 .append(helpReturn[1]);
         return result.toString();
@@ -149,7 +149,7 @@ public class CommandHandler {
         }
 
         result.append("```\n**Minimum required Role:** ")
-                .append(toExecute.getMinimumRequiredRole().getName())
+                .append(toExecute.getMinimumRequiredBlackRole().getName())
                 .append("\n\n")
                 .append(helpReturn[1]);
         return result.toString();

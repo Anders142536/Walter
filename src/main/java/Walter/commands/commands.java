@@ -1,6 +1,7 @@
 package Walter.commands;
 
 import Walter.*;
+import Walter.enums.BlackRole;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -19,7 +20,7 @@ public class commands extends Command {
 
     public commands() {
         keywords = new String[]{"commands", "command"};
-        minimumRequiredRole = RoleID.GUEST;
+        minimumRequiredBlackRole = BlackRole.GUEST;
     }
 
     @Override
@@ -51,11 +52,11 @@ public class commands extends Command {
             fillCommandStrings();
         }
 
-        if (RoleHandler.instance.hasRole(author, RoleID.ADMIN))
+        if (RoleHandler.instance.hasRole(author, BlackRole.ADMIN))
             Helper.instance.respond(author, channel, adminCommands, adminCommandsEnglish);
-        else if (RoleHandler.instance.hasRole(author, RoleID.MEMBER))
+        else if (RoleHandler.instance.hasRole(author, BlackRole.MEMBER))
             Helper.instance.respond(author, channel, memberCommands, memberCommandsEnglish);
-        else if (RoleHandler.instance.hasRole(author, RoleID.GUEST))
+        else if (RoleHandler.instance.hasRole(author, BlackRole.GUEST))
             Helper.instance.respond(author, channel, guestCommands, guestCommandsEnglish);
         else
             //TODO: print error message
@@ -71,8 +72,8 @@ public class commands extends Command {
         //filling the command lists
         for (Command command :
                 commands) {
-            if (command.getMinimumRequiredRole() == RoleID.GUEST) guestCommandsList.add(command);
-            else if (command.getMinimumRequiredRole() == RoleID.MEMBER) memberCommandsList.add(command);
+            if (command.getMinimumRequiredBlackRole() == BlackRole.GUEST) guestCommandsList.add(command);
+            else if (command.getMinimumRequiredBlackRole() == BlackRole.MEMBER) memberCommandsList.add(command);
             else adminCommandsList.add(command);
         }
 

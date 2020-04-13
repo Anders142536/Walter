@@ -1,5 +1,8 @@
 package Walter;
 
+import Walter.enums.BlackCategory;
+import Walter.enums.BlackChannel;
+import Walter.enums.BlackRole;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 
@@ -29,16 +32,16 @@ public class Helper {
         return jda.getGuildById(GUILD_ID);
     }
 
-    Category getCategory(CategoryID categoryID) { return getCategory(categoryID.ID); }
+    net.dv8tion.jda.api.entities.Category getCategory(BlackCategory blackCategory) { return getCategory(blackCategory.ID); }
 
-    Category getCategory(long categoryID) { return getGuild().getCategoryById(categoryID); }
+    net.dv8tion.jda.api.entities.Category getCategory(long categoryID) { return getGuild().getCategoryById(categoryID); }
 
-    TextChannel getTextChannel(ChannelID channelID) { return getTextChannel(channelID.ID); }
+    TextChannel getTextChannel(BlackChannel blackChannel) { return getTextChannel(blackChannel.ID); }
 
     TextChannel getTextChannel(long channelID) { return getGuild().getTextChannelById(channelID);}
 
-    VoiceChannel getVoiceChannel(ChannelID channelID) {
-        return getVoiceChannel(channelID.ID);
+    VoiceChannel getVoiceChannel(BlackChannel blackChannel) {
+        return getVoiceChannel(blackChannel.ID);
     }
 
     VoiceChannel getVoiceChannel(long channelID) { return getGuild().getVoiceChannelById(channelID); }
@@ -56,7 +59,7 @@ public class Helper {
      * ******************* */
 
     public void respond(Member member, MessageChannel channel, String german, String english) {
-        if (RoleHandler.instance.hasRole(member, RoleID.ENGLISH))
+        if (RoleHandler.instance.hasRole(member, BlackRole.ENGLISH))
             channel.sendMessage(english).queue();
         else
             channel.sendMessage(german).queue();

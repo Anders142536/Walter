@@ -1,6 +1,6 @@
-package Walter;
+package Walter.enums;
 
-public enum ChannelID {
+public enum BlackChannel {
     FOYER (402875839131156501L),
     CONFIG (403266783844237323L),
     ADMIN (391278094352121857L),
@@ -9,8 +9,8 @@ public enum ChannelID {
     NEWS (405462316470108160L),
     CINEMA (305417211508555776L);
 
-    final long ID;
+    public final long ID;
 
-    ChannelID(long ID) { this.ID = ID; }
+    BlackChannel(long ID) { this.ID = ID; }
 
 }

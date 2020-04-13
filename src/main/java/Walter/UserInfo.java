@@ -1,5 +1,6 @@
 package Walter;
 
+//currently unused
 public class UserInfo {
     private long totalTime;
     private long lastTime;

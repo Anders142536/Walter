@@ -1,17 +1,12 @@
 package Walter.commands;
 
-import Walter.Collection;
-import Walter.Helper;
-import Walter.RoleID;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.List;
+import Walter.enums.BlackRole;
 
 public class test extends Command {
 
     public test () {
         keywords = new String[]{"test"};
-        minimumRequiredRole = RoleID.MEMBER;
+        minimumRequiredBlackRole = BlackRole.MEMBER;
 
     }
 

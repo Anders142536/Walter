@@ -1,8 +1,9 @@
-package Walter;
+package Walter.enums;
 
+import Walter.RoleHandler;
 import net.dv8tion.jda.api.entities.Role;
 
-public enum RoleID {
+public enum BlackRole {
     ADMIN       (254264388209475584L),
     BOT         (0L),
     ENGLISH     (431236126443831308L),
@@ -15,9 +16,9 @@ public enum RoleID {
     PIMMEL      (305413276181987329L),
     WALTER      (391285765893783554L);
 
-    final long ID;
+    public final long ID;
 
-    RoleID(long ID) { this.ID = ID; }
+    BlackRole(long ID) { this.ID = ID; }
 
     //role instances have an expiring life span, therefore we must fetch freshly everytime
     public Role getInstance() {

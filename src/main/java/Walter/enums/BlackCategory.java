@@ -1,6 +1,6 @@
-package Walter;
+package Walter.enums;
 
-public enum CategoryID {
+public enum BlackCategory {
     ADMIN                       (402882380953681922L),
     CATSANDMEMES                (361165294590230529L),
     MEOWANDPURRPURR             (402885052687581215L),
@@ -10,7 +10,7 @@ public enum CategoryID {
     UNUSEDGAMECHANNELS          (533049033720070154L),
     ARCHIV                      (413314004660912128L);
 
-    long ID;
+    public final long ID;
 
-    CategoryID(long ID) { this.ID = ID; }
+    BlackCategory(long ID) { this.ID = ID; }
 }

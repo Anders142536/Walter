@@ -1,8 +1,7 @@
 package Walter.commands;
 
-import Walter.Collection;
 import Walter.Helper;
-import Walter.RoleID;
+import Walter.enums.BlackRole;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -13,7 +12,7 @@ public class roll extends Command {
 
     public roll() {
         keywords = new String[]{"roll", "würfel"};
-        minimumRequiredRole = RoleID.GUEST;
+        minimumRequiredBlackRole = BlackRole.GUEST;
     }
 
     @Override

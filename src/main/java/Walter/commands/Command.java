@@ -1,8 +1,7 @@
 package Walter.commands;
 
-import Walter.Collection;
 import Walter.Helper;
-import Walter.RoleID;
+import Walter.enums.BlackRole;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -12,7 +11,7 @@ import java.util.List;
 public abstract class Command {
 
     protected String[] keywords;
-    RoleID minimumRequiredRole = RoleID.ADMIN;
+    BlackRole minimumRequiredBlackRole = BlackRole.ADMIN;
     int mainKeywordGerman;
     int mainKeywordEnglish;
 
@@ -35,8 +34,8 @@ public abstract class Command {
         return keywords;
     }
 
-    public RoleID getMinimumRequiredRole() {
-        return minimumRequiredRole;
+    public BlackRole getMinimumRequiredBlackRole() {
+        return minimumRequiredBlackRole;
     }
 
     //executes the command with the given parameters

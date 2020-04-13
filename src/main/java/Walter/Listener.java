@@ -1,5 +1,7 @@
 package Walter;
 
+import Walter.enums.BlackChannel;
+import Walter.enums.BlackRole;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.*;
@@ -20,7 +22,6 @@ public class Listener extends ListenerAdapter {
 
     //settings
     private int dropzoneLimit;
-    private int pullrateTwitterFeed;
 
     /* ******** *
      *  EVENTS  *
@@ -29,20 +30,20 @@ public class Listener extends ListenerAdapter {
     //new members are announced in the general channel, tagging the admins
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        TextChannel general = Helper.instance.getTextChannel(ChannelID.GENERAL);
-        Role admin = RoleID.ADMIN.getInstance();
+        TextChannel general = Helper.instance.getTextChannel(BlackChannel.GENERAL);
+        net.dv8tion.jda.api.entities.Role admin = BlackRole.ADMIN.getInstance();
 
         //sending the message. it shall look like this:
         //  @admin: NewMember hat sich im #foyer eingefunden.
         general.sendMessage(admin.getAsMention() + ": " + event.getMember().getEffectiveName() +
-                " hat sich im <#" + ChannelID.FOYER.ID + "> eingefunden.").queue();
+                " hat sich im <#" + BlackChannel.FOYER.ID + "> eingefunden.").queue();
     }
 
     //leaving members will be announced in the admin channel
     //furthermore they will receive a polite farewell by walter with a link to join the server in case they want to come back
     @Override
     public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
-        TextChannel admin = Helper.instance.getTextChannel(ChannelID.ADMIN);
+        TextChannel admin = Helper.instance.getTextChannel(BlackChannel.ADMIN);
 
         admin.sendMessage(event.getMember().getEffectiveName() + " hat unseren Server verlassen.").queue();
         //TODO: this
@@ -62,7 +63,7 @@ public class Listener extends ListenerAdapter {
         long IDvoiceJoined = event.getChannelJoined().getIdLong();
 
         //if the channel joined is the cinema channel
-        if (IDvoiceJoined == ChannelID.CINEMA.ID) {
+        if (IDvoiceJoined == BlackChannel.CINEMA.ID) {
             VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceJoined);
             if (channel.getMembers().size() == 1) {
                 //gets the current time and truncates it to only show hours and minutes
@@ -77,11 +78,11 @@ public class Listener extends ListenerAdapter {
     public void onGuildVoiceMove(GuildVoiceMoveEvent event) {
         long IDvoiceLeft = event.getChannelLeft().getIdLong();
         long IDvoiceJoined = event.getChannelJoined().getIdLong();
-        if (IDvoiceLeft == ChannelID.CINEMA.ID) {
+        if (IDvoiceLeft == BlackChannel.CINEMA.ID) {
             VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceLeft);
             if (channel.getMembers().size() == 0)
                 channel.getManager().setName("\uD83C\uDF7F Cinema").complete();
-        } else if (IDvoiceJoined == ChannelID.CINEMA.ID) {
+        } else if (IDvoiceJoined == BlackChannel.CINEMA.ID) {
             VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceJoined);
             if (channel.getMembers().size() == 1) {
                 //gets the current time and truncates it to only show hours and minutes
@@ -97,7 +98,7 @@ public class Listener extends ListenerAdapter {
         long IDvoiceLeft = event.getChannelLeft().getIdLong();
 
         //if the channel joined is the cinema channel
-        if (IDvoiceLeft == ChannelID.CINEMA.ID) {
+        if (IDvoiceLeft == BlackChannel.CINEMA.ID) {
             VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceLeft);
             if (channel.getMembers().size() == 0)
                 channel.getManager().setName("\uD83C\uDF7F Cinema").complete();
@@ -111,19 +112,34 @@ public class Listener extends ListenerAdapter {
         String messageContent = event.getMessage().getContentRaw();
         MessageChannel channel = event.getChannel();
         long channelID = channel.getIdLong();
+        boolean isCommand = messageContent.length() != 0 &&
+                            (messageContent.charAt(0) == '!' || messageContent.charAt(0) == '?');
 
         try {
-            if (messageContent.length() != 0 && (messageContent.charAt(0) == '!' || messageContent.charAt(0) == '?'))
+            if (isCommand)
                 CommandHandler.instance.process(event);
+            else {
+                if (channelID == BlackChannel.DROPZONE.ID) {
+                    Member author = event.getMember();
+                    mentionVoiceChat(author, channel);
+                }
+
+            }
         } catch (Exception e) {
             String informationToAdd = "channel:        " + channel.getName() +
                     "\nauthor:         " + event.getAuthor().getName() +
                     "\nmessageContent: \"" + messageContent + "\"\n";
             Helper.instance.respondException(channel, informationToAdd, e);
         }
-        if (channelID == ChannelID.DROPZONE.ID) {
+
+        if (channelID == BlackChannel.DROPZONE.ID) {
             Member author = event.getMember();
             mentionVoiceChat(author, channel);
+        }
+
+        if (channelID == BlackChannel.NEWS.ID) {
+
+
         }
     }
 

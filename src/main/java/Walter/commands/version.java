@@ -1,9 +1,8 @@
 package Walter.commands;
 
-import Walter.Collection;
 import Walter.Helper;
 import Walter.Walter;
-import Walter.RoleID;
+import Walter.enums.BlackRole;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -13,7 +12,7 @@ public class version extends Command {
 
     public version () {
         keywords = new String[]{"version"};
-        minimumRequiredRole = RoleID.MEMBER;
+        minimumRequiredBlackRole = BlackRole.MEMBER;
 
     }
 
