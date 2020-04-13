@@ -1,39 +1,26 @@
 package Walter;
 
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.events.ReadyEvent;
-import net.dv8tion.jda.core.events.ShutdownEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberRoleAddEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceMoveEvent;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.*;
+import net.dv8tion.jda.api.events.guild.member.*;
+import net.dv8tion.jda.api.events.guild.voice.*;
+import net.dv8tion.jda.api.events.message.*;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 //handles events and, for reasons of simplicity, holds settings.
 public class Listener extends ListenerAdapter {
 
     //required objects
     private JDA jda;
-    private Helper helper;
-    private CommandHandler commandHandler;
-    private TwitterFeed fortniteFeed;
 
     //settings
     private int dropzoneLimit;
-    private int pullrateFortnite;
-    private String idLastPostFortnite;
+    private int pullrateTwitterFeed;
 
     /* ******** *
      *  EVENTS  *
@@ -42,21 +29,20 @@ public class Listener extends ListenerAdapter {
     //new members are announced in the general channel, tagging the admins
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        //fetching required objects
-        TextChannel general = helper.getTextChannel(Collection.GENERAL_CHANNEL_ID);
-        Role admin = helper.getRole(Collection.ADMIN_ROLE_ID);
+        TextChannel general = Helper.instance.getTextChannel(ChannelID.GENERAL);
+        Role admin = RoleID.ADMIN.getInstance();
 
         //sending the message. it shall look like this:
         //  @admin: NewMember hat sich im #foyer eingefunden.
         general.sendMessage(admin.getAsMention() + ": " + event.getMember().getEffectiveName() +
-                " hat sich im <#" + Collection.FOYER_CHANNEL_ID + "> eingefunden.").queue();
+                " hat sich im <#" + ChannelID.FOYER.ID + "> eingefunden.").queue();
     }
 
     //leaving members will be announced in the admin channel
     //furthermore they will receive a polite farewell by walter with a link to join the server in case they want to come back
     @Override
     public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
-        TextChannel admin = helper.getTextChannel(Collection.ADMIN_CHANNEL_ID);
+        TextChannel admin = Helper.instance.getTextChannel(ChannelID.ADMIN);
 
         admin.sendMessage(event.getMember().getEffectiveName() + " hat unseren Server verlassen.").queue();
         //TODO: this
@@ -73,30 +59,11 @@ public class Listener extends ListenerAdapter {
     //log functionality to monitor the usage of voice channels and to see who are the most active members
     @Override
     public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
-        //getting all the data to log
-        long IDmemberJoined = event.getMember().getUser().getIdLong();
         long IDvoiceJoined = event.getChannelJoined().getIdLong();
 
-
-        //logging voice activity
-        try {
-            File logFile = new File("./voice.logs");    //TODO: rename voicelogs file to voice.logs
-
-            if (logFile.exists()) {
-                FileWriter fw = new FileWriter(logFile, true);  //this only adds to the text file
-                fw.write("1 " + IDmemberJoined + " " + IDvoiceJoined + " " + System.currentTimeMillis() + "\n");
-                fw.close();
-            } else {
-                //TODO: log Collection.N;
-            }
-        } catch (IOException e) {
-            //TODO: log e.toString();
-            e.printStackTrace();
-        }
-
         //if the channel joined is the cinema channel
-        if (IDvoiceJoined == Collection.CINEMA_CHANNEL_ID) {
-            VoiceChannel channel = helper.getVoiceChannel(IDvoiceJoined);
+        if (IDvoiceJoined == ChannelID.CINEMA.ID) {
+            VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceJoined);
             if (channel.getMembers().size() == 1) {
                 //gets the current time and truncates it to only show hours and minutes
                 LocalTime currentTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
@@ -108,27 +75,81 @@ public class Listener extends ListenerAdapter {
     //log functionality to monitor the usage of voice channels and to see who are the most active members
     @Override
     public void onGuildVoiceMove(GuildVoiceMoveEvent event) {
-        //TODO: this
+        long IDvoiceLeft = event.getChannelLeft().getIdLong();
+        long IDvoiceJoined = event.getChannelJoined().getIdLong();
+        if (IDvoiceLeft == ChannelID.CINEMA.ID) {
+            VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceLeft);
+            if (channel.getMembers().size() == 0)
+                channel.getManager().setName("\uD83C\uDF7F Cinema").complete();
+        } else if (IDvoiceJoined == ChannelID.CINEMA.ID) {
+            VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceJoined);
+            if (channel.getMembers().size() == 1) {
+                //gets the current time and truncates it to only show hours and minutes
+                LocalTime currentTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
+                channel.getManager().setName("\uD83C\uDF7F Cinema (" + currentTime + ")").complete();
+            }
+        }
     }
 
     //log functionality to monitor the usage of voice channels and to see who are the most active members
     @Override
     public void onGuildVoiceLeave(GuildVoiceLeaveEvent event) {
-        //TODO: this
+        long IDvoiceLeft = event.getChannelLeft().getIdLong();
+
+        //if the channel joined is the cinema channel
+        if (IDvoiceLeft == ChannelID.CINEMA.ID) {
+            VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceLeft);
+            if (channel.getMembers().size() == 0)
+                channel.getManager().setName("\uD83C\uDF7F Cinema").complete();
+        }
     }
 
     //TODO: write comment about what exactly is done here
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        //TODO: this
+        if (event.getAuthor().isBot()) return;
+        String messageContent = event.getMessage().getContentRaw();
+        MessageChannel channel = event.getChannel();
+        long channelID = channel.getIdLong();
+
+        try {
+            if (messageContent.length() != 0 && (messageContent.charAt(0) == '!' || messageContent.charAt(0) == '?'))
+                CommandHandler.instance.process(event);
+        } catch (Exception e) {
+            String informationToAdd = "channel:        " + channel.getName() +
+                    "\nauthor:         " + event.getAuthor().getName() +
+                    "\nmessageContent: \"" + messageContent + "\"\n";
+            Helper.instance.respondException(channel, informationToAdd, e);
+        }
+        if (channelID == ChannelID.DROPZONE.ID) {
+            Member author = event.getMember();
+            mentionVoiceChat(author, channel);
+        }
+    }
+
+    private void mentionVoiceChat(Member author, MessageChannel channel) {
+        StringBuilder mentions = new StringBuilder();
+
+        //get a list of all the members that are in the same voice channel as the author of the message
+        if (author.getVoiceState().inVoiceChannel()) {
+            VoiceChannel voice = author.getVoiceState().getChannel();
+            List<Member> vmembers = voice.getMembers();
+            for (Member temp : vmembers) {
+                if (author != temp) mentions.append(temp.getAsMention() + " ");
+            }
+            if (mentions.length() > 0) channel.sendMessage(mentions).queue();
+        }
     }
 
     //does stuff that only needs to be done when walter is started
     @Override
     public void onReady(ReadyEvent event) {
+        System.out.println("onReady triggered, JDA object launched without exception.");
         jda = event.getJDA();
-        helper = new Helper(jda);
-        commandHandler = new CommandHandler(helper);
+        Helper.instance = new Helper(jda);
+        CommandHandler.instance = new CommandHandler();
+        RoleHandler.instance = new RoleHandler();
+
         //TODO: Twitterfeeds
     }
 

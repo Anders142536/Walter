@@ -1,16 +1,20 @@
 package Walter.commands;
 
-import Walter.Command;
+import Walter.Collection;
 import Walter.Helper;
-import net.dv8tion.jda.core.events.Event;
+import Walter.RoleID;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
 public class hello extends Command {
 
-    String[] keywords = {"hallo", "hello", "hi", "hey", "hola",
-            "moin", "servus", "griaßdi", "grüzi", "tag"};
-
+    public hello () {
+        keywords = new String[]{"hallo", "hello", "hi", "hey", "hola",
+                "moin", "servus", "griaßdi", "grüzi", "tag"};
+        minimumRequiredRole = RoleID.GUEST;
+        mainKeywordEnglish = 1;
+    }
     @Override
     public String[] getHelp() {
         return new String[]{
@@ -30,8 +34,7 @@ public class hello extends Command {
         return keywords;
     }
 
-    @Override
-    public int execute(List<String> args, Event event, Helper helper) {
-        return -1;
-    }
+//    @Override
+//    public void execute(List<String> args, MessageReceivedEvent event) {
+//    }
 }

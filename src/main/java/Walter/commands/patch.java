@@ -1,37 +1,38 @@
 package Walter.commands;
 
+import Walter.ChannelID;
 import Walter.Collection;
-import Walter.Command;
 import Walter.Helper;
-import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
 public class patch extends Command {
 
-    String[] keywords = {"patch"};
+    public patch() {
+        keywords = new String[]{"patch"};
+    }
 
     @Override
     public String[] getHelp() {
         return new String[]{
                 " TEXT",
-                "Dieser Command schreibt den Text **TEXT** in <#" + Collection.NEWS_CHANNEL_ID + "> mit Hilfe des Patchnotes-Webhook."};
+                "Dieser Command schreibt den Text **TEXT** in <#" + ChannelID.NEWS + "> mit Hilfe des Patchnotes-Webhook."};
     }
 
     @Override
     public String[] getHelpEnglish() {
         return new String[]{
                 " TEST",
-                "This command writes the text **TEXT** into <#" + Collection.NEWS_CHANNEL_ID + "> using the Patchnotes webhook."};
+                "This command writes the text **TEXT** into <#" + ChannelID.NEWS + "> using the Patchnotes webhook."};
     }
 
     @Override
     public String[] getKeywords() {
         return keywords;
     }
-
-    @Override
-    public int execute(List<String> args, Event event, Helper helper) {
-        return -1;
-    }
+//
+//    @Override
+//    public void execute(List<String> args, MessageReceivedEvent event) {
+//    }
 }

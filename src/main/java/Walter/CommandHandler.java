@@ -1,9 +1,11 @@
 package Walter;
 
-import Walter.Walter;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+
+
+import Walter.commands.*;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.message.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,27 +13,153 @@ import java.util.List;
 
 
 //this class handles the recognition of commands and their execution, as well as their loading
-class CommandHandler {
+public class CommandHandler {
 
-    HashMap<String, Command>  commands = new HashMap<>();
-    Helper helper;
+    public static CommandHandler instance;
+    private HashMap<String, Command>  commands = new HashMap<>();
+    private List<Command> commandList;
 
-    CommandHandler(Helper helper) {
-        this.helper = helper;
-        initializeCommands();
+    CommandHandler() {
+        loadCommandsToHashMap();
     }
 
-    //loads the commands
-    void initializeCommands() {
+    private void loadCommandsToHashMap() {
         //TODO: in the long run, use reflection to find all classes instead of this list here
+        for (Command command :
+                createListOfCommands()) {
+            String[] keywords = command.getKeywords();
+            if (keywords != null) {
+                for (String keyword :
+                        keywords) {
+                    commands.put(keyword, command);
+                }
+            }
+        }
+    }
 
+    private List<Command> createListOfCommands() {
+        commandList = new ArrayList<Command>();
+
+        commandList.add(new analyse());
+        commandList.add(new commands());
+        commandList.add(new config());
+        commandList.add(new editmsg());
+        commandList.add(new english());
+        commandList.add(new file());
+        commandList.add(new german());
+        commandList.add(new getmsg());
+        commandList.add(new guest());
+        commandList.add(new hello());
+        commandList.add(new help());
+        commandList.add(new listening());
+        commandList.add(new member());
+        commandList.add(new patch());
+        commandList.add(new pimmel());
+        commandList.add(new playing());
+        commandList.add(new reprint());
+        commandList.add(new roll());
+        commandList.add(new say());
+        commandList.add(new shutdown());
+        commandList.add(new test());
+        commandList.add(new version());
+        commandList.add(new watching());
+
+        System.out.println("length of commandlist: " + commandList.size());
+        return commandList;
+    }
+
+    public List<Command> getListOfCommands() {
+        return commandList;
+    }
+
+    void process(MessageReceivedEvent event) {
+        String messageContent = event.getMessage().getContentRaw();
+        List<String> arguments = parseCommand(messageContent);
+        Command toExecute = commands.get(arguments.get(0));
+        Member author = Helper.instance.getMember(event.getAuthor());
+        MessageChannel channel = event.getChannel();
+
+        //happens if author is not member of server
+        if (author == null) {
+            Helper.instance.respond(event.getChannel(), "I am utterly sorry, but my services are strictly limited to members of our server.");
+            return;
+        }
+
+        System.out.println("> COMM: " + author.getEffectiveName() + " issued the following command:\n" + messageContent);
+
+        //if there was no command found with the given keyword
+        if (toExecute == null) {
+            Helper.instance.respond(author, event.getChannel(),
+                    "Es tut mir Leid, doch ich habe keinen Command für " + arguments.get(0) + " gefunden.",
+                    "I am utterly sorry, but I did not find a command for " + arguments.get(0) + ".");
+            return;
+        }
+
+        if (messageContent.charAt(0) == '!') {
+            if (RoleHandler.instance.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
+                toExecute.execute(arguments, event);
+            } else {
+                String minimumRequiredRole = toExecute.getMinimumRequiredRole().getName();
+                Helper.instance.respond(author, channel,
+                        "Es tut mir Leid, doch du hast nicht die minimale benötigte Rolle \"" + minimumRequiredRole + "\" für diesen Command.",
+                        "I am utterly sorry, but you do not have the minimum required role \"" + minimumRequiredRole + "\" for this command.");
+            }
+        } else {
+            Helper.instance.respond(author, channel,
+                    getEnglishHelpText(arguments.get(0), toExecute),
+                    getGermanHelpText(arguments.get(0), toExecute));
+        }
+    }
+
+    @NotNull
+    private String getGermanHelpText(String usedArgument, Command toExecute) {
+        String[] helpReturn = toExecute.getHelp();
+        StringBuilder result = new StringBuilder();
+        result.append("```diff\n!")
+                .append(usedArgument)
+                .append(helpReturn[0])
+                .append("```\n**Synonyme:**```");
+
+        for (String keyword :
+                toExecute.getKeywords()) {
+            result.append(keyword)
+                    .append("\n");
+        }
+
+        result.append("```\n**Minimale benötigte Rolle:** ")
+                .append(toExecute.getMinimumRequiredRole().getName())
+                .append("\n\n")
+                .append(helpReturn[1]);
+        return result.toString();
+    }
+
+    @NotNull
+    private String getEnglishHelpText(String usedArgument, Command toExecute) {
+        String[] helpReturn = toExecute.getHelpEnglish();
+        StringBuilder result = new StringBuilder();
+        result.append("```diff\n!")
+                .append(usedArgument)
+                .append(helpReturn[0])
+                .append("```\n**Synonyms:**```");
+
+        for (String keyword :
+                toExecute.getKeywords()) {
+            result.append(keyword)
+                    .append("\n");
+        }
+
+        result.append("```\n**Minimum required Role:** ")
+                .append(toExecute.getMinimumRequiredRole().getName())
+                .append("\n\n")
+                .append(helpReturn[1]);
+        return result.toString();
     }
 
     //converts the given string into an Arraylist that represents the command arguments
     //String is split on white spaces. If an argument is supposed to contain white spaces, it is bracketed with "
     private List<String> parseCommand(String content) {
         List<String> result = new ArrayList<>();
-
+        //TODO: change this to use "\"" instead of "" + char
         char quote = 34;  // "
         String[] split = content.substring(1).split("" + quote);
 
@@ -46,57 +174,5 @@ class CommandHandler {
             } else result.add(split[i]);
         }
         return result;
-    }
-
-    //processes the given command
-    //if the command object returns -1 or null it is not yet implemented.
-    void process(MessageReceivedEvent event) {
-        String content = event.getMessage().getContentRaw();
-        List<String> arguments = parseCommand(content);
-        Command toExecute = commands.get(arguments.get(0));
-
-        //detecting wether it was a !-  or a ?-command
-        char prefix = content.charAt(0);
-        if (prefix == '!') {
-
-        } else if (prefix == '?') {
-            MessageChannel channel = event.getChannel();
-            Member author = event.getMember();
-
-            //TODO get help string[] from list depending on language of the author
-            if (helper.checkRole(author, helper.getRole(Collection.ENGLISH_ROLE_ID))) {
-                String[] helpText = toExecute.getHelpEnglish();
-            } else {
-                String[] helpText = toExecute.getHelp();
-            }
-
-            String result = "```!" + arguments.get(0) + "```"
-        } else {
-            //TODO: Error, something went terribly wrong
-        }
-
-        /*TODO: parse command and determine wether the command was a !- or ?-command
-            if it was a !-command, execute it
-            if it was a ?-command, build the message that is returned with the String-Array returned
-                by the getHelp() method.
-
-            help method, depending on the language:
-            String result = "```!" + arguments[0] + helpReturn[0]"```\n" +
-                helpReturn[1] +
-                "\n\nSchlüsselworte für diesen Command sind:```" +
-                for (String keyword: command.getKeywords) {
-                    result[1] += keyword + "\n";
-                }
-                "```Achtung:\nDie Groß- und Kleinschreibung ist immer irrelevant.";
-
-            channel.sendMessage(result);
-         */
-    }
-
-    List<Command> getCommandList() {
-        List<Command> list = new ArrayList<Command>();
-
-
-        return list;
     }
 }

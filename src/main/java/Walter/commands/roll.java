@@ -1,14 +1,20 @@
 package Walter.commands;
 
-import Walter.Command;
+import Walter.Collection;
 import Walter.Helper;
-import net.dv8tion.jda.core.events.Event;
+import Walter.RoleID;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
 public class roll extends Command {
 
-    String[] keywords = {"roll", "würfel"};
+    public roll() {
+        keywords = new String[]{"roll", "würfel"};
+        minimumRequiredRole = RoleID.GUEST;
+    }
 
     @Override
     public String[] getHelp() {
@@ -32,7 +38,21 @@ public class roll extends Command {
     }
 
     @Override
-    public int execute(List<String> args, Event event, Helper helper) {
-        return -1;
+    public void execute(List<String> args, MessageReceivedEvent event) {
+        Member author = event.getMember();
+        MessageChannel channel = event.getChannel();
+        int limit;
+
+        if (args.size() > 1) {
+            limit = Integer.parseInt(args.get(1));
+        } else {
+            limit = 6;
+        }
+
+        int randomNumber = (int)(Math.random() * limit) + 1;
+
+        Helper.instance.respond(author, channel,
+                "Deine Zufallszahl lautet: " + randomNumber,
+                "Your random number is: " + randomNumber);
     }
 }

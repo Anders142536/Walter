@@ -1,15 +1,22 @@
 package Walter.commands;
 
 import Walter.Collection;
-import Walter.Command;
 import Walter.Helper;
-import net.dv8tion.jda.core.events.Event;
+import Walter.RoleHandler;
+import Walter.RoleID;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
 public class member extends Command {
 
-    String[] keywords = {"member", "mitglied"};
+    public member() {
+        keywords = new String[]{"member", "mitglied"};
+        minimumRequiredRole = RoleID.MEMBER;
+        mainKeywordGerman = 1;
+    }
 
     @Override
     public String[] getHelp() {
@@ -35,7 +42,35 @@ public class member extends Command {
     }
 
     @Override
-    public int execute(List<String> args, Event event, Helper helper) {
-        return -1;
+    public void execute(List<String> args, MessageReceivedEvent event) {
+        Member author = event.getMember();
+        MessageChannel channel = event.getChannel();
+
+        if (args.size() < 2) {
+            Helper.instance.respond(author, channel,
+                    "Es tut mir Leid, doch mir wurde kein Name gegeben.",
+                    "I am utterly sorry, but I was not given a name.");
+            return;
+        }
+
+        String memberToSearchFor = args.get(1);
+        List<Member> foundMembers = Helper.instance.getMembersByName(memberToSearchFor);
+
+        if (foundMembers.size() == 0) Helper.instance.respond(author, channel,
+                "Es tut mir Leid, doch ich habe niemanden mit dem Namen \"" + memberToSearchFor + "\" gefunden.",
+                "I am utterly sorry, but I did not find anyone with the name \"" + memberToSearchFor + "\".");
+        else if (foundMembers.size() > 1) Helper.instance.respond(author, channel,
+                "Es tut mir Leid, doch \"" + memberToSearchFor + "\" könnte auf mehrere Benutzer zutreffen.",
+                "I am utterly sorry, but \"" + memberToSearchFor + "\" could mean several users.");
+        else {
+            Member memberToAssignTo = foundMembers.get(0);
+            if (RoleHandler.instance.hasRole(memberToAssignTo, RoleID.MEMBER)) Helper.instance.respond(author, channel,
+                    "Es tut mir Leid, doch der Benutzer \"" + memberToSearchFor + "\" ist bereits Member.",
+                    "I am utterly sorry, but the user \"" + memberToSearchFor + "\" already is a member.");
+            else {
+                RoleHandler.instance.assignRole(memberToAssignTo, RoleID.MEMBER);
+                if (RoleHandler.instance.hasRole(memberToAssignTo, RoleID.GUEST)) RoleHandler.instance.removeRole(memberToAssignTo, RoleID.GUEST);
+            }
+        }
     }
 }
