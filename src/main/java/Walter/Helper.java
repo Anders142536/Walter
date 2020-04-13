@@ -13,6 +13,8 @@ public class Helper {
     public static Helper instance;
     private JDA jda;
 
+    final private static long GUILD_ID = 254263827237961729L;
+
 
     public Helper (JDA jda) {
         this.jda = jda;
@@ -22,10 +24,14 @@ public class Helper {
      *  JDA Getters  *
      * ************* */
 
-    //this is not stashed as instances are invalidated after a certain period of time
+    //this is not stored as instances are invalidated after a certain period of time
     Guild getGuild() {
-        return jda.getGuildById(Collection.GUILD_ID);
+        return jda.getGuildById(GUILD_ID);
     }
+
+    Category getCategory(CategoryID categoryID) { return getCategory(categoryID.ID); }
+
+    Category getCategory(long categoryID) { return getGuild().getCategoryById(categoryID); }
 
     TextChannel getTextChannel(ChannelID channelID) { return getTextChannel(channelID.ID); }
 

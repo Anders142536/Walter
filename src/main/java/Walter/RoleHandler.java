@@ -7,11 +7,11 @@ public class RoleHandler {
     public static RoleHandler instance;
 
     public void assignRole(Member member, RoleID roleToAssign) {
-        Helper.instance.getGuild().addRoleToMember(member, roleToAssign.getRoleInstance()).queue();
+        Helper.instance.getGuild().addRoleToMember(member, roleToAssign.getInstance()).queue();
     }
 
     public void removeRole(Member member, RoleID roleToRemove) {
-        Helper.instance.getGuild().removeRoleFromMember(member, roleToRemove.getRoleInstance()).queue();
+        Helper.instance.getGuild().removeRoleFromMember(member, roleToRemove.getInstance()).queue();
     }
 
     public void toggleRole(Member member, RoleID roleToToggle) {
@@ -19,7 +19,7 @@ public class RoleHandler {
     }
 
     public boolean hasRole(Member member, RoleID roleToCheck) {
-        return member.getRoles().contains(roleToCheck.getRoleInstance());
+        return member.getRoles().contains(roleToCheck.getInstance());
     }
 
     Role getRole(long roleID) {

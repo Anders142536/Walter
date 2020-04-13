@@ -10,7 +10,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 import java.util.List;
 
 //handles events and, for reasons of simplicity, holds settings.
@@ -31,12 +30,12 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         TextChannel general = Helper.instance.getTextChannel(ChannelID.GENERAL);
-        Role admin = RoleID.ADMIN.getRoleInstance();
+        Role admin = RoleID.ADMIN.getInstance();
 
         //sending the message. it shall look like this:
         //  @admin: NewMember hat sich im #foyer eingefunden.
         general.sendMessage(admin.getAsMention() + ": " + event.getMember().getEffectiveName() +
-                " hat sich im <#" + ChannelID.FOYER + "> eingefunden.").queue();
+                " hat sich im <#" + ChannelID.FOYER.ID + "> eingefunden.").queue();
     }
 
     //leaving members will be announced in the admin channel

@@ -5,8 +5,6 @@ package Walter;
 import Walter.commands.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.*;
-import net.dv8tion.jda.api.managers.RoleManager;
-import net.dv8tion.jda.internal.managers.RoleManagerImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -101,7 +99,7 @@ public class CommandHandler {
             if (RoleHandler.instance.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
                 toExecute.execute(arguments, event);
             } else {
-                String minimumRequiredRole = toExecute.getMinimumRequiredRole().getRoleInstance().getName();
+                String minimumRequiredRole = toExecute.getMinimumRequiredRole().getName();
                 Helper.instance.respond(author, channel,
                         "Es tut mir Leid, doch du hast nicht die minimale benötigte Rolle \"" + minimumRequiredRole + "\" für diesen Command.",
                         "I am utterly sorry, but you do not have the minimum required role \"" + minimumRequiredRole + "\" for this command.");
@@ -129,7 +127,7 @@ public class CommandHandler {
         }
 
         result.append("```\n**Minimale benötigte Rolle:** ")
-                .append(toExecute.getMinimumRequiredRole().getRoleInstance().getName())
+                .append(toExecute.getMinimumRequiredRole().getName())
                 .append("\n\n")
                 .append(helpReturn[1]);
         return result.toString();
@@ -151,7 +149,7 @@ public class CommandHandler {
         }
 
         result.append("```\n**Minimum required Role:** ")
-                .append(toExecute.getMinimumRequiredRole().getRoleInstance().getName())
+                .append(toExecute.getMinimumRequiredRole().getName())
                 .append("\n\n")
                 .append(helpReturn[1]);
         return result.toString();

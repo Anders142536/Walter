@@ -20,7 +20,9 @@ public enum RoleID {
     RoleID(long ID) { this.ID = ID; }
 
     //role instances have an expiring life span, therefore we must fetch freshly everytime
-    public Role getRoleInstance() {
+    public Role getInstance() {
         return RoleHandler.instance.getRole(ID);
     }
+
+    public String getName() { return getInstance().getName(); }
 }

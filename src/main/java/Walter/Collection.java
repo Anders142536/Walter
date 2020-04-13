@@ -3,11 +3,6 @@ package Walter;
 //this is a static collection of constants that may be called anywhere in the project
 public class Collection {
 
-
-    //guild and channel IDs on our server
-    final public static long GUILD_ID              = 254263827237961729L;
-
-
     //Strings that are used all over the place
     public static String NO_VOICELOG_FOUND = "No file called voice.logs found.";
     public static String ERROR_NOT_YET_IMPLEMENTED = "(Error: Anders was to lazy too implement something here.";
