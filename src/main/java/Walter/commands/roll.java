@@ -11,8 +11,8 @@ import java.util.List;
 public class roll extends Command {
 
     public roll() {
-        keywords = new String[]{"roll", "würfel"};
-        minimumRequiredBlackRole = BlackRole.GUEST;
+        keywords = new String[]{"roll", "würfel", "wuerfel"};
+        minimumRequiredRole = BlackRole.GUEST;
     }
 
     @Override
@@ -40,13 +40,9 @@ public class roll extends Command {
     public void execute(List<String> args, MessageReceivedEvent event) {
         Member author = event.getMember();
         MessageChannel channel = event.getChannel();
-        int limit;
 
-        if (args.size() > 1) {
-            limit = Integer.parseInt(args.get(1));
-        } else {
-            limit = 6;
-        }
+        int limit = (args.size() > 1 ?
+                Integer.parseInt(args.get(1)) : 6);
 
         int randomNumber = (int)(Math.random() * limit) + 1;
 

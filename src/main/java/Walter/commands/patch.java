@@ -38,6 +38,7 @@ public class patch extends Command {
         String toSend = "__**Patchnotes Walter " + Walter.VERSION + "**__\n\n" +
                 // enter patch notes between here..
                 itemizer + "implemented !patch command\n" +
+                itemizer + "implemented !roll command\n" +
                 itemizer + "fixed issue with help texts of patch command displaying the news channel name incorrectly" +
                 itemizer + "slight code refactor\n" +
                 // ..and here

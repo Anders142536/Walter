@@ -13,7 +13,7 @@ public class german extends Command {
 
     public german() {
         keywords = new String[]{"deutsch", "german"};
-        minimumRequiredBlackRole = BlackRole.GUEST;
+        minimumRequiredRole = BlackRole.GUEST;
         mainKeywordEnglish = 1;
     }
 

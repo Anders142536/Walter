@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class Command {
 
     protected String[] keywords;
-    BlackRole minimumRequiredBlackRole = BlackRole.ADMIN;
+    BlackRole minimumRequiredRole = BlackRole.ADMIN;
     int mainKeywordGerman;
     int mainKeywordEnglish;
 
@@ -34,8 +34,8 @@ public abstract class Command {
         return keywords;
     }
 
-    public BlackRole getMinimumRequiredBlackRole() {
-        return minimumRequiredBlackRole;
+    public BlackRole getMinimumRequiredRole() {
+        return minimumRequiredRole;
     }
 
     //executes the command with the given parameters

@@ -7,7 +7,7 @@ public class watching extends Command {
 
     public watching() {
         keywords = new String[]{"watching"};
-        minimumRequiredBlackRole = BlackRole.GUEST;
+        minimumRequiredRole = BlackRole.GUEST;
     }
 
     @Override

@@ -6,7 +6,7 @@ public class help extends Command {
 
     public help() {
         keywords = new String[]{"help", "hilfe"};
-        minimumRequiredBlackRole = BlackRole.GUEST;
+        minimumRequiredRole = BlackRole.GUEST;
         mainKeywordGerman = 1;
     }
 
