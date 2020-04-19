@@ -1,7 +1,9 @@
-.idea/
 .gradle
-gradle/
+.idea
+.settings
+bin
 build
+gradle
 out
 Walter.iml
 src/main/java/META-INF/MANIFEST.MF

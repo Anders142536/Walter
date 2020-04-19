@@ -7,7 +7,7 @@ public class hello extends Command {
     public hello () {
         keywords = new String[]{"hallo", "hello", "hi", "hey", "hola",
                 "moin", "servus", "griaßdi", "grüzi", "tag"};
-        minimumRequiredBlackRole = BlackRole.GUEST;
+        minimumRequiredRole = BlackRole.GUEST;
         mainKeywordEnglish = 1;
     }
     @Override

@@ -7,7 +7,7 @@ public class guest extends Command {
 
     public guest() {
         keywords = new String[]{"guest", "gast"};
-        minimumRequiredBlackRole = BlackRole.GUEST;
+        minimumRequiredRole = BlackRole.GUEST;
         mainKeywordGerman = 1;
     }
 

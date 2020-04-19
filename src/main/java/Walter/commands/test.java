@@ -6,7 +6,7 @@ public class test extends Command {
 
     public test () {
         keywords = new String[]{"test"};
-        minimumRequiredBlackRole = BlackRole.MEMBER;
+        minimumRequiredRole = BlackRole.MEMBER;
 
     }
 

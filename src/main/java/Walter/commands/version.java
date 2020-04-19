@@ -12,7 +12,7 @@ public class version extends Command {
 
     public version () {
         keywords = new String[]{"version"};
-        minimumRequiredBlackRole = BlackRole.MEMBER;
+        minimumRequiredRole = BlackRole.MEMBER;
 
     }
 

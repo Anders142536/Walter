@@ -14,7 +14,7 @@ public class member extends Command {
 
     public member() {
         keywords = new String[]{"member", "mitglied"};
-        minimumRequiredBlackRole = BlackRole.MEMBER;
+        minimumRequiredRole = BlackRole.MEMBER;
         mainKeywordGerman = 1;
     }
 

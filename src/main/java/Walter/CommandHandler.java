@@ -81,7 +81,7 @@ public class CommandHandler {
 
         //happens if author is not member of server
         if (author == null) {
-            Helper.instance.respond(event.getChannel(), "I am utterly sorry, but my services are strictly limited to members of our server.");
+            Helper.instance.respond(channel, "I am utterly sorry, but my services are strictly limited to members of our server.");
             return;
         }
 
@@ -89,17 +89,17 @@ public class CommandHandler {
 
         //if there was no command found with the given keyword
         if (toExecute == null) {
-            Helper.instance.respond(author, event.getChannel(),
+            Helper.instance.respond(author, channel,
                     "Es tut mir Leid, doch ich habe keinen Command für " + arguments.get(0) + " gefunden.",
                     "I am utterly sorry, but I did not find a command for " + arguments.get(0) + ".");
             return;
         }
 
         if (messageContent.charAt(0) == '!') {
-            if (RoleHandler.instance.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredBlackRole())) {
+            if (RoleHandler.instance.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
                 toExecute.execute(arguments, event);
             } else {
-                String minimumRequiredRole = toExecute.getMinimumRequiredBlackRole().getName();
+                String minimumRequiredRole = toExecute.getMinimumRequiredRole().getName();
                 Helper.instance.respond(author, channel,
                         "Es tut mir Leid, doch du hast nicht die minimale benötigte Rolle \"" + minimumRequiredRole + "\" für diesen Command.",
                         "I am utterly sorry, but you do not have the minimum required role \"" + minimumRequiredRole + "\" for this command.");
@@ -114,45 +114,31 @@ public class CommandHandler {
     @NotNull
     private String getGermanHelpText(String usedArgument, Command toExecute) {
         String[] helpReturn = toExecute.getHelp();
-        StringBuilder result = new StringBuilder();
-        result.append("```diff\n!")
-                .append(usedArgument)
-                .append(helpReturn[0])
-                .append("```\n**Synonyme:**```");
-
-        for (String keyword :
-                toExecute.getKeywords()) {
-            result.append(keyword)
-                    .append("\n");
-        }
-
-        result.append("```\n**Minimale benötigte Rolle:** ")
-                .append(toExecute.getMinimumRequiredBlackRole().getName())
-                .append("\n\n")
-                .append(helpReturn[1]);
-        return result.toString();
+        return "```diff\n!" +
+                usedArgument + helpReturn[0] +
+                "```\n**Synonyme:**```" +
+                buildKeywordList(toExecute.getKeywords()) +
+                "```\n**Minimale benötigte Rolle:** " + toExecute.getMinimumRequiredRole().getName() + "\n\n" +
+                helpReturn[1];
     }
 
     @NotNull
     private String getEnglishHelpText(String usedArgument, Command toExecute) {
         String[] helpReturn = toExecute.getHelpEnglish();
-        StringBuilder result = new StringBuilder();
-        result.append("```diff\n!")
-                .append(usedArgument)
-                .append(helpReturn[0])
-                .append("```\n**Synonyms:**```");
+        return "```diff\n!" +
+                usedArgument + helpReturn[0] +
+                "```\n**Synonyms:**```" +
+                buildKeywordList(toExecute.getKeywords()) +
+                "```\n**Minimum required Role:** " + toExecute.getMinimumRequiredRole().getName() + "\n\n" +
+                helpReturn[1];
+    }
 
-        for (String keyword :
-                toExecute.getKeywords()) {
-            result.append(keyword)
-                    .append("\n");
+    private String buildKeywordList(String[] keywords) {
+        StringBuilder keywordList = new StringBuilder();
+        for (String keyword : keywords) {
+            keywordList.append(keyword).append("\n");
         }
-
-        result.append("```\n**Minimum required Role:** ")
-                .append(toExecute.getMinimumRequiredBlackRole().getName())
-                .append("\n\n")
-                .append(helpReturn[1]);
-        return result.toString();
+        return keywordList.toString();
     }
 
     //converts the given string into an Arraylist that represents the command arguments

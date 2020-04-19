@@ -8,7 +8,7 @@ public class pimmel extends Command {
     public pimmel() {
         keywords = new String[]{"pimmel", "pimmelberger", "dick", "dickhead"};
         mainKeywordEnglish = 2;
-        minimumRequiredBlackRole = BlackRole.GUEST;
+        minimumRequiredRole = BlackRole.GUEST;
     }
 
     @Override
