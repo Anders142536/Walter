@@ -40,26 +40,26 @@ public class CommandHandler {
     private List<Command> createListOfCommands() {
         commandList = new ArrayList<Command>();
 
-        commandList.add(new analyse());
+//        commandList.add(new analyse());
         commandList.add(new commands());
-        commandList.add(new config());
-        commandList.add(new editmsg());
+//        commandList.add(new config());
+//        commandList.add(new editmsg());
         commandList.add(new english());
-        commandList.add(new file());
+//        commandList.add(new file());
         commandList.add(new german());
-        commandList.add(new getmsg());
-        commandList.add(new guest());
-        commandList.add(new hello());
-        commandList.add(new help());
+//        commandList.add(new getmsg());
+//        commandList.add(new guest());
+//        commandList.add(new hello());
+//        commandList.add(new help());
         commandList.add(new listening());
         commandList.add(new member());
         commandList.add(new patch());
-        commandList.add(new pimmel());
+//        commandList.add(new pimmel());
         commandList.add(new playing());
-        commandList.add(new reprint());
+//        commandList.add(new reprint());
         commandList.add(new roll());
-        commandList.add(new say());
-        commandList.add(new shutdown());
+//        commandList.add(new say());
+//        commandList.add(new shutdown());
         commandList.add(new test());
         commandList.add(new version());
         commandList.add(new watching());
@@ -97,7 +97,12 @@ public class CommandHandler {
 
         if (messageContent.charAt(0) == '!') {
             if (RoleHandler.instance.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
-                toExecute.execute(arguments, event);
+                String[] returnCode = toExecute.execute(arguments, event);
+                if (returnCode != null) {
+                    Helper.instance.respond(author, channel,
+                            "Es tut mir Leid, doch etwas ist schief gelaufen:\n\n**Fehlermeldung:** *" + returnCode[0] + "*\n\n" + getGermanHelpText(arguments.get(0), toExecute),
+                            "I am utterly sorry, but something went wrong.\n\n**Error message:** *" + returnCode[1] + "*\n\n" + getEnglishHelpText(arguments.get(0), toExecute));
+                }
             } else {
                 String minimumRequiredRole = toExecute.getMinimumRequiredRole().getName();
                 Helper.instance.respond(author, channel,
@@ -106,15 +111,17 @@ public class CommandHandler {
             }
         } else {
             Helper.instance.respond(author, channel,
-                    getEnglishHelpText(arguments.get(0), toExecute),
-                    getGermanHelpText(arguments.get(0), toExecute));
+                    getGermanHelpText(arguments.get(0), toExecute),
+                    getEnglishHelpText(arguments.get(0), toExecute));
         }
     }
 
     @NotNull
     private String getGermanHelpText(String usedArgument, Command toExecute) {
         String[] helpReturn = toExecute.getHelp();
-        return "```diff\n!" +
+        return "__**Hilfeseite " + usedArgument +  "**__\n\n" +
+                "**Syntax:**" +
+                "```diff\n!" +
                 usedArgument + helpReturn[0] +
                 "```\n**Synonyme:**```" +
                 buildKeywordList(toExecute.getKeywords()) +
@@ -125,7 +132,9 @@ public class CommandHandler {
     @NotNull
     private String getEnglishHelpText(String usedArgument, Command toExecute) {
         String[] helpReturn = toExecute.getHelpEnglish();
-        return "```diff\n!" +
+        return "__**Help page " + usedArgument +  "**__\n\n" +
+                "**Syntax:**" +
+                "```diff\n!" +
                 usedArgument + helpReturn[0] +
                 "```\n**Synonyms:**```" +
                 buildKeywordList(toExecute.getKeywords()) +

@@ -27,12 +27,8 @@ public class guest extends Command {
                         Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH};
     }
 
-    @Override
-    public String[] getKeywords() {
-        return keywords;
-    }
-
 //    @Override
-//    public void execute(List<String> args, MessageReceivedEvent event) {
+//    public String[] execute(List<String> args, MessageReceivedEvent event) {
+    //TODO: add in CommandHandler.createListOfCommands()
 //    }
 }

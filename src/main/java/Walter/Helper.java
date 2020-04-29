@@ -71,13 +71,13 @@ public class Helper {
 
     public void respondException(MessageChannel channel, String informationToAdd, Exception e) {
 
-        Calendar now = Calendar.getInstance();
-        String corePrint = "\n<@!151010441043116032>:\nTIME AND DATE:  " +
-                now.get(Calendar.YEAR) + "/" + now.get(Calendar.MONTH) + "/" + now.get(Calendar.DAY_OF_MONTH) + " " + now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
-        if (informationToAdd.length() != 0) corePrint += "\n\nADDITIONAL INFORMATION:\n" + informationToAdd;
-        corePrint += "\n\nSTACKTRACE:\n" + e.getStackTrace()[0];
-        channel.sendMessage("I am utterly sorry, but something went seriously wrong here." + corePrint).queue();
+
+        String corePrint = "I am utterly sorry, but something went seriously wrong here." +
+                "\n\n<@!151010441043116032>:\n" +
+                "```timestamp:      " + getFormattedNowString() + "\n" +
+                (informationToAdd != null ? informationToAdd + "" : "") + "```";
         System.out.println("> ERROR An exception was thrown!" + corePrint);
+        channel.sendMessage(corePrint + getStackTraceString(e)).queue();
         e.printStackTrace();
     }
 
@@ -100,4 +100,17 @@ public class Helper {
         }
     }
 
+    public String getFormattedNowString() {
+        Calendar now = Calendar.getInstance();
+        return now.get(Calendar.YEAR) + "/" + now.get(Calendar.MONTH) + "/" + now.get(Calendar.DAY_OF_MONTH) + " " + now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+    }
+
+    private String getStackTraceString(Exception e) {
+        StringBuilder builder = new StringBuilder("\nSTACKTRACE:\n");
+        StackTraceElement[] stacktrace = e.getStackTrace();
+        for (int i = 0; i < 10 && i < stacktrace.length; i++) {
+            builder.append("\n").append(stacktrace[i]);
+        }
+        return builder.toString();
+    }
 }

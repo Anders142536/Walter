@@ -31,12 +31,8 @@ public class editmsg extends Command {
                         "can only edit messages that were sent by me."};
     }
 
-    @Override
-    public String[] getKeywords() {
-        return keywords;
-    }
-
 //    @Override
-//    public void execute(List<String> args, MessageReceivedEvent event) {
+//    public String[] execute(List<String> args, MessageReceivedEvent event) {
+    //TODO: add in CommandHandler.createListOfCommands()
 //    }
 }

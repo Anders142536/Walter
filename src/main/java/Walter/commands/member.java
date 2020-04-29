@@ -37,40 +37,28 @@ public class member extends Command {
     }
 
     @Override
-    public String[] getKeywords() {
-        return keywords;
-    }
-
-    @Override
-    public void execute(List<String> args, MessageReceivedEvent event) {
+    public String[] execute(List<String> args, MessageReceivedEvent event) {
         Member author = event.getMember();
         MessageChannel channel = event.getChannel();
 
-        if (args.size() < 2) {
-            Helper.instance.respond(author, channel,
-                    "Es tut mir Leid, doch mir wurde kein Name gegeben.",
-                    "I am utterly sorry, but I was not given a name.");
-            return;
-        }
+        if (args.size() < 2) return new String[]{"Mir wurde kein Name gegeben.", "I was not given a name."};
 
         String memberToSearchFor = args.get(1);
         List<Member> foundMembers = Helper.instance.getMembersByName(memberToSearchFor);
 
-        if (foundMembers.size() == 0) Helper.instance.respond(author, channel,
-                "Es tut mir Leid, doch ich habe niemanden mit dem Namen \"" + memberToSearchFor + "\" gefunden.",
-                "I am utterly sorry, but I did not find anyone with the name \"" + memberToSearchFor + "\".");
-        else if (foundMembers.size() > 1) Helper.instance.respond(author, channel,
-                "Es tut mir Leid, doch \"" + memberToSearchFor + "\" könnte auf mehrere Benutzer zutreffen.",
-                "I am utterly sorry, but \"" + memberToSearchFor + "\" could mean several users.");
+        if (foundMembers.size() == 0) return new String[]{"Ich habe niemanden mit dem Namen \"" + memberToSearchFor + "\" gefunden.",
+                "I did not find anyone with the name \"" + memberToSearchFor + "\"."};
+        else if (foundMembers.size() > 1) return new String[] {memberToSearchFor + "\" könnte auf mehrere Benutzer zutreffen.",
+                memberToSearchFor + "\" matches several users."};
         else {
             Member memberToAssignTo = foundMembers.get(0);
-            if (RoleHandler.instance.hasRole(memberToAssignTo, BlackRole.MEMBER)) Helper.instance.respond(author, channel,
-                    "Es tut mir Leid, doch der Benutzer \"" + memberToSearchFor + "\" ist bereits Member.",
-                    "I am utterly sorry, but the user \"" + memberToSearchFor + "\" already is a member.");
+            if (RoleHandler.instance.hasRole(memberToAssignTo, BlackRole.MEMBER)) return new String[]{"Der Benutzer \"" + memberToSearchFor + "\" ist bereits Member.",
+                    "The user \"" + memberToSearchFor + "\" already is a member."};
             else {
                 RoleHandler.instance.assignRole(memberToAssignTo, BlackRole.MEMBER);
                 if (RoleHandler.instance.hasRole(memberToAssignTo, BlackRole.GUEST)) RoleHandler.instance.removeRole(memberToAssignTo, BlackRole.GUEST);
             }
         }
+        return null;
     }
 }

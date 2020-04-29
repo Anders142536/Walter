@@ -37,7 +37,7 @@ public class roll extends Command {
     }
 
     @Override
-    public void execute(List<String> args, MessageReceivedEvent event) {
+    public String[] execute(List<String> args, MessageReceivedEvent event) {
         Member author = event.getMember();
         MessageChannel channel = event.getChannel();
 
@@ -49,5 +49,6 @@ public class roll extends Command {
         Helper.instance.respond(author, channel,
                 "Deine Zufallszahl lautet: " + randomNumber,
                 "Your random number is: " + randomNumber);
+        return null;
     }
 }

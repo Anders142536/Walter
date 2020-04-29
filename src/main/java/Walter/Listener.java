@@ -2,8 +2,10 @@ package Walter;
 
 import Walter.enums.BlackChannel;
 import Walter.enums.BlackRole;
+import Walter.enums.BlackWebhook;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Message.Attachment;
 import net.dv8tion.jda.api.events.*;
 import net.dv8tion.jda.api.events.guild.member.*;
 import net.dv8tion.jda.api.events.guild.voice.*;
@@ -31,12 +33,10 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         TextChannel general = Helper.instance.getTextChannel(BlackChannel.GENERAL);
-        net.dv8tion.jda.api.entities.Role admin = BlackRole.ADMIN.getInstance();
+        RoleHandler.instance.assignRole(event.getMember(), BlackRole.GUEST);
 
-        //sending the message. it shall look like this:
-        //  @admin: NewMember hat sich im #foyer eingefunden.
-        general.sendMessage(admin.getAsMention() + ": " + event.getMember().getEffectiveName() +
-                " hat sich im <#" + BlackChannel.FOYER.ID + "> eingefunden.").queue();
+        general.sendMessage("Werte " + BlackRole.MEMBER.getName() + ", unser Gast " + event.getMember().getAsMention() +
+                " ist eingetroffen. Herzlich Willkommen!").queue();
     }
 
     //leaving members will be announced in the admin channel
@@ -123,23 +123,26 @@ public class Listener extends ListenerAdapter {
                     Member author = event.getMember();
                     mentionVoiceChat(author, channel);
                 }
+            }
 
+            if (channelID == BlackChannel.DROPZONE.ID) {
+                Member author = event.getMember();
+                mentionVoiceChat(author, channel);
+            }
+
+            if (channelID == BlackChannel.NEWS.ID) {
+                List<Attachment> attachments = event.getMessage().getAttachments();
+
+                BlackWebhook.SERVERNEWS
+                        .sendMessage(messageContent + "\n\n*Brought to you by:* " + event.getAuthor().getAsMention(),
+                                attachments);
+                event.getMessage().delete().queue();
             }
         } catch (Exception e) {
             String informationToAdd = "channel:        " + channel.getName() +
-                    "\nauthor:         " + event.getAuthor().getName() +
-                    "\nmessageContent: \"" + messageContent + "\"\n";
+                    "\nauthor:         " + event.getAuthor().getName() + " <@!" + event.getAuthor().getId() + ">" +
+                    "\nmessageContent: " + messageContent + "";
             Helper.instance.respondException(channel, informationToAdd, e);
-        }
-
-        if (channelID == BlackChannel.DROPZONE.ID) {
-            Member author = event.getMember();
-            mentionVoiceChat(author, channel);
-        }
-
-        if (channelID == BlackChannel.NEWS.ID) {
-
-
         }
     }
 
@@ -165,8 +168,6 @@ public class Listener extends ListenerAdapter {
         Helper.instance = new Helper(jda);
         CommandHandler.instance = new CommandHandler();
         RoleHandler.instance = new RoleHandler();
-
-        //TODO: Twitterfeeds
     }
 
     //prints the shudown code in the logger

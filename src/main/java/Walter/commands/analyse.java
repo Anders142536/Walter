@@ -26,12 +26,8 @@ public class analyse extends Command {
                 "I analyse the log files I have written and write the result both into a respective result file and the chat."};
     }
 
-    @Override
-    public String[] getKeywords() {
-        return keywords;
-    }
-
 //    @Override
-//    public void execute(List<String> args, MessageReceivedEvent event) {
+//    public String[] execute(List<String> args, MessageReceivedEvent event) {
+            //TODO: add in CommandHandler.createListOfCommands()
 //    }
 }

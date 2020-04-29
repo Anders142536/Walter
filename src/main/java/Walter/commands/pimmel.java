@@ -6,7 +6,7 @@ import Walter.enums.BlackRole;
 public class pimmel extends Command {
 
     public pimmel() {
-        keywords = new String[]{"pimmel", "pimmelberger", "dick", "dickhead"};
+        keywords = new String[]{"pimmel", "pimmelberger", "dick", "dickhead", "biggusdickus", "schwanzuslongus", "iamagrownadult"};
         mainKeywordEnglish = 2;
         minimumRequiredRole = BlackRole.GUEST;
     }
@@ -29,12 +29,8 @@ public class pimmel extends Command {
                         Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH};
     }
 
-    @Override
-    public String[] getKeywords() {
-        return keywords;
-    }
-
 //    @Override
-//    public void execute(List<String> args, MessageReceivedEvent event) {
+//    public String[] execute(List<String> args, MessageReceivedEvent event) {
+    //TODO: add in CommandHandler.createListOfCommands()
 //    }
 }

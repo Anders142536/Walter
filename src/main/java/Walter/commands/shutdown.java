@@ -25,12 +25,8 @@ public class shutdown extends Command {
                 "I shut down. I can only be started again via an SSH connection."};
     }
 
-    @Override
-    public String[] getKeywords() {
-        return keywords;
-    }
-
 //    @Override
-//    public void execute(List<String> args, MessageReceivedEvent event) {
+//    public String[] execute(List<String> args, MessageReceivedEvent event) {
+    //TODO: add in CommandHandler.createListOfCommands()
 //    }
 }

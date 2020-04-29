@@ -34,12 +34,7 @@ public class english extends Command {
     }
 
     @Override
-    public String[] getKeywords() {
-        return keywords;
-    }
-
-    @Override
-    public void execute(List<String> args, MessageReceivedEvent event) {
+    public String[] execute(List<String> args, MessageReceivedEvent event) {
         Member author = event.getMember();
         MessageChannel channel = event.getChannel();
 
@@ -52,5 +47,6 @@ public class english extends Command {
             Helper.instance.respond(author, channel,
                     "Ich kommuniziere bereits mit dir in Englisch.",
                     "I already communicate with you in english.");
+        return null;
     }
 }

@@ -11,7 +11,7 @@ public class test extends Command {
     }
 
 //    @Override
-//    public void execute(List<String> args, MessageReceivedEvent event) {
-//        System.out.println("main keyword german:" + mainKeywordGerman);
+//    public String[] execute(List<String> args, MessageReceivedEvent event) {
+    //TODO: add in CommandHandler.createListOfCommands()
 //    }
 }

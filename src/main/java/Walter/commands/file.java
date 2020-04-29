@@ -28,12 +28,8 @@ public class file extends Command {
                         "the file must be present on the raspberry i run on in the folder walter\\files."};
     }
 
-    @Override
-    public String[] getKeywords() {
-        return keywords;
-    }
-//
 //    @Override
-//    public void execute(List<String> args, MessageReceivedEvent event) {
+//    public String[] execute(List<String> args, MessageReceivedEvent event) {
+    //TODO: add in CommandHandler.createListOfCommands()
 //    }
 }

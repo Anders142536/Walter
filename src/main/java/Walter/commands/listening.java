@@ -2,6 +2,10 @@ package Walter.commands;
 
 import Walter.Collection;
 import Walter.enums.BlackRole;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
+import java.util.List;
 
 public class listening extends Command {
 
@@ -27,11 +31,9 @@ public class listening extends Command {
     }
 
     @Override
-    public String[] getKeywords() {
-        return keywords;
+    public String[] execute(List<String> args, MessageReceivedEvent event) {
+        if (args.size() > 1 && !args.get(1).trim().equals("")) event.getJDA().getPresence().setActivity(Activity.listening(args.get(1)));
+        else return new String[]{"Mir wurde nichts zu hören gegeben.", "I was not given anything to listen to."};
+        return null;
     }
-
-//    @Override
-//    public void execute(List<String> args, MessageReceivedEvent event) {
-//    }
 }

@@ -13,7 +13,7 @@ public class config extends Command {
         return new String[]{
                 " SCHLÜSSEL WERT",
                 "Dieser Command ändert den Wert der Variable **SCHLÜSSEL** zum Wert **WERT**. Diese sind in <#" +
-                        BlackChannel.CONFIG+ "> aufgelistet."};
+                        BlackChannel.CONFIG.ID + "> aufgelistet."};
     }
 
     @Override
@@ -21,15 +21,10 @@ public class config extends Command {
         return new String[]{
                 " KEY VALUE",
                 "This command changes the variable with the name **KEY** to the value **VALUE**. Those are displayed in <#" +
-                        BlackChannel.CONFIG + ">."};
+                        BlackChannel.CONFIG.ID + ">."};
     }
-
-    @Override
-    public String[] getKeywords() {
-        return keywords;
-    }
-
 //    @Override
-//    public void execute(List<String> args, MessageReceivedEvent event) {
+//    public String[] execute(List<String> args, MessageReceivedEvent event) {
+    //TODO: add in CommandHandler.createListOfCommands()
 //    }
 }

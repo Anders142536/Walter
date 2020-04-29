@@ -40,10 +40,11 @@ public abstract class Command {
 
     //executes the command with the given parameters
     //returns an integer number indicating how the command executed
-    public void execute(List<String> args, MessageReceivedEvent event) {
+    public String[] execute(List<String> args, MessageReceivedEvent event) {
         Member author = Helper.instance.getMember(event.getAuthor());
         Helper.instance.respond(author, event.getChannel(),
                 "Es tut mir Leid, doch dies ist noch nicht implementiert. Bitte melde dies <@!151010441043116032> damit er es implementieren kann.",
                 "I am utterly sorry, but this is not yet implemented. Please report to <@!151010441043116032> so he can implement this.");
+        return null;
     }
 }

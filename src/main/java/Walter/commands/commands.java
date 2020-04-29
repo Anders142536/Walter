@@ -37,14 +37,8 @@ public class commands extends Command {
                 "This command lists all the commands available to you."};
     }
 
-    //this can probably be returned on the abstract class already, avoiding having the same code 20 times
     @Override
-    public String[] getKeywords() {
-        return keywords;
-    }
-
-    @Override
-    public void execute(List<String> args, MessageReceivedEvent event) {
+    public String[] execute(List<String> args, MessageReceivedEvent event) {
         Member author = Helper.instance.getMember(event.getAuthor());
         MessageChannel channel = event.getChannel();
 
@@ -61,6 +55,8 @@ public class commands extends Command {
         else
             //TODO: print error message
             Helper.instance.respond(author, channel, "", "");
+
+        return null;
     }
 
     private void fillCommandStrings() {
