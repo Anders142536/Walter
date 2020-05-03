@@ -109,7 +109,7 @@ public class CommandHandler {
                         "Es tut mir Leid, doch du hast nicht die minimale benötigte Rolle \"" + minimumRequiredRole + "\" für diesen Command.",
                         "I am utterly sorry, but you do not have the minimum required role \"" + minimumRequiredRole + "\" for this command.");
             }
-        } else {
+        } else if (messageContent.charAt(0) == '?') {
             Helper.instance.respond(author, channel,
                     getGermanHelpText(arguments.get(0), toExecute),
                     getEnglishHelpText(arguments.get(0), toExecute));

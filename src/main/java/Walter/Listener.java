@@ -108,6 +108,7 @@ public class Listener extends ListenerAdapter {
     //TODO: write comment about what exactly is done here
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+
         if (event.getAuthor().isBot()) return;
         String messageContent = event.getMessage().getContentRaw();
         MessageChannel channel = event.getChannel();
@@ -119,15 +120,10 @@ public class Listener extends ListenerAdapter {
             if (isCommand)
                 CommandHandler.instance.process(event);
             else {
-                if (channelID == BlackChannel.DROPZONE.ID) {
+                if (channelID == BlackChannel.DROPZONE.ID && messageContent.charAt(0) != '$') {
                     Member author = event.getMember();
                     mentionVoiceChat(author, channel);
                 }
-            }
-
-            if (channelID == BlackChannel.DROPZONE.ID) {
-                Member author = event.getMember();
-                mentionVoiceChat(author, channel);
             }
 
             if (channelID == BlackChannel.NEWS.ID) {

@@ -113,4 +113,8 @@ public class Helper {
         }
         return builder.toString();
     }
+
+    private void dummy() {
+
+    }
 }
