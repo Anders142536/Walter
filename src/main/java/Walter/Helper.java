@@ -106,7 +106,8 @@ public class Helper {
     }
 
     private String getStackTraceString(Exception e) {
-        StringBuilder builder = new StringBuilder("\nSTACKTRACE:\n");
+        StringBuilder builder = new StringBuilder("\nSTACKTRACE:\n`" +
+                e.getClass().getSimpleName() + "`");
         StackTraceElement[] stacktrace = e.getStackTrace();
         for (int i = 0; i < 10 && i < stacktrace.length; i++) {
             builder.append("\n").append(stacktrace[i]);

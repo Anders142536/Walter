@@ -35,14 +35,15 @@ public class patch extends Command {
     @Override
     public String[] execute(List<String> args, MessageReceivedEvent event) {
         String toSend = "__**Walter " + Walter.VERSION + "**__\n" +
-//                "\n**New Features**\n" +
+                "\n**New Features**\n" +
                 // enter new features between here..
-
+                item("messages starting with '%' will now not be tagged in the dropzone") +
                 // ..and here
                 "\n**Bug Fixes**\n" +
                 // enter bugfixes between here..
-                item("fixed issue with walter tagging twice in the dropzone") +
-                item("fixed issue with walter tagging in dropzone if a command was used") +
+                item("fixed issue with exception error message missing information") +
+                item("fixed issue with walter not being able to handle messages in the dropzone without text i.e. images") +
+                item("fixed issue with walter not being able to handle messages containing only '!' or '?'") +
                 // ..and here
                 "\nIn case you encounter any issues or wish for new features please contact <@!151010441043116032>";
 
