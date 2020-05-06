@@ -37,13 +37,10 @@ public class patch extends Command {
         String toSend = "__**Walter " + Walter.VERSION + "**__\n" +
                 "\n**New Features**\n" +
                 // enter new features between here..
-                item("messages starting with '%' will now not be tagged in the dropzone") +
+                item("not yet implemented commands are now removed from !commands list") +
                 // ..and here
                 "\n**Bug Fixes**\n" +
                 // enter bugfixes between here..
-                item("fixed issue with exception error message missing information") +
-                item("fixed issue with walter not being able to handle messages in the dropzone without text i.e. images") +
-                item("fixed issue with walter not being able to handle messages containing only '!' or '?'") +
                 // ..and here
                 "\nIn case you encounter any issues or wish for new features please contact <@!151010441043116032>";
 
