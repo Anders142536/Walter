@@ -34,8 +34,8 @@ public class patch extends Command {
 
     @Override
     public String[] execute(List<String> args, MessageReceivedEvent event) {
-        String toSend = "__**Walter " + Walter.VERSION + "**__\n\n" +
-                "**New Features**\n" +
+        String toSend = "__**Walter " + Walter.VERSION + "**__\n" +
+                "\n**New Features**\n" +
                 // enter new features between here..
                 item("not yet implemented commands are now removed from !commands list") +
                 // ..and here

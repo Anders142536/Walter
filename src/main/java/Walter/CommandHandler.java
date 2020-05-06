@@ -74,8 +74,6 @@ public class CommandHandler {
 
     void process(MessageReceivedEvent event) {
         String messageContent = event.getMessage().getContentRaw();
-        List<String> arguments = parseCommand(messageContent);
-        Command toExecute = commands.get(arguments.get(0));
         Member author = Helper.instance.getMember(event.getAuthor());
         MessageChannel channel = event.getChannel();
 
@@ -86,6 +84,16 @@ public class CommandHandler {
         }
 
         System.out.println("> COMM: " + author.getEffectiveName() + " issued the following command:\n" + messageContent);
+
+        List<String> arguments = parseCommand(messageContent);
+        if (arguments.size() == 0) {
+            Helper.instance.respond(author, channel,
+                    "Es tut mir Leid, doch du hast mir keinen Command gegeben.",
+                    "I am utterly sorry, but I was not given a command.");
+            return;
+        }
+
+        Command toExecute = commands.get(arguments.get(0));
 
         //if there was no command found with the given keyword
         if (toExecute == null) {
@@ -109,7 +117,7 @@ public class CommandHandler {
                         "Es tut mir Leid, doch du hast nicht die minimale benötigte Rolle \"" + minimumRequiredRole + "\" für diesen Command.",
                         "I am utterly sorry, but you do not have the minimum required role \"" + minimumRequiredRole + "\" for this command.");
             }
-        } else {
+        } else if (messageContent.charAt(0) == '?') {
             Helper.instance.respond(author, channel,
                     getGermanHelpText(arguments.get(0), toExecute),
                     getEnglishHelpText(arguments.get(0), toExecute));

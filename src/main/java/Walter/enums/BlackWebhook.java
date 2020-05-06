@@ -7,6 +7,7 @@ import club.minnced.discord.webhook.send.WebhookMessage;
 import club.minnced.discord.webhook.send.WebhookMessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Message.Attachment;
+import net.dv8tion.jda.api.managers.WebhookManager;
 
 import java.io.File;
 import java.util.List;
@@ -29,6 +30,7 @@ public enum BlackWebhook {
                 attachments) {
             msg.addFile(att.getFileName(), att.retrieveInputStream().get());
         }
+
         client.send(msg.build());
         client.close();
     }
