@@ -38,6 +38,7 @@ public class patch extends Command {
                 "\n**New Features**\n" +
                 // enter new features between here..
                 item("not yet implemented commands are now removed from !commands list") +
+                item("walter now ignores rythm commands in the dropzone") +
                 // ..and here
                 "\n**Bug Fixes**\n" +
                 // enter bugfixes between here..
