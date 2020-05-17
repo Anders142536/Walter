@@ -5,7 +5,6 @@ package Walter;
 import Walter.commands.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,7 +123,6 @@ public class CommandHandler {
         }
     }
 
-    @NotNull
     private String getGermanHelpText(String usedArgument, Command toExecute) {
         String[] helpReturn = toExecute.getHelp();
         return "__**Hilfeseite " + usedArgument +  "**__\n\n" +
@@ -137,7 +135,6 @@ public class CommandHandler {
                 helpReturn[1];
     }
 
-    @NotNull
     private String getEnglishHelpText(String usedArgument, Command toExecute) {
         String[] helpReturn = toExecute.getHelpEnglish();
         return "__**Help page " + usedArgument +  "**__\n\n" +
