@@ -2,7 +2,7 @@ package Walter.commands;
 
 import Walter.Helper;
 import Walter.Walter;
-import Walter.enums.BlackRole;
+import Walter.entities.BlackRole;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 

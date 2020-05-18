@@ -1,8 +1,8 @@
 package Walter.commands;
 
 import Walter.Walter;
-import Walter.enums.BlackChannel;
-import Walter.enums.BlackWebhook;
+import Walter.entities.BlackChannel;
+import Walter.entities.BlackWebhook;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
@@ -41,6 +41,8 @@ public class patch extends Command {
                 // ..and here
                 "\n**Bug Fixes**\n" +
                 // enter bugfixes between here..
+                item("Walter now ignores messages starting with $ as well, not just %.") +
+                item("The webhooks are now leak-proof*erish* and work again.") +
                 // ..and here
                 "\nIn case you encounter any issues or wish for new features please contact <@!151010441043116032>";
 

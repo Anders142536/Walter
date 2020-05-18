@@ -1,4 +1,4 @@
-package Walter.enums;
+package Walter.entities;
 
 public enum BlackChannel {
     FOYER (402875839131156501L),

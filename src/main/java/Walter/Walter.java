@@ -12,7 +12,8 @@ import java.io.FileReader;
 
 public class Walter {
 
-    final public static String VERSION = "2.4.2";   //REWRITES . NEW FEATURES . PURE BUGFIX
+    final public static String VERSION = "2.4.3";   //REWRITES . NEW FEATURES . PURE BUGFIX
+    public static String location;
 
     public static void main(String[] args) {
         //TODO add logging
@@ -40,8 +41,9 @@ public class Walter {
 
     private static String getLocation() throws PathNotFoundException {
         File jarLocation = new File (Walter.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        String path = jarLocation.getParent();
-        if (path == null || path.equals("")) throw new PathNotFoundException();
-        return path + "/";
+        location = jarLocation.getParent();
+        if (location == null || location.equals("")) throw new PathNotFoundException();
+        location += "/";
+        return location;
     }
 }

@@ -1,4 +1,4 @@
-package Walter.enums;
+package Walter.entities;
 
 public enum BlackCategory {
     ADMIN                       (402882380953681922L),
