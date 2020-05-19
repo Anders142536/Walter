@@ -37,13 +37,9 @@ public class patch extends Command {
         String toSend = "__**Walter " + Walter.VERSION + "**__\n" +
                 "\n**New Features**\n" +
                 // enter new features between here..
-                item("not yet implemented commands are now removed from !commands list") +
-                item("walter now ignores rythm commands in the dropzone") +
                 // ..and here
                 "\n**Bug Fixes**\n" +
                 // enter bugfixes between here..
-                item("Walter now ignores messages starting with $ as well, not just %.") +
-                item("The webhooks are now leak-proof*erish* and work again.") +
                 // ..and here
                 "\nIn case you encounter any issues or wish for new features please contact <@!151010441043116032>";
 
