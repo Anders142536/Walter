@@ -1,13 +1,12 @@
 package Walter.entities;
 
 import Walter.Walter;
-import Walter.exceptions.WalterFileParseException;
+import Walter.exceptions.ParseException;
 import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.send.WebhookMessageBuilder;
 import net.dv8tion.jda.api.entities.Message.Attachment;
 
 import java.io.*;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class BlackWebhook {
         this.url = url;
     }
 
-    public static void loadWebhooks() throws WalterFileParseException {
+    public static void loadWebhooks() throws ParseException {
         HashMap<String, String> foundWebhooks = parseWebhookFile("entities/webhooks.walter");
 
         //list of all webhooks
@@ -50,7 +49,7 @@ public class BlackWebhook {
         client.close();
     }
 
-    private static HashMap<String, String> parseWebhookFile(String path) throws WalterFileParseException {
+    private static HashMap<String, String> parseWebhookFile(String path) throws ParseException {
         //URGENT TODO: make this part of the parser of 2.5!!!!!!!!
         try {
             BufferedReader file = new BufferedReader(new FileReader(Walter.location + path));
@@ -63,12 +62,12 @@ public class BlackWebhook {
                 try {
                     result.put(splitLine[0].toLowerCase(), splitLine[1]);
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    throw new WalterFileParseException("Couldnt parse line \"" + nextLine + "\"");
+                    throw new ParseException("Couldnt parse line \"" + nextLine + "\"");
                 }
             }
             return result;
         } catch (IOException e) {
-            throw new WalterFileParseException(e.getMessage());
+            throw new ParseException(e.getMessage());
         }
     }
 }

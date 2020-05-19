@@ -3,7 +3,7 @@ package Walter;
 import Walter.entities.BlackChannel;
 import Walter.entities.BlackRole;
 import Walter.entities.BlackWebhook;
-import Walter.exceptions.WalterFileParseException;
+import Walter.exceptions.ParseException;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.Message.Attachment;
@@ -172,7 +172,7 @@ public class Listener extends ListenerAdapter {
 
         try {
             BlackWebhook.loadWebhooks();
-        } catch (WalterFileParseException e) {
+        } catch (ParseException e) {
             System.out.println("> ERROR An exception was thrown!" +
                     "\n" + e.toString() + "\n");
             e.printStackTrace();

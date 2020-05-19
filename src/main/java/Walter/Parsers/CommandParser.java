@@ -1,23 +1,28 @@
-package Walter;
+package Walter.Parsers;
 
+import Walter.Walter;
 import Walter.commands.Command;
+import Walter.exceptions.ParseException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandParser {
+public class CommandParser extends Parser {
 
     final char quote = 34; // "
     String stringToParse = null;
     Command foundCommand = null;
     List<String> arguments = new ArrayList<>();
 
-    public void setStringToParse(String stringToParse) {
-        this.stringToParse = stringToParse;
-
+    public void setStingToParse(String stringToParse) {
+        super.setStringToParse(stringToParse);
+        findCommand();
     }
 
-    void parseArguments() {
+    private void findCommand() {
+    }
+
+    public void parse() throws ParseException {
         arguments.clear();
         String[] split = stringToParse.substring(1).split("" + quote);
 
