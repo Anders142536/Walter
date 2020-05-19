@@ -1,7 +1,7 @@
 package Walter.commands;
 
 import Walter.Collection;
-import Walter.enums.BlackRole;
+import Walter.entities.BlackRole;
 
 public class pimmel extends Command {
 

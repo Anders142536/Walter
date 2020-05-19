@@ -1,6 +1,6 @@
 package Walter.commands;
 
-import Walter.enums.BlackRole;
+import Walter.entities.BlackRole;
 
 public class hello extends Command {
 

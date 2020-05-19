@@ -1,8 +1,8 @@
 package Walter;
 
-import Walter.enums.BlackCategory;
-import Walter.enums.BlackChannel;
-import Walter.enums.BlackRole;
+import Walter.entities.BlackCategory;
+import Walter.entities.BlackChannel;
+import Walter.entities.BlackRole;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 

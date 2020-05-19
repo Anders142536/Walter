@@ -1,8 +1,9 @@
 package Walter;
 
-import Walter.enums.BlackChannel;
-import Walter.enums.BlackRole;
-import Walter.enums.BlackWebhook;
+import Walter.entities.BlackChannel;
+import Walter.entities.BlackRole;
+import Walter.entities.BlackWebhook;
+import Walter.exceptions.WalterFileParseException;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.Message.Attachment;
@@ -168,6 +169,16 @@ public class Listener extends ListenerAdapter {
         Helper.instance = new Helper(jda);
         CommandHandler.instance = new CommandHandler();
         RoleHandler.instance = new RoleHandler();
+
+        try {
+            BlackWebhook.loadWebhooks();
+        } catch (WalterFileParseException e) {
+            System.out.println("> ERROR An exception was thrown!" +
+                    "\n" + e.toString() + "\n");
+            e.printStackTrace();
+            jda.shutdown();
+        }
+        System.out.println("onReady finished, Walter launched successfully");
     }
 
     //prints the shudown code in the logger

@@ -1,6 +1,6 @@
 package Walter.commands;
 
-import Walter.enums.BlackChannel;
+import Walter.entities.BlackChannel;
 
 public class config extends Command {
 

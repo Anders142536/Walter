@@ -1,4 +1,4 @@
-package Walter.enums;
+package Walter.entities;
 
 import Walter.RoleHandler;
 import net.dv8tion.jda.api.entities.Role;
