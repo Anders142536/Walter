@@ -10,16 +10,15 @@ import java.util.List;
 public class CommandParser extends Parser {
 
     final char quote = 34; // "
-    String stringToParse = null;
-    Command foundCommand = null;
+    private Command foundCommand = null;
     List<String> arguments = new ArrayList<>();
 
     public void setStingToParse(String stringToParse) {
         super.setStringToParse(stringToParse);
-        findCommand();
     }
 
-    private void findCommand() {
+    public Command identifyCommand() {
+        return foundCommand;
     }
 
     public void parse() throws ParseException {
@@ -38,7 +37,7 @@ public class CommandParser extends Parser {
         }
     }
 
-    public Command getFoundCommand() {
-        return foundCommand;
+    public List<String> getArguments() {
+        return arguments;
     }
 }
