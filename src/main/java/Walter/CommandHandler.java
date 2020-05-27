@@ -2,7 +2,9 @@ package Walter;
 
 
 
+import Walter.Parsers.CommandParser;
 import Walter.commands.*;
+import Walter.exceptions.ParseException;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.*;
 
@@ -17,8 +19,10 @@ public class CommandHandler {
     public static CommandHandler instance;
     private HashMap<String, Command>  commands = new HashMap<>();
     private List<Command> commandList;
+    private CommandParser parser;
 
     CommandHandler() {
+        parser = new CommandParser();
         loadCommandsToHashMap();
     }
 
@@ -71,7 +75,7 @@ public class CommandHandler {
         return commandList;
     }
 
-    void process(MessageReceivedEvent event) {
+    void process(MessageReceivedEvent event) throws ParseException {
         String messageContent = event.getMessage().getContentRaw();
         Member author = Helper.instance.getMember(event.getAuthor());
         MessageChannel channel = event.getChannel();
@@ -84,15 +88,10 @@ public class CommandHandler {
 
         System.out.println("> COMM: " + author.getEffectiveName() + " issued the following command:\n" + messageContent);
 
-        List<String> arguments = parseCommand(messageContent);
-        if (arguments.size() == 0) {
-            Helper.instance.respond(author, channel,
-                    "Es tut mir Leid, doch du hast mir keinen Command gegeben.",
-                    "I am utterly sorry, but I was not given a command.");
-            return;
-        }
+        parser.setStringToParse(messageContent);
+        parser.parseFirstArgument();
 
-        Command toExecute = commands.get(arguments.get(0));
+        Command toExecute = commands.get(parser.getFirstArgument());
 
         //if there was no command found with the given keyword
         if (toExecute == null) {

@@ -1,7 +1,5 @@
 package Walter.Parsers;
 
-import Walter.Walter;
-import Walter.commands.Command;
 import Walter.exceptions.ParseException;
 
 import java.util.ArrayList;
@@ -10,20 +8,22 @@ import java.util.List;
 public class CommandParser extends Parser {
 
     final char quote = 34; // "
-    private Command foundCommand;
+    private String firstArgument;
     List<String> arguments = new ArrayList<>();
 
-    public void setStingToParse(String stringToParse) {
-        super.setStringToParse(stringToParse);
+    public String getFirstArgument() {
+        return firstArgument;
     }
 
-    public Command getFoundCommand() {
-        return foundCommand;
-    }
-
-    public boolean identifyCommand() {
-
-        return true;
+    public void parseFirstArgument() throws ParseException {
+        if (stringToParse == null) throw new ParseException(
+                "Mir wurde kein Text zu parsen gegeben.",
+                "I was not given text to parse.");
+        String[] splitString = stringToParse.split(" ");
+        if (splitString.length == 0) throw new ParseException(
+                "Es ist kein Befehl aus \"" + stringToParse + "\" identifizierbar.",
+                "There is no command identifyable in \"" + stringToParse + "\".");
+        firstArgument = splitString[0];
     }
 
     public void parse() throws ParseException {

@@ -1,4 +1,4 @@
 package Walter.Parsers;
 
-public class argument {
+public class option {
 }

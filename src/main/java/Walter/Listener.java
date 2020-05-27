@@ -139,6 +139,10 @@ public class Listener extends ListenerAdapter {
                                 attachments);
                 event.getMessage().delete().queue();
             }
+        } catch (ParseException e) {
+            Helper.instance.respond(event.getMember(), channel,
+                    "Es tut mir Leid, doch etwas ist beim Verstehen deines Befehls schief gelaufen.\n" + e.getReasonGerman(),
+                    "I am utterly sorry, but something went wrong trying to understand your command.\n" + e.getReasonEnglish());
         } catch (Exception e) {
             String informationToAdd = "channel:        " + channel.getName() +
                     "\nauthor:         " + event.getAuthor().getName() + " <@!" + event.getAuthor().getId() + ">" +
