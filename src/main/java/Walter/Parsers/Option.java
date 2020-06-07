@@ -5,13 +5,11 @@ package Walter.Parsers;
  *
  */
 
-public abstract class Option {
+public abstract class Option extends Argument {
 
     private final boolean required;
     private final String nameEnglish;
     private final String nameGerman;
-    private final String descriptionEnglish;
-    private final String descriptionGerman;
 
     /** When not giving a boolean wether or not this option is required it defaults to being required
      *
@@ -33,10 +31,9 @@ public abstract class Option {
      * @param required
      */
     public Option(String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman, boolean required) {
+        super(descriptionEnglish, descriptionGerman);
         this.nameEnglish = nameEnglish;
         this.nameGerman = nameGerman;
-        this.descriptionEnglish = descriptionEnglish;
-        this.descriptionGerman = descriptionGerman;
         this.required = required;
     }
 
