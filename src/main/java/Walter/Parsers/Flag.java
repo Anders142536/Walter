@@ -31,4 +31,14 @@ public class Flag extends Argument {
     public Option getParameter() {
         return parameter;
     }
+
+    public String getDescriptionEnglish() {
+        return descriptionEnglish;
+
+
+    }
+
+    public String getDescriptionGerman() {
+        return descriptionGerman;
+    }
 }

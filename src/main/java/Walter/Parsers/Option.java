@@ -31,6 +31,9 @@ public abstract class Option extends Argument {
      * @param required
      */
     public Option(String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman, boolean required) {
+        assert nameEnglish.length() <= argMaxLength : "argument name " + nameEnglish + " is longer than the hardcoded limit of " + argMaxLength;
+        assert nameGerman.length() <= argMaxLength : "";
+
         super(descriptionEnglish, descriptionGerman);
         this.nameEnglish = nameEnglish;
         this.nameGerman = nameGerman;
@@ -51,14 +54,15 @@ public abstract class Option extends Argument {
      * @return Formatted german description of option
      */
     public String getDescriptionGerman() {
-        return String.format("%-10s%s", nameGerman, descriptionGerman);
+        return formatArgumentDescription();
+
     }
 
     /**
      * @return Formatted english description of option
      */
     public String getDescriptionEnglish() {
-        return String.format("%-10s%s", nameEnglish, descriptionEnglish);
+
     }
 
 }
