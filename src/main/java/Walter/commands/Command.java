@@ -1,6 +1,8 @@
 package Walter.commands;
 
 import Walter.Helper;
+import Walter.Parsers.Flag;
+import Walter.Parsers.Option;
 import Walter.entities.BlackRole;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -10,7 +12,9 @@ import java.util.List;
 //this class represents a command, including help texts
 public abstract class Command {
 
-    protected String[] keywords;
+    String[] keywords;
+    List<Option> options;
+    List<Flag> flags;
     BlackRole minimumRequiredRole = BlackRole.ADMIN;
     int mainKeywordGerman;
     int mainKeywordEnglish;

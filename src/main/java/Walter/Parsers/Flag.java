@@ -11,6 +11,9 @@ public class Flag extends Argument {
 
     public Flag (char shortName, String longName, String descriptionEnglish, String descriptionGerman, Option parameter) {
         super(descriptionEnglish, descriptionGerman);
+
+        assert longName.length() <= argMaxLength - 6 : "flag long name " + longName + " is longer than the hardcoded limit of " + (argMaxLength - 6);
+
         this.shortName = shortName;
         this.longName = longName;
         this.parameter = parameter;
@@ -33,12 +36,10 @@ public class Flag extends Argument {
     }
 
     public String getDescriptionEnglish() {
-        return descriptionEnglish;
-
-
+        return formatArgumentDescription("-" + shortName + ", --" + longName, descriptionEnglish);
     }
 
     public String getDescriptionGerman() {
-        return descriptionGerman;
+        return formatArgumentDescription("-" + shortName + ", --" + longName, descriptionGerman);
     }
 }
