@@ -86,6 +86,7 @@ public class CommandHandler {
             return;
         }
 
+        Helper.instance.getGuild().
         System.out.println("> COMM: " + author.getEffectiveName() + " issued the following command:\n" + messageContent);
 
         parser.setStringToParse(messageContent);

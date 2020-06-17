@@ -16,6 +16,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 
 //handles events and, for reasons of simplicity, holds settings.
 public class Listener extends ListenerAdapter {
@@ -124,12 +125,8 @@ public class Listener extends ListenerAdapter {
         try {
             if (isCommand)
                 CommandHandler.instance.process(event);
-            else {
-                if (channelID == BlackChannel.DROPZONE.ID && !ignorePrefix) {
-                    Member author = event.getMember();
-                    mentionVoiceChat(author, channel);
-                }
-            }
+            else if (channelID == BlackChannel.DROPZONE.ID && !ignorePrefix)
+                mentionVoiceChat(event.getMember(), channel);
 
             if (channelID == BlackChannel.NEWS.ID) {
                 List<Attachment> attachments = event.getMessage().getAttachments();

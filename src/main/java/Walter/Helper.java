@@ -58,6 +58,10 @@ public class Helper {
      *  Other Helpmethods  *
      * ******************* */
 
+    public void log(String logMessage) {
+        getTextChannel(BlackChannel.LOG).sendMessage("```yaml\n" + logMessage + "```").queue();
+    }
+
     public void respond(Member member, MessageChannel channel, String german, String english) {
         if (RoleHandler.instance.hasRole(member, BlackRole.ENGLISH))
             channel.sendMessage(english).queue();
