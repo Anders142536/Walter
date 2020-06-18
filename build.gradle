@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    compile ('net.dv8tion:JDA:4.0.0_48') {
+    compile ('net.dv8tion:JDA:4.1.1_165') {
         exclude module: 'opus-java'
     }
     compile("club.minnced:discord-webhooks:0.3.0")
