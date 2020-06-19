@@ -11,7 +11,7 @@ public abstract class Parser {
      */
     public void setStringToParse(String stringToParse) {
         this.stringToParse = stringToParse;
-        reset(Integer);
+        reset();
     }
 
     /** Resets the state of the Parser

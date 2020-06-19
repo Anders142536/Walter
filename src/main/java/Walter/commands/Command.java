@@ -1,11 +1,9 @@
 package Walter.commands;
 
-import Walter.Helper;
 import Walter.Parsers.Flag;
 import Walter.Parsers.Option;
 import Walter.entities.BlackRole;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import Walter.exceptions.CommandExecutionException;
 
 import java.util.List;
 
@@ -33,7 +31,6 @@ public abstract class Command {
                 "This command does not have a help text."};
     }
 
-    //returns a string array of keywords
     public String[] getKeywords() {
         return keywords;
     }
@@ -42,13 +39,13 @@ public abstract class Command {
         return minimumRequiredRole;
     }
 
+    public List<Option> getOptions() { return options; }
+
+    public List<Flag> getFlags() { return flags; }
+
     //executes the command with the given parameters
-    //returns an integer number indicating how the command executed
-    public String[] execute(List<String> args, MessageReceivedEvent event) {
-        Member author = Helper.instance.getMember(event.getAuthor());
-        Helper.instance.respond(author, event.getChannel(),
-                "Es tut mir Leid, doch dies ist noch nicht implementiert. Bitte melde dies <@!151010441043116032> damit er es implementieren kann.",
-                "I am utterly sorry, but this is not yet implemented. Please report to <@!151010441043116032> so he can implement this.");
-        return null;
+    public void execute() throws CommandExecutionException {
+        throw new CommandExecutionException("This command is not yet implemented. Please report to <@!151010441043116032> so he can implement this.",
+                "Es tut mir Leid, doch dies ist noch nicht implementiert. Bitte melde dies <@!151010441043116032> damit er es implementieren kann.");
     }
 }

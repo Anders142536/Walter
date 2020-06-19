@@ -2,5 +2,7 @@ package Walter.Parsers;
 
 public enum OptionType {
     STRING  (),
-    INT     ()
+    INT     (),
+    MEMBER  (),
+    FLUSH   ();
 }

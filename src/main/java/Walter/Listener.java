@@ -110,11 +110,19 @@ public class Listener extends ListenerAdapter {
     //TODO: write comment about what exactly is done here
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-
         if (event.getAuthor().isBot()) return;
         String messageContent = event.getMessage().getContentRaw();
         MessageChannel channel = event.getChannel();
-        long channelID = channel.getIdLong();
+
+        //check if member of server
+        if (event.getMember() == null) {
+            Helper.instance.respond(channel, "I am utterly sorry, but my services are strictly limited to members of our server.");
+            Helper.instance.logInfo("Unknown User " + event.getAuthor().getAsMention() +
+                    " (" + event.getAuthor().getId() + ") tried to contact me using the following message:\n" + messageContent);
+            return;
+        }
+
+        //check prefixes
         boolean isCommand = false;
         boolean ignorePrefix = false;
         if (messageContent.length() != 0) {
@@ -122,6 +130,8 @@ public class Listener extends ListenerAdapter {
             ignorePrefix = (messageContent.charAt(0) == '$' || messageContent.charAt(0) == '%');
         }
 
+        //decision time
+        long channelID = channel.getIdLong();
         try {
             if (isCommand)
                 CommandHandler.instance.process(event);
@@ -131,15 +141,13 @@ public class Listener extends ListenerAdapter {
             if (channelID == BlackChannel.NEWS.ID) {
                 List<Attachment> attachments = event.getMessage().getAttachments();
 
-                BlackWebhook.SERVERNEWS
-                        .sendMessage(messageContent + "\n\n*Brought to you by:* " + event.getAuthor().getAsMention(),
-                                attachments);
+                BlackWebhook.SERVERNEWS.sendMessage(messageContent + "\n\n*Brought to you by:* " + event.getAuthor().getAsMention(), attachments);
                 event.getMessage().delete().queue();
             }
         } catch (ParseException e) {
             Helper.instance.respond(event.getMember(), channel,
-                    "Es tut mir Leid, doch etwas ist beim Verstehen deines Befehls schief gelaufen.\n" + e.getReasonGerman(),
-                    "I am utterly sorry, but something went wrong trying to understand your command.\n" + e.getReasonEnglish());
+                    "Es tut mir Leid, doch etwas ist beim Verstehen deines Befehls schief gelaufen.\n" + e.getReasonGerman() + "\n" + BlackRole.ADMIN.getAsMention(),
+                    "I am utterly sorry, but something went wrong trying to understand your command.\n" + e.getReasonEnglish() + "\n" + BlackRole.ADMIN.getAsMention());
         } catch (Exception e) {
             String informationToAdd = "channel:        " + channel.getName() +
                     "\nauthor:         " + event.getAuthor().getName() + " <@!" + event.getAuthor().getId() + ">" +

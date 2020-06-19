@@ -2,9 +2,9 @@ package Walter.commands;
 
 import Walter.*;
 import Walter.entities.BlackRole;
+import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class commands extends Command {
     }
 
     @Override
-    public String[] execute(List<String> args, MessageReceivedEvent event) {
+    public void execute() throws CommandExecutionException {
         Member author = Helper.instance.getMember(event.getAuthor());
         MessageChannel channel = event.getChannel();
 

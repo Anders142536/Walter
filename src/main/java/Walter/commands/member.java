@@ -4,9 +4,9 @@ import Walter.Collection;
 import Walter.Helper;
 import Walter.RoleHandler;
 import Walter.entities.BlackRole;
+import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
@@ -37,13 +37,13 @@ public class member extends Command {
     }
 
     @Override
-    public String[] execute(List<String> args, MessageReceivedEvent event) {
+    public void execute() throws CommandExecutionException {
         Member author = event.getMember();
         MessageChannel channel = event.getChannel();
 
-        if (args.size() < 2) return new String[]{"Mir wurde kein Name gegeben.", "I was not given a name."};
+        if (parseResult.size() < 2) return new String[]{"Mir wurde kein Name gegeben.", "I was not given a name."};
 
-        String memberToSearchFor = args.get(1);
+        String memberToSearchFor = parseResult.get(1);
         List<Member> foundMembers = Helper.instance.getMembersByName(memberToSearchFor);
 
         if (foundMembers.size() == 0) return new String[]{"Ich habe niemanden mit dem Namen \"" + memberToSearchFor + "\" gefunden.",

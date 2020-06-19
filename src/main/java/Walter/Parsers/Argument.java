@@ -14,6 +14,8 @@ public abstract class Argument {
 
     public String getDescriptionGerman;
 
+    public abstract void reset();
+
     String formatArgumentDescription(String argument, String description) {
         return String.format("%-" + argMaxLength + "s%s", argument, description);
     }

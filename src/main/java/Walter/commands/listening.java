@@ -2,10 +2,8 @@ package Walter.commands;
 
 import Walter.Collection;
 import Walter.entities.BlackRole;
+import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.List;
 
 public class listening extends Command {
 
@@ -31,8 +29,8 @@ public class listening extends Command {
     }
 
     @Override
-    public String[] execute(List<String> args, MessageReceivedEvent event) {
-        if (args.size() > 1 && !args.get(1).trim().equals("")) event.getJDA().getPresence().setActivity(Activity.listening(args.get(1)));
+    public void execute() throws CommandExecutionException {
+        if (parseResult.size() > 1 && !parseResult.get(1).trim().equals("")) event.getJDA().getPresence().setActivity(Activity.listening(parseResult.get(1)));
         else return new String[]{"Mir wurde nichts zu hören gegeben.", "I was not given anything to listen to."};
         return null;
     }

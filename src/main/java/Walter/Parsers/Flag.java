@@ -4,6 +4,7 @@ public class Flag extends Argument {
     private final String longName;
     private final char shortName;
     private final Option parameter;
+    private boolean isGiven = false;
 
     public Flag (char shortName, String longName, String descriptionEnglish, String descriptionGerman) {
         this(shortName, longName, descriptionEnglish, descriptionGerman, null);
@@ -19,8 +20,18 @@ public class Flag extends Argument {
         this.parameter = parameter;
     }
 
+    public void given() { isGiven = true; }
+
+    public boolean isGiven() { return isGiven; }
+
+    public void reset() { isGiven = false; }
+
     public boolean hasParameter() {
         return parameter != null;
+    }
+
+    public Option getParameter() {
+        return parameter;
     }
 
     public char getShortName() {
@@ -29,10 +40,6 @@ public class Flag extends Argument {
 
     public String getLongName() {
         return longName;
-    }
-
-    public Option getParameter() {
-        return parameter;
     }
 
     public String getDescriptionEnglish() {

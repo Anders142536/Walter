@@ -4,7 +4,7 @@ package Walter.Parsers;
  *
  */
 
-public class Option extends Argument {
+public abstract class Option extends Argument {
 
     private final boolean required;
     private final String nameEnglish;
@@ -33,6 +33,9 @@ public class Option extends Argument {
     public boolean isRequired() {
         return required;
     }
+
+    public OptionType getType() { return type; }
+
 
     /**
      * @return Formatted german description of option

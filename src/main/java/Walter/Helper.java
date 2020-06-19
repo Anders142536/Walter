@@ -58,8 +58,27 @@ public class Helper {
      *  Other Helpmethods  *
      * ******************* */
 
-    public void log(String logMessage) {
-        getTextChannel(BlackChannel.LOG).sendMessage("```yaml\n" + logMessage + "```").queue();
+    public void logCommand(Member author, MessageChannel channel, String commandMessageRaw) {
+        String messageToSend = "\nAUTHOR:  " + author.getEffectiveName() + " (" + author.getId() + ")" +
+                "\nCHANNEL: " + channel.getName() + " (" + channel.getId() + ") " +
+                "\nCOMMAND: " + commandMessageRaw;
+        getTextChannel(BlackChannel.LOG).sendMessage("```yaml" + messageToSend + "```").queue();
+        System.out.println(messageToSend);
+    }
+
+    public void logError(String logMessage) {
+        String messageToSend = "ERROR:   " + logMessage;
+        getTextChannel(BlackChannel.LOG).sendMessage("```yaml\n" + messageToSend + "```").queue();
+        System.out.println(messageToSend);
+    }
+
+    public void logException(String logMessage) {
+        logError("AN UNHANDLED EXCEPTION OCCURED\n" + logMessage);
+    }
+
+    public void logInfo(String logMessage) {
+        String messageToSend = "INFO:    " + logMessage;
+        getTextChannel(BlackChannel.LOG).sendMessage("```yaml\n" + messageToSend + "```").queue();
     }
 
     public void respond(Member member, MessageChannel channel, String german, String english) {
@@ -74,14 +93,13 @@ public class Helper {
     }
 
     public void respondException(MessageChannel channel, String informationToAdd, Exception e) {
-
-
         String corePrint = "I am utterly sorry, but something went seriously wrong here." +
                 "\n\n<@!151010441043116032>:\n" +
                 "```timestamp:      " + getFormattedNowString() + "\n" +
                 (informationToAdd != null ? informationToAdd + "" : "") + "```";
         System.out.println("> ERROR An exception was thrown!" + corePrint);
         channel.sendMessage(corePrint + getStackTraceString(e)).queue();
+        logException(corePrint + getStackTraceString(e));
         e.printStackTrace();
     }
 

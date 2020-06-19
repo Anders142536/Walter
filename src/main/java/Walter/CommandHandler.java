@@ -2,9 +2,9 @@ package Walter;
 
 
 
-import Walter.Parsers.CommandParser;
+import Walter.Parsers.*;
 import Walter.commands.*;
-import Walter.exceptions.ParseException;
+import Walter.exceptions.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.*;
 
@@ -17,9 +17,9 @@ import java.util.List;
 public class CommandHandler {
 
     public static CommandHandler instance;
-    private HashMap<String, Command>  commands = new HashMap<>();
+    private final HashMap<String, Command>  commands = new HashMap<>();
     private List<Command> commandList;
-    private CommandParser parser;
+    private final CommandParser parser;
 
     CommandHandler() {
         parser = new CommandParser();
@@ -28,18 +28,14 @@ public class CommandHandler {
 
     private void loadCommandsToHashMap() {
         //TODO: in the long run, use reflection to find all classes instead of this list here
-        for (Command command :
-                createListOfCommands()) {
-            String[] keywords = command.getKeywords();
-            if (keywords != null) {
-                for (String keyword :
-                        keywords) {
-                    commands.put(keyword, command);
-                }
+        for (Command command : createListOfCommands()) {
+            for (String keyword : command.getKeywords()) {
+                commands.put(keyword, command);
             }
         }
     }
 
+    //If it is missing here it cannot be found in any way
     private List<Command> createListOfCommands() {
         commandList = new ArrayList<Command>();
 
@@ -67,7 +63,6 @@ public class CommandHandler {
         commandList.add(new version());
         commandList.add(new watching());
 
-        System.out.println("length of commandlist: " + commandList.size());
         return commandList;
     }
 
@@ -75,52 +70,36 @@ public class CommandHandler {
         return commandList;
     }
 
-    void process(MessageReceivedEvent event) throws ParseException {
-        String messageContent = event.getMessage().getContentRaw();
+    /**Attempts to parse the given message as command and triggers either the execution of a command 
+     * or the display of a help page depending on the prefix
+     */
+    void process(MessageReceivedEvent event) throws ParseException, CommandExecutionException {
         Member author = Helper.instance.getMember(event.getAuthor());
         MessageChannel channel = event.getChannel();
+        String messageContent = event.getMessage().getContentRaw();
 
-        //happens if author is not member of server
-        if (author == null) {
-            Helper.instance.respond(channel, "I am utterly sorry, but my services are strictly limited to members of our server.");
-            return;
-        }
-
-        Helper.instance.getGuild().
-        System.out.println("> COMM: " + author.getEffectiveName() + " issued the following command:\n" + messageContent);
+        Helper.instance.logCommand(author, channel, messageContent);
 
         parser.setStringToParse(messageContent);
-        parser.parseFirstArgument();
+        String firstArgument = parser.parseFirstArgument();
+        if (!commands.containsKey(firstArgument))
+            throw new ParseException("There is no command called " + firstArgument,
+                    "Es gibt keinen Command namens " + firstArgument);
 
-        Command toExecute = commands.get(parser.getFirstArgument());
-
-        //if there was no command found with the given keyword
-        if (toExecute == null) {
-            Helper.instance.respond(author, channel,
-                    "Es tut mir Leid, doch ich habe keinen Command für " + arguments.get(0) + " gefunden.",
-                    "I am utterly sorry, but I did not find a command for " + arguments.get(0) + ".");
-            return;
-        }
-
-        if (messageContent.charAt(0) == '!') {
+        Command toExecute = commands.get(firstArgument);
+        if (messageContent.charAt(0) == '!') {      //command
             if (RoleHandler.instance.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
-                String[] returnCode = toExecute.execute(arguments, event);
-                if (returnCode != null) {
-                    Helper.instance.respond(author, channel,
-                            "Es tut mir Leid, doch etwas ist schief gelaufen:\n\n**Fehlermeldung:** *" + returnCode[0] + "*\n\n" + getGermanHelpText(arguments.get(0), toExecute),
-                            "I am utterly sorry, but something went wrong.\n\n**Error message:** *" + returnCode[1] + "*\n\n" + getEnglishHelpText(arguments.get(0), toExecute));
-                }
+                ParseResult pr = parser.parse(toExecute.getOptions(), toExecute.getFlags());
+                toExecute.execute();
             } else {
-                String minimumRequiredRole = toExecute.getMinimumRequiredRole().getName();
-                Helper.instance.respond(author, channel,
-                        "Es tut mir Leid, doch du hast nicht die minimale benötigte Rolle \"" + minimumRequiredRole + "\" für diesen Command.",
-                        "I am utterly sorry, but you do not have the minimum required role \"" + minimumRequiredRole + "\" for this command.");
+                String roleName = toExecute.getMinimumRequiredRole().getName();
+                throw new CommandExecutionException("You do not have the minimum required role \"" + roleName + "\" for this command.",
+                        "Du hast nicht die minimale benötigte Rolle \"" + roleName + "\" für diesen Command.");
             }
-        } else if (messageContent.charAt(0) == '?') {
+        } else if (messageContent.charAt(0) == '?') //help request
             Helper.instance.respond(author, channel,
-                    getGermanHelpText(arguments.get(0), toExecute),
-                    getEnglishHelpText(arguments.get(0), toExecute));
-        }
+                    getGermanHelpText(firstArgument, toExecute),
+                    getEnglishHelpText(firstArgument, toExecute));
     }
 
     private String getGermanHelpText(String usedArgument, Command toExecute) {
@@ -153,26 +132,5 @@ public class CommandHandler {
             keywordList.append(keyword).append("\n");
         }
         return keywordList.toString();
-    }
-
-    //converts the given string into an Arraylist that represents the command arguments
-    //String is split on white spaces. If an argument is supposed to contain white spaces, it is bracketed with "
-    private List<String> parseCommand(String content) {
-        List<String> result = new ArrayList<>();
-        //TODO: change this to use "\"" instead of "" + char
-        char quote = 34;  // "
-        String[] split = content.substring(1).split("" + quote);
-
-        for (int i = 0; i < split.length; i++) {
-            //as arguments that are bracketed with " are always bracketed using exactly two "s it is certain
-            //that every even index in the resulted array needs to be split at white spaces
-            if (i % 2 == 0) {
-                for (String temp : split[i].split(" ")) {
-                    //sorting out empty entries, in case someone forgot to put a whitespace between two bracketed arguments
-                    if (!temp.equals("")) result.add(temp);
-                }
-            } else result.add(split[i]);
-        }
-        return result;
     }
 }

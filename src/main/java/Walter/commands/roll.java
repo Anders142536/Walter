@@ -2,11 +2,9 @@ package Walter.commands;
 
 import Walter.Helper;
 import Walter.entities.BlackRole;
+import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.List;
 
 public class roll extends Command {
 
@@ -37,12 +35,12 @@ public class roll extends Command {
     }
 
     @Override
-    public String[] execute(List<String> args, MessageReceivedEvent event) {
+    public void execute() throws CommandExecutionException {
         Member author = event.getMember();
         MessageChannel channel = event.getChannel();
 
-        int limit = (args.size() > 1 ?
-                Integer.parseInt(args.get(1)) : 6);
+        int limit = (parseResult.size() > 1 ?
+                Integer.parseInt(parseResult.get(1)) : 6);
 
         int randomNumber = (int)(Math.random() * limit) + 1;
 

@@ -2,15 +2,27 @@ package Walter.Parsers;
 
 public class StringOption extends Option {
 
-    public StringOption(String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman) {
-        super(nameEnglish, nameGerman, descriptionEnglish, descriptionGerman);
+    String value = null;
+
+    public StringOption(OptionType type, String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman) {
+        super(type, nameEnglish, nameGerman, descriptionEnglish, descriptionGerman);
     }
 
-    public StringOption(String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman, boolean required) {
-        super(nameEnglish, nameGerman, descriptionEnglish, descriptionGerman, required);
+    public StringOption(OptionType type, String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman, boolean required) {
+        super(type, nameEnglish, nameGerman, descriptionEnglish, descriptionGerman, required);
     }
 
-    public boolean isCorrectType(String argument) {
-        return true;
+    public void setValue (String value) {
+        this.value = value;
+    }
+
+    public boolean hasValue(){
+        return value != null;
+    }
+
+    public String getValue() { return value; }
+
+    public void reset() {
+        value = null;
     }
 }

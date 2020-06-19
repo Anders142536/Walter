@@ -26,4 +26,6 @@ public enum BlackRole {
     }
 
     public String getName() { return getInstance().getName(); }
+
+    public String getAsMention() { return getInstance().getAsMention(); }
 }

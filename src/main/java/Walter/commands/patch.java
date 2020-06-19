@@ -3,9 +3,7 @@ package Walter.commands;
 import Walter.Walter;
 import Walter.entities.BlackChannel;
 import Walter.entities.BlackWebhook;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
-import java.util.List;
+import Walter.exceptions.CommandExecutionException;
 
 public class patch extends Command {
 
@@ -33,7 +31,7 @@ public class patch extends Command {
     }
 
     @Override
-    public String[] execute(List<String> args, MessageReceivedEvent event) {
+    public void execute() throws CommandExecutionException {
         String toSend = "__**Walter " + Walter.VERSION + " Parser Update**__\n" +
                 "\n**New Features**\n" +
                 // enter new features between here..
@@ -52,6 +50,7 @@ public class patch extends Command {
                 item("Commands are now more standardized to how commands are usually designed and standardized.") +
                 note("The changes mostly affect admin-exclusive commands. The commands that members or guests may use" +
                         " whose behaviour changed are listed below:") +
+                item("On detected user error admins are now tagged so they can more effectively help you.") +
                 // ..and here
                 "\n**Bug Fixes & Improvements**\n" +
                 // enter bugfixes between here..
@@ -62,7 +61,6 @@ public class patch extends Command {
                 "\nIn case you encounter any issues, have any questions or wish for new features please contact <@!151010441043116032>";
 
         BlackWebhook.PATCHNOTES.sendMessage(toSend);
-        return null;
     }
 
     private String item(String text) {
