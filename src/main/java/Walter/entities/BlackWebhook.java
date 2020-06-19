@@ -62,12 +62,13 @@ public class BlackWebhook {
                 try {
                     result.put(splitLine[0].toLowerCase(), splitLine[1]);
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    throw new ParseException("Couldnt parse line \"" + nextLine + "\"");
+                    throw new ParseException("Zeile \"" + nextLine + "\" konnte nicht geparsed werden.","Couldnt parse line \"" + nextLine + "\"");
                 }
             }
             return result;
         } catch (IOException e) {
-            throw new ParseException(e.getMessage());
+            throw new ParseException("Fehler beim lesen der Webhook-Datei:\n" + e.getMessage(),
+                    "Error whilst reading the webhook file:\n" + e.getMessage());
         }
     }
 }

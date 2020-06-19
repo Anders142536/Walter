@@ -4,12 +4,12 @@ public class StringOption extends Option {
 
     String value = null;
 
-    public StringOption(OptionType type, String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman) {
-        super(type, nameEnglish, nameGerman, descriptionEnglish, descriptionGerman);
+    public StringOption(String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman) {
+        super(OptionType.STRING, nameEnglish, nameGerman, descriptionEnglish, descriptionGerman);
     }
 
-    public StringOption(OptionType type, String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman, boolean required) {
-        super(type, nameEnglish, nameGerman, descriptionEnglish, descriptionGerman, required);
+    public StringOption(String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman, boolean required) {
+        super(OptionType.STRING, nameEnglish, nameGerman, descriptionEnglish, descriptionGerman, required);
     }
 
     public void setValue (String value) {

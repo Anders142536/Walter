@@ -4,6 +4,7 @@ import Walter.Parsers.Flag;
 import Walter.Parsers.Option;
 import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public abstract class Command {
     public List<Flag> getFlags() { return flags; }
 
     //executes the command with the given parameters
-    public void execute() throws CommandExecutionException {
+    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
         throw new CommandExecutionException("This command is not yet implemented. Please report to <@!151010441043116032> so he can implement this.",
                 "Es tut mir Leid, doch dies ist noch nicht implementiert. Bitte melde dies <@!151010441043116032> damit er es implementieren kann.");
     }

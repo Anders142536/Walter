@@ -36,6 +36,11 @@ public abstract class Option extends Argument {
 
     public OptionType getType() { return type; }
 
+    public abstract boolean hasValue();
+
+    public String getNameGerman() { return nameGerman; }
+
+    public String getNameEnglish() { return nameEnglish; }
 
     /**
      * @return Formatted german description of option

@@ -1,9 +1,9 @@
 package Walter.Parsers;
 
 public abstract class Argument {
-    final String descriptionEnglish;
-    final String descriptionGerman;
-    final int argMaxLength = 15;
+    protected final String descriptionEnglish;
+    protected final String descriptionGerman;
+    protected final int argMaxLength = 15;
 
     public Argument(String descriptionEnglish, String descriptionGerman) {
         this.descriptionEnglish = descriptionEnglish;

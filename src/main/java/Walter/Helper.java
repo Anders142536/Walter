@@ -96,7 +96,7 @@ public class Helper {
         String corePrint = "I am utterly sorry, but something went seriously wrong here." +
                 "\n\n<@!151010441043116032>:\n" +
                 "```timestamp:      " + getFormattedNowString() + "\n" +
-                (informationToAdd != null ? informationToAdd + "" : "") + "```";
+                (informationToAdd != null ? informationToAdd : "") + "```";
         System.out.println("> ERROR An exception was thrown!" + corePrint);
         channel.sendMessage(corePrint + getStackTraceString(e)).queue();
         logException(corePrint + getStackTraceString(e));
@@ -135,9 +135,5 @@ public class Helper {
             builder.append("\n").append(stacktrace[i]);
         }
         return builder.toString();
-    }
-
-    private void dummy() {
-
     }
 }

@@ -2,6 +2,7 @@ package Walter.Parsers;
 
 import Walter.Helper;
 import Walter.exceptions.ParseException;
+import com.sun.source.tree.ParenthesizedTree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +43,50 @@ public class CommandParser extends Parser {
 
         resetLists();
 
-        checkOptions();
-        checkFlags();
+        int optionsCounter = 0;
+        Flag requiresParameter = null;
+        for (int i = 1; i < arguments.size(); i++) {
+            String argument = arguments.get(i);
+            if (argument.matches("-.+")) {
+                if (requiresParameter != null)
+                    throw new ParseException("Flag " + requiresParameter.getShortName() + " erwartet einen Parameter.",
+                            "Flag " + requiresParameter.getShortName() + " expects a parameter");
 
+                Flag flag;
+                if (argument.matches("--.+"))
+                    flag = searchListForFlagLongName(argument.substring(2));
+                else if (argument.matches("-."))
+                    flag = searchListForFlagShortname(argument.charAt(1));
+                else
+                    throw new ParseException("Ungültiges Argument: " + argument,
+                            "Invalid argument: " + argument);
+
+                if (flag == null)
+                    throw new ParseException("Keine Flag zu " + argument + " gefunden",
+                            "No flag found for " + argument);
+                if (flag.isGiven())
+                    throw new ParseException("Flag " + argument + " kann nicht mehrmals gesetzt werden.",
+                            "Flag " + argument + " may not be set several times.");
+
+                flag.given();
+                if (flag.hasParameter()) requiresParameter = flag;
+            } else {
+                Option option;
+                if (requiresParameter != null) {
+                    option = requiresParameter.getParameter();
+                    requiresParameter = null;
+                } else {
+                    //todo add handling for optionscounter > options.size()
+                    option = options.get(optionsCounter++);
+                }
+
+                //todo do this
+                //switch statement for type plus parsing with regex
+            }
+
+        }
+
+        checkRequiredOptionsForValues();
     }
 
     private List<String> splitStringToParseIntoArguments() {
@@ -72,18 +114,11 @@ public class CommandParser extends Parser {
         }
     }
 
-    //side effect: found options are removed from the list
-    private void checkOptions() throws ParseException {
-        //checking options
-        int optionsCounter = 0;
-        Option tempOption;
-        for (int i = 0; i < arguments.size() && optionsCounter < options.size(); i++) {
-            if (argument.length() < 1) Helper.instance.logError("encountered empty option at position " + (optionsCounter + 1));
-            if (argument.matches("-.?")) {
-
-            } else {
-                tempOption = options.s
-            }
+    private void checkRequiredOptionsForValues() throws ParseException {
+        for (Option option : options) {
+            if (option.isRequired() && !option.hasValue())
+                throw new ParseException(option.getNameGerman() + " wurde nicht gegeben, obwohl erfordert.",
+                        option.getNameEnglish() + " was not given, although required.");
         }
     }
 

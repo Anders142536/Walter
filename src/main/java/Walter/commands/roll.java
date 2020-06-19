@@ -5,6 +5,7 @@ import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class roll extends Command {
 
@@ -35,7 +36,7 @@ public class roll extends Command {
     }
 
     @Override
-    public void execute() throws CommandExecutionException {
+    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
         Member author = event.getMember();
         MessageChannel channel = event.getChannel();
 

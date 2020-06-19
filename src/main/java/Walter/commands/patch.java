@@ -4,6 +4,7 @@ import Walter.Walter;
 import Walter.entities.BlackChannel;
 import Walter.entities.BlackWebhook;
 import Walter.exceptions.CommandExecutionException;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class patch extends Command {
 
@@ -31,7 +32,7 @@ public class patch extends Command {
     }
 
     @Override
-    public void execute() throws CommandExecutionException {
+    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
         String toSend = "__**Walter " + Walter.VERSION + " Parser Update**__\n" +
                 "\n**New Features**\n" +
                 // enter new features between here..

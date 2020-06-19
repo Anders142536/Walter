@@ -53,7 +53,6 @@ public class CommandHandler {
         commandList.add(new listening());
         commandList.add(new member());
         commandList.add(new patch());
-//        commandList.add(new pimmel());
         commandList.add(new playing());
 //        commandList.add(new reprint());
         commandList.add(new roll());
@@ -89,8 +88,8 @@ public class CommandHandler {
         Command toExecute = commands.get(firstArgument);
         if (messageContent.charAt(0) == '!') {      //command
             if (RoleHandler.instance.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
-                ParseResult pr = parser.parse(toExecute.getOptions(), toExecute.getFlags());
-                toExecute.execute();
+                parser.parse(toExecute.getOptions(), toExecute.getFlags());
+                toExecute.execute(event);
             } else {
                 String roleName = toExecute.getMinimumRequiredRole().getName();
                 throw new CommandExecutionException("You do not have the minimum required role \"" + roleName + "\" for this command.",
