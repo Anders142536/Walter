@@ -38,6 +38,8 @@ public abstract class Option extends Argument {
 
     public abstract boolean hasValue();
 
+    public abstract void reset();
+
     public String getNameGerman() { return nameGerman; }
 
     public String getNameEnglish() { return nameEnglish; }

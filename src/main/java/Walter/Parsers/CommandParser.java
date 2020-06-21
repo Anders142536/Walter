@@ -2,7 +2,7 @@ package Walter.Parsers;
 
 import Walter.Helper;
 import Walter.exceptions.ParseException;
-import com.sun.source.tree.ParenthesizedTree;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +21,19 @@ public class CommandParser extends Parser {
     }
 
     public String parseFirstArgument() throws ParseException {
-        if (stringToParse == null || stringToParse.length() < 2) throw new ParseException(
-                "Mir wurde kein Text zu parsen gegeben.",
+        if (stringToParse == null || stringToParse.length() < 2)
+            throw new ParseException("Mir wurde kein Text zu parsen gegeben.",
                 "I was not given text to parse.");
-        String[] splitString = stringToParse.substring(1).split(" ");   //substring truncates the ! or ?
-        if (splitString.length == 0) throw new ParseException(
-                "Es ist kein Befehl aus \"" + stringToParse + "\" identifizierbar.",
-                "There is no command identifyable in \"" + stringToParse + "\".");
-        return splitString[0];
+
+        //deleting everything after first whitespace, if there is one
+        String firstArgument = stringToParse.replaceFirst(" .*", "")
+                                            .toLowerCase();
+
+        //regex: ! or ?, followed by at least one letter a-z
+        if (!firstArgument.matches("[!?][a-z]+"))
+            throw new ParseException("Es ist kein Befehl aus \"" + firstArgument + "\" identifizierbar.",
+                "There is no command identifyable in \"" + firstArgument + "\".");
+        return firstArgument.substring(1);
     }
 
     /** Parses given stringToParse against the given list of options and flags. The first argument is ignored
@@ -47,45 +52,33 @@ public class CommandParser extends Parser {
         Flag requiresParameter = null;
         for (int i = 1; i < arguments.size(); i++) {
             String argument = arguments.get(i);
-            if (argument.matches("-.+")) {
+
+            //regex: one '-' followed by at least one arbitrary char
+            if (argument.matches("-[A-Za-z]+")) { //is flag
                 if (requiresParameter != null)
                     throw new ParseException("Flag " + requiresParameter.getShortName() + " erwartet einen Parameter.",
                             "Flag " + requiresParameter.getShortName() + " expects a parameter");
 
-                Flag flag;
-                if (argument.matches("--.+"))
-                    flag = searchListForFlagLongName(argument.substring(2));
-                else if (argument.matches("-."))
-                    flag = searchListForFlagShortname(argument.charAt(1));
-                else
-                    throw new ParseException("Ungültiges Argument: " + argument,
-                            "Invalid argument: " + argument);
-
-                if (flag == null)
-                    throw new ParseException("Keine Flag zu " + argument + " gefunden",
-                            "No flag found for " + argument);
+                Flag flag = identifyFlag(argument);
                 if (flag.isGiven())
                     throw new ParseException("Flag " + argument + " kann nicht mehrmals gesetzt werden.",
                             "Flag " + argument + " may not be set several times.");
-
                 flag.given();
                 if (flag.hasParameter()) requiresParameter = flag;
-            } else {
+            } else {    //is option
                 Option option;
                 if (requiresParameter != null) {
                     option = requiresParameter.getParameter();
                     requiresParameter = null;
                 } else {
-                    //todo add handling for optionscounter > options.size()
+                    if (optionsCounter >= options.size())
+                        throw new ParseException("Argument " + argument + " wurde nicht erwartet.",
+                                "Argument " + argument + " was not expected.");
                     option = options.get(optionsCounter++);
                 }
-
-                //todo do this
-                //switch statement for type plus parsing with regex
+                setOptionValue(argument, option);
             }
-
         }
-
         checkRequiredOptionsForValues();
     }
 
@@ -114,26 +107,24 @@ public class CommandParser extends Parser {
         }
     }
 
-    private void checkRequiredOptionsForValues() throws ParseException {
-        for (Option option : options) {
-            if (option.isRequired() && !option.hasValue())
-                throw new ParseException(option.getNameGerman() + " wurde nicht gegeben, obwohl erfordert.",
-                        option.getNameEnglish() + " was not given, although required.");
-        }
-    }
+    @NotNull
+    private Flag identifyFlag(String argument) throws ParseException {
+        if (flags == null)
+            throw new ParseException("Flag " + argument + " wurde gegeben, aber keine Flags sind erwartet.",
+                    "Flag " + argument + " was given but no flags are expected");
+        Flag flag;
+        if (argument.matches("--[A-Za-z]+")) //regex: -- followed by at least one letter a - z, both cases
+            flag = searchListForFlagLongName(argument.substring(2));
+        else if (argument.matches("-[A-Za-z]")) //regex: - followed by one letter a-z, both case
+            flag = searchListForFlagShortname(argument.charAt(1));
+        else
+            throw new ParseException("Ungültiges Argument: " + argument,
+                    "Invalid argument: " + argument);
 
-    //as everything but flags is already removed from checkOptions() we can savely assume that all entries are flags
-    private void checkFlags() throws ParseException {
-        Flag temp = null;
-        for (String argument : arguments){
-            if (argument.matches("--.?"))
-                temp = searchListForFlagLongName(argument.substring(2));
-            else
-                temp = searchListForFlagShortname(argument.charAt(1));
-            if (temp == null)
-                throw new ParseException("Flag " + argument + " konnte nicht identifiziert werden.",
-                        "Flag " + argument + " could not be identified");
-        }
+        if (flag == null)
+            throw new ParseException("Keine Flag zu " + argument + " gefunden",
+                    "No flag found for " + argument);
+        return flag;
     }
 
     private Flag searchListForFlagLongName(String longname) {
@@ -148,5 +139,34 @@ public class CommandParser extends Parser {
             if (flag.getShortName() == shortname) return flag;
         }
         return null;
+    }
+
+    private void setOptionValue(String argument, Option option) throws ParseException {
+        switch (option.getType()) {
+            case STRING:
+                StringOption stringO = (StringOption)option;
+                stringO.setValue(argument);
+                break;
+            case INT:
+                if (!argument.matches("\\d*"))
+                    throw new ParseException("Argument " + argument + " ist keine natürliche Zahl.",
+                            "Argument " + argument + " is not a natural number.");
+                IntegerOption intO = (IntegerOption)option;
+                intO.setValue(Integer.parseUnsignedInt(argument));
+                break;
+            case FLUSH:
+                FlushOption flushO = (FlushOption)option;
+                String value = stringToParse.substring(arguments.get(0).length() + 1);
+                flushO.setValue(value);
+                break;
+        }
+    }
+
+    private void checkRequiredOptionsForValues() throws ParseException {
+        for (Option option : options) {
+            if (option.isRequired() && !option.hasValue())
+                throw new ParseException(option.getNameGerman() + " wurde nicht gegeben, obwohl erfordert.",
+                        option.getNameEnglish() + " was not given, although required.");
+        }
     }
 }

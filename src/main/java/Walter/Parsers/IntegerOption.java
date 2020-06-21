@@ -2,22 +2,21 @@ package Walter.Parsers;
 
 public class IntegerOption extends Option {
 
+    Integer value = null;
+
     public IntegerOption(String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman) {
-        super(nameEnglish, nameGerman, descriptionEnglish, descriptionGerman);
+        super(OptionType.INT, nameEnglish, nameGerman, descriptionEnglish, descriptionGerman);
     }
 
     public IntegerOption(String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman, boolean required) {
-        super(nameEnglish, nameGerman, descriptionEnglish, descriptionGerman, required);
+        super(OptionType.INT, nameEnglish, nameGerman, descriptionEnglish, descriptionGerman, required);
     }
 
-    @Override
-    public boolean isCorrectType(String argument) {
-        //there are smarter ways to do this, but this is simple and short ¯\_(ツ)_/¯
-        try {
-            Integer.parseInt(argument);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
+    public void setValue (int value) { this.value = value; }
+
+    public boolean hasValue() { return value != null; }
+
+    public int getValue() { return value; }
+
+    public void reset() { value = null; }
 }
