@@ -54,11 +54,19 @@ public class test extends Command {
         p.setStringToParse("!test");
         p.parse(null, null);
 
-        p.setStringToParse("!test test");
-        p.parse(null, null);
+        try {
+            p.setStringToParse("!test test");
+            p.parse(null, null);
+        } catch (ParseException e) {
+            if (!e.getReasonEnglish().equals("Argument test was not expected.")) fail("0.3");
+        }
 
-        p.setStringToParse("!test --test");
-        p.parse(null, null);
+        try {
+            p.setStringToParse("!test --test");
+            p.parse(null, null);
+        } catch (ParseException e) {
+            if (!e.getReasonEnglish().equals("Flag --test was given but no flags are expected")) fail("0.4");
+        }
 
         //test 1, only one option to parse
         List<Option> options = optionList1();
@@ -68,13 +76,21 @@ public class test extends Command {
         if (!option.hasValue()) fail("1.0");
         if (!option.getValue().equals("testStringOption")) fail("1.1");
 
-        p.setStringToParse("!test");
-        p.parse(options, null);
-        if (option.hasValue()) fail("1.2");
+        try {
+            p.setStringToParse("!test");
+            p.parse(options, null);
+        } catch (ParseException e) {
+            if (!e.getReasonEnglish().equals("testString was not given, although required.")) fail("1.2.0");
+        }
+        if (option.hasValue()) fail("1.2.1");
 
-        p.setStringToParse("!test --test");
-        p.parse(options, null);
-        if (option.hasValue()) fail("1.3");
+        try {
+            p.setStringToParse("!test --test");
+            p.parse(options, null);
+        } catch (ParseException e) {
+            if (!e.getReasonEnglish().equals("Flag --test was given but no flags are expected")) fail("1.3.0");
+        }
+        if (option.hasValue()) fail("1.3.1");
 
 
         //test 2, only one flag to parse
@@ -84,13 +100,14 @@ public class test extends Command {
         Flag flag = flags.get(0);
         if (!flag.isGiven()) fail("2.0");
 
-        p.setStringToParse("!test");
-        p.parse(null, flags);
-        if (flag.isGiven()) fail("2.1");
 
         p.setStringToParse("!test --test");
         p.parse(null, flags);
-        if (!flag.isGiven()) fail("2.2");
+        if (!flag.isGiven()) fail("2.1");
+
+        p.setStringToParse("!test");
+        p.parse(null, flags);
+        if (flag.isGiven()) fail("2.2");
 
         p.setStringToParse("!test test");
         p.parse(null, flags);
