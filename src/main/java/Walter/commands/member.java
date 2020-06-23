@@ -2,6 +2,7 @@ package Walter.commands;
 
 import Walter.Collection;
 import Walter.Helper;
+import Walter.Parsers.StringOption;
 import Walter.RoleHandler;
 import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
@@ -9,6 +10,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class member extends Command {
@@ -17,6 +19,10 @@ public class member extends Command {
         keywords = new String[]{"member", "mitglied"};
         minimumRequiredRole = BlackRole.MEMBER;
         mainKeywordGerman = 1;
+        options = new ArrayList<>();
+        options.add(new StringOption("nickname", "nickname",
+                "Visible nickname of user that should become member.",
+                "Sichtbarer nickname des Users, der member werden soll."));
     }
 
     @Override
@@ -42,24 +48,25 @@ public class member extends Command {
         Member author = event.getMember();
         MessageChannel channel = event.getChannel();
 
-        if (parseResult.size() < 2) return new String[]{"Mir wurde kein Name gegeben.", "I was not given a name."};
+        StringOption nick = (StringOption)options.get(0);
 
-        String memberToSearchFor = parseResult.get(1);
+        String memberToSearchFor = nick.getValue();
         List<Member> foundMembers = Helper.instance.getMembersByName(memberToSearchFor);
 
-        if (foundMembers.size() == 0) return new String[]{"Ich habe niemanden mit dem Namen \"" + memberToSearchFor + "\" gefunden.",
-                "I did not find anyone with the name \"" + memberToSearchFor + "\"."};
-        else if (foundMembers.size() > 1) return new String[] {memberToSearchFor + "\" könnte auf mehrere Benutzer zutreffen.",
-                memberToSearchFor + "\" matches several users."};
-        else {
-            Member memberToAssignTo = foundMembers.get(0);
-            if (RoleHandler.instance.hasRole(memberToAssignTo, BlackRole.MEMBER)) return new String[]{"Der Benutzer \"" + memberToSearchFor + "\" ist bereits Member.",
-                    "The user \"" + memberToSearchFor + "\" already is a member."};
-            else {
-                RoleHandler.instance.assignRole(memberToAssignTo, BlackRole.MEMBER);
-                if (RoleHandler.instance.hasRole(memberToAssignTo, BlackRole.GUEST)) RoleHandler.instance.removeRole(memberToAssignTo, BlackRole.GUEST);
-            }
-        }
-        return null;
+        if (foundMembers.size() == 0)
+            throw new CommandExecutionException("Ich habe niemanden mit dem Namen \"" + memberToSearchFor + "\" gefunden.",
+                "I did not find anyone with the name \"" + memberToSearchFor + "\".");
+        if (foundMembers.size() > 1)
+            throw new CommandExecutionException("\"" + memberToSearchFor + "\" könnte auf mehrere Benutzer zutreffen.",
+                    "\"" + memberToSearchFor + "\" matches several users.");
+
+        Member memberToAssignTo = foundMembers.get(0);
+        if (RoleHandler.instance.hasRole(memberToAssignTo, BlackRole.MEMBER))
+            throw new CommandExecutionException("Der Benutzer \"" + memberToSearchFor + "\" ist bereits Member.",
+                "The user \"" + memberToSearchFor + "\" already is a member.");
+
+        RoleHandler.instance.assignRole(memberToAssignTo, BlackRole.MEMBER);
+        if (RoleHandler.instance.hasRole(memberToAssignTo, BlackRole.GUEST))
+            RoleHandler.instance.removeRole(memberToAssignTo, BlackRole.GUEST);
     }
 }

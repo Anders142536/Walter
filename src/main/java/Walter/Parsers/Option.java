@@ -1,5 +1,7 @@
 package Walter.Parsers;
 
+import Walter.exceptions.ParseException;
+
 /** Class representing Options.
  *
  */
@@ -38,7 +40,7 @@ public abstract class Option extends Argument {
 
     public abstract boolean hasValue();
 
-    public abstract void reset();
+    public abstract void setValue(String argument) throws ParseException;
 
     public String getNameGerman() { return nameGerman; }
 

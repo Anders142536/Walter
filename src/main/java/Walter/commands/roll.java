@@ -1,17 +1,23 @@
 package Walter.commands;
 
 import Walter.Helper;
+import Walter.Parsers.IntegerOption;
 import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.util.ArrayList;
+
 public class roll extends Command {
 
     public roll() {
         keywords = new String[]{"roll", "würfel", "wuerfel"};
         minimumRequiredRole = BlackRole.GUEST;
+        options = new ArrayList<>();
+        options.add(new IntegerOption("limit", "limit",
+                "Upper limit of the roll.", "Obere Schranke für den Wurf.", false));
     }
 
     @Override
@@ -40,14 +46,13 @@ public class roll extends Command {
         Member author = event.getMember();
         MessageChannel channel = event.getChannel();
 
-        int limit = (parseResult.size() > 1 ?
-                Integer.parseInt(parseResult.get(1)) : 6);
+        IntegerOption limitOption = (IntegerOption) options.get(0);
 
+        int limit = (limitOption.hasValue() ? limitOption.getValue() : 6);
         int randomNumber = (int)(Math.random() * limit) + 1;
 
         Helper.instance.respond(author, channel,
                 "Deine Zufallszahl lautet: " + randomNumber,
                 "Your random number is: " + randomNumber);
-        return null;
     }
 }

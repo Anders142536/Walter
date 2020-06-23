@@ -1,5 +1,7 @@
 package Walter.Parsers;
 
+import Walter.exceptions.ParseException;
+
 public class IntegerOption extends Option {
 
     Integer value = null;
@@ -12,7 +14,12 @@ public class IntegerOption extends Option {
         super(OptionType.INT, nameEnglish, nameGerman, descriptionEnglish, descriptionGerman, required);
     }
 
-    public void setValue (int value) { this.value = value; }
+    public void setValue (String argument) throws ParseException {
+        if (!argument.matches("\\d*"))
+            throw new ParseException("Argument " + argument + " ist keine natürliche Zahl.",
+                    "Argument " + argument + " is not a natural number.");
+        this.value = Integer.parseUnsignedInt(argument);
+    }
 
     public boolean hasValue() { return value != null; }
 

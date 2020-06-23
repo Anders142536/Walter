@@ -10,9 +10,9 @@ public abstract class Argument {
         this.descriptionGerman = descriptionGerman;
     }
 
-    public String getDescriptionEnglish;
+    public abstract String getDescriptionEnglish();
 
-    public String getDescriptionGerman;
+    public abstract String getDescriptionGerman();
 
     public abstract void reset();
 

@@ -46,6 +46,5 @@ public class english extends Command {
             Helper.instance.respond(author, channel,
                     "Ich kommuniziere bereits mit dir in Englisch.",
                     "I already communicate with you in english.");
-        return null;
     }
 }

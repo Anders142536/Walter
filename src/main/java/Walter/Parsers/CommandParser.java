@@ -76,7 +76,10 @@ public class CommandParser extends Parser {
                                 "Argument " + argument + " was not expected.");
                     option = options.get(optionsCounter++);
                 }
-                setOptionValue(argument, option);
+                if (option.getType() == OptionType.FLUSH)
+                    option.setValue(stringToParse.substring(arguments.get(0).length() + 1));
+                else
+                    option.setValue(argument);
             }
         }
         checkRequiredOptionsForValues();
@@ -141,26 +144,6 @@ public class CommandParser extends Parser {
         return null;
     }
 
-    private void setOptionValue(String argument, Option option) throws ParseException {
-        switch (option.getType()) {
-            case STRING:
-                StringOption stringO = (StringOption)option;
-                stringO.setValue(argument);
-                break;
-            case INT:
-                if (!argument.matches("\\d*"))
-                    throw new ParseException("Argument " + argument + " ist keine natürliche Zahl.",
-                            "Argument " + argument + " is not a natural number.");
-                IntegerOption intO = (IntegerOption)option;
-                intO.setValue(Integer.parseUnsignedInt(argument));
-                break;
-            case FLUSH:
-                FlushOption flushO = (FlushOption)option;
-                String value = stringToParse.substring(arguments.get(0).length() + 1);
-                flushO.setValue(value);
-                break;
-        }
-    }
 
     private void checkRequiredOptionsForValues() throws ParseException {
         for (Option option : options) {

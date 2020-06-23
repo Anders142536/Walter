@@ -29,7 +29,7 @@ public class file extends Command {
     }
 
 //    @Override
-//    public String[] execute(List<String> args, MessageReceivedEvent event) {
+//    public void execute(MessageReceivedEvent event) throw CommandExecutionException {
     //TODO: add in CommandHandler.createListOfCommands()
 //    }
 }

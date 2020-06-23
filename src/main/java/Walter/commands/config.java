@@ -24,7 +24,7 @@ public class config extends Command {
                         BlackChannel.CONFIG.ID + ">."};
     }
 //    @Override
-//    public String[] execute(List<String> args, MessageReceivedEvent event) {
-    //TODO: add in CommandHandler.createListOfCommands()
+//    public void execute(MessageReceivedEvent event) throws CommandExecutionException{
+        //TODO: add in CommandHandler.createListOfCommands()
 //    }
 }

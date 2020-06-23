@@ -43,21 +43,15 @@ public class commands extends Command {
         Member author = Helper.instance.getMember(event.getAuthor());
         MessageChannel channel = event.getChannel();
 
-        if (adminCommands == null) {
+        if (adminCommands == null)
             fillCommandStrings();
-        }
 
         if (RoleHandler.instance.hasRole(author, BlackRole.ADMIN))
             Helper.instance.respond(author, channel, adminCommands, adminCommandsEnglish);
         else if (RoleHandler.instance.hasRole(author, BlackRole.MEMBER))
             Helper.instance.respond(author, channel, memberCommands, memberCommandsEnglish);
-        else if (RoleHandler.instance.hasRole(author, BlackRole.GUEST))
-            Helper.instance.respond(author, channel, guestCommands, guestCommandsEnglish);
         else
-            //TODO: print error message
-            Helper.instance.respond(author, channel, "", "");
-
-        return null;
+            Helper.instance.respond(author, channel, guestCommands, guestCommandsEnglish);
     }
 
     private void fillCommandStrings() {

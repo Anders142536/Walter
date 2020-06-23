@@ -31,7 +31,7 @@ public class getmsg extends Command {
     }
 
 //    @Override
-//    public String[] execute(List<String> args, MessageReceivedEvent event) {
+//    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
     //TODO: add in CommandHandler.createListOfCommands()
 //    }
 }

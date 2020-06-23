@@ -12,16 +12,19 @@ public class StringOption extends Option {
         super(OptionType.STRING, nameEnglish, nameGerman, descriptionEnglish, descriptionGerman, required);
     }
 
-    public void setValue (String value) {
-        this.value = value;
+    @Override
+    public void setValue (String argument) {
+        this.value = argument;
     }
 
+    @Override
     public boolean hasValue(){
         return value != null;
     }
 
     public String getValue() { return value; }
 
+    @Override
     public void reset() {
         value = null;
     }

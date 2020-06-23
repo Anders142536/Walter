@@ -1,6 +1,6 @@
 package Walter.commands;
 
-import Walter.Helper;
+import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class analyse extends Command {
     }
 
 //    @Override
-//    public String[] execute(List<String> args, MessageReceivedEvent event) {
-            //TODO: add in CommandHandler.createListOfCommands()
+//    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
+//            TODO: add in CommandHandler.createListOfCommands()
 //    }
 }

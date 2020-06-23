@@ -25,7 +25,7 @@ public class hello extends Command {
     }
 
 //    @Override
-//    public String[] execute(List<String> args, MessageReceivedEvent event) {
+//    public execute(MessageReceivedEvent event) throws CommandExecutionException {
     //TODO: add in CommandHandler.createListOfCommands()
 //    }
 }

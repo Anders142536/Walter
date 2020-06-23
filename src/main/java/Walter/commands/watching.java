@@ -1,16 +1,22 @@
 package Walter.commands;
 
 import Walter.Collection;
+import Walter.Parsers.StringOption;
 import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
+import java.util.ArrayList;
 
 public class watching extends Command {
 
     public watching() {
         keywords = new String[]{"watching"};
         minimumRequiredRole = BlackRole.GUEST;
+        options = new ArrayList<>();
+        options.add(new StringOption("media source", "medienquelle",
+                "What I should watch.", "Was ich schauen soll"));
     }
 
     @Override
@@ -31,8 +37,7 @@ public class watching extends Command {
 
     @Override
     public void execute(MessageReceivedEvent event) throws CommandExecutionException {
-        if (parseResult.size() > 1 && !parseResult.get(1).trim().equals("")) event.getJDA().getPresence().setActivity(Activity.watching(parseResult.get(1)));
-        else return new String[]{"Mir wurde nichts zu schauen gegeben.", "I was not given something to watch."};
-        return null;
+        StringOption media = (StringOption)options.get(0);
+        event.getJDA().getPresence().setActivity(Activity.watching(media.getValue()));
     }
 }
