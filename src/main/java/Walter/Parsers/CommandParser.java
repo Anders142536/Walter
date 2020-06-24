@@ -71,7 +71,7 @@ public class CommandParser extends Parser {
                     option = requiresParameter.getParameter();
                     requiresParameter = null;
                 } else {
-                    if (optionsCounter >= options.size())
+                    if (optionsCounter >= (options == null ? 0 : options.size()))
                         throw new ParseException("Argument " + argument + " wurde nicht erwartet.",
                                 "Argument " + argument + " was not expected.");
                     option = options.get(optionsCounter++);
@@ -87,8 +87,8 @@ public class CommandParser extends Parser {
 
     private List<String> splitStringToParseIntoArguments() {
         List<String> arguments = new ArrayList<>();
-        String[] split = stringToParse.substring(1).split("\"");  //TODO test this
 
+        String[] split = stringToParse.split("\"");  //TODO test this
         for (int i = 0; i < split.length; i++) {
             //as arguments that are bracketed with " are always bracketed using exactly two "s it is certain
             //that every even index in the resulted array needs to be split at white spaces
@@ -102,11 +102,15 @@ public class CommandParser extends Parser {
     }
 
     private void resetLists() {
-        for (Option option: options) {
-            option.reset();
+        if (options != null) {
+            for (Option option : options) {
+                option.reset();
+            }
         }
-        for (Flag flag: flags) {
-            flag.reset();
+        if (flags != null) {
+            for (Flag flag : flags) {
+                flag.reset();
+            }
         }
     }
 
@@ -146,6 +150,7 @@ public class CommandParser extends Parser {
 
 
     private void checkRequiredOptionsForValues() throws ParseException {
+        if (options == null) return;
         for (Option option : options) {
             if (option.isRequired() && !option.hasValue())
                 throw new ParseException(option.getNameGerman() + " wurde nicht gegeben, obwohl erfordert.",
