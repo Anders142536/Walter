@@ -1,12 +1,10 @@
 plugins {
-    id'java'
     id'application'
-    id'com.github.johnrengelman.shadow' version '4.0.4'
+//    id'com.github.johnrengelman.shadow' version '4.0.4'
+    id'com.github.johnrengelman.shadow' version '6.0.0'
 }
 
 mainClassName = 'Walter.Walter'
-
-
 
 sourceCompatibility = 1.8
 
@@ -14,8 +12,11 @@ repositories {
     jcenter()
 }
 
+
+compileJava.options.encoding = 'UTF-8'
 dependencies {
-    compile ('net.dv8tion:JDA:4.1.1_165') {
+
+    compile ('net.dv8tion:JDA:4.1.1_167') {
         exclude module: 'opus-java'
     }
     compile("club.minnced:discord-webhooks:0.3.0")
@@ -25,4 +26,8 @@ dependencies {
     compile 'org.reflections:reflections:0.9.11'
 }
 
-compileJava.options.encoding = 'UTF-8'
+test {
+    useJUnitPlatform()
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+}
