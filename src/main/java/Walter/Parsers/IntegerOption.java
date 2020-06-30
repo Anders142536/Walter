@@ -23,7 +23,7 @@ public class IntegerOption extends Option {
 
     public boolean hasValue() { return value != null; }
 
-    public int getValue() { return value; }
+    public Integer getValue() { return value; }
 
     public void reset() { value = null; }
 }

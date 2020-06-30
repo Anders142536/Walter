@@ -5,13 +5,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StringOptionTests {
-
     private StringOption t;
 
     @BeforeEach
     public void resetTests() {
         t = new StringOption("name e", "name d", "des e", "des d");
-
     }
 
     @Test
