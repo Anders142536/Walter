@@ -24,7 +24,10 @@ public class Flag extends Argument {
 
     public boolean isGiven() { return isGiven; }
 
-    public void reset() { isGiven = false; }
+    public void reset() {
+        isGiven = false;
+        if (parameter != null) parameter.reset();
+    }
 
     public boolean hasParameter() {
         return parameter != null;

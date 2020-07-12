@@ -11,7 +11,6 @@ public class OptionTests {
     @BeforeEach
     public void resetTests() {
         t = new StringOption("name e", "name d", "des e", "des d");
-
     }
 
     @Test
