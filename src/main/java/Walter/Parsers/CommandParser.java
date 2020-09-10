@@ -6,13 +6,32 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CommandParser extends Parser {
+    static Pattern command;
 
-    final char quote = 34; // "
     private List<Option> options = null;
     private List<Flag> flags = null;
     private List<String> arguments = null;
+
+    public CommandParser() {
+        command = Pattern.compile("[!?]([a-zA-Z]+)( +([^-\"][^\\s\"]*|-?\\d*[.,]?\\d+|-?[a-zA-Z]+|\"[^\"]*\"))*");
+        /*                              *snorts cocaine* fuck yes
+            A ! or ?, followed by the letters a-z case insensitive, followed by an arbitrary number of
+            whitespace and either one of the following:
+            * any word without whitespace, " signs or - signs
+            * a integer or decimal number that may be negative. leading 0 can be left out for decimals
+            * a flag. for example -U, with flag concatenation being allowed
+            * any number of signs or linebreaks between two " signs
+         */
+    }
+
+    public static boolean isCommand(String message) {
+        Matcher commandChecker = command.matcher(message);
+        return commandChecker.matches();
+    }
 
     public void reset() {
         options = null;

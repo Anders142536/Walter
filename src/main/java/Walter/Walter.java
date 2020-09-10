@@ -21,8 +21,7 @@ public class Walter {
             String path = getLocation();
             String token = fetchToken(path);
 
-            JDA bot = new JDABuilder()
-                    .setToken(token)
+            JDA bot = JDABuilder.createDefault(token)
                     .addEventListeners(new Listener())
                     .build();
         } catch (Exception e) {

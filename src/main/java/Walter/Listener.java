@@ -1,5 +1,6 @@
 package Walter;
 
+import Walter.Parsers.CommandParser;
 import Walter.entities.BlackChannel;
 import Walter.entities.BlackRole;
 import Walter.entities.BlackWebhook;
@@ -44,7 +45,7 @@ public class Listener extends ListenerAdapter {
     //leaving members will be announced in the admin channel
     //furthermore they will receive a polite farewell by walter with a link to join the server in case they want to come back
     @Override
-    public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
+    public void onGuildMemberRemove(GuildMemberRemoveEvent event) {
         TextChannel admin = Helper.instance.getTextChannel(BlackChannel.ADMIN);
 
         admin.sendMessage(event.getMember().getEffectiveName() + " hat unseren Server verlassen.").queue();
@@ -122,20 +123,12 @@ public class Listener extends ListenerAdapter {
             return;
         }
 
-        //check prefixes
-        boolean isCommand = false;
-        boolean ignorePrefix = false;
-        if (messageContent.length() != 0) {
-            isCommand = (messageContent.charAt(0) == '!' || messageContent.charAt(0) == '?');
-            ignorePrefix = (messageContent.charAt(0) == '$' || messageContent.charAt(0) == '%');
-        }
-
         //decision time
         long channelID = channel.getIdLong();
         try {
-            if (isCommand)
+            if (CommandParser.isCommand(messageContent))
                 CommandHandler.instance.process(event);
-            else if (channelID == BlackChannel.DROPZONE.ID && !ignorePrefix)
+            else if (channelID == BlackChannel.DROPZONE.ID && !messageContent.matches("[$%].*")) //$ and % are prefixes that should be ignored
                 mentionVoiceChat(event.getMember(), channel);
 
             if (channelID == BlackChannel.NEWS.ID) {
