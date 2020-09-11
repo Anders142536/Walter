@@ -11,13 +11,13 @@ import java.util.regex.Pattern;
 
 public class CommandParser extends Parser {
     static Pattern command;
+    static Matcher commandMatcher;
 
     private List<Option> options = null;
     private List<Flag> flags = null;
-    private List<String> arguments = null;
 
     public CommandParser() {
-        command = Pattern.compile("[!?]([a-zA-Z]+)( +([^-\"][^\\s\"]*|-?\\d*[.,]?\\d+|-?[a-zA-Z]+|\"[^\"]*\"))*");
+        command = Pattern.compile("[!?]([a-zA-Z]+)( +([^-\"][^\\s\"]*|-?\\d*[.,]?\\d+|-([A-Za-z]|-[A-Za-z]+)|\"[^\"]*\"))*");
         /*                              *snorts cocaine* fuck yes
             A ! or ?, followed by the letters a-z case insensitive, followed by an arbitrary number of
             whitespace and either one of the following:
@@ -29,30 +29,22 @@ public class CommandParser extends Parser {
     }
 
     public static boolean isCommand(String message) {
-        Matcher commandChecker = command.matcher(message);
-        return commandChecker.matches();
+        commandMatcher = command.matcher(message);
+        return commandMatcher.matches();
     }
 
     public void reset() {
         options = null;
         flags = null;
-        arguments = null;
     }
 
-    public String parseFirstArgument() throws ParseException {
-        if (stringToParse == null || stringToParse.length() < 2)
-            throw new ParseException("Mir wurde kein Text zu parsen gegeben.",
-                "I was not given text to parse.");
-
-        //deleting everything after first whitespace, if there is one
-        String firstArgument = stringToParse.replaceFirst(" .*", "")
-                                            .toLowerCase();
-
-        //regex: ! or ?, followed by at least one letter a-z
-        if (!firstArgument.matches("[!?][a-z]+"))
-            throw new ParseException("Es ist kein Befehl aus \"" + firstArgument + "\" identifizierbar.",
-                "There is no command identifyable in \"" + firstArgument + "\".");
-        return firstArgument.substring(1);
+    public String parseCommandName() throws ParseException {
+        commandMatcher = command.matcher(stringToParse);
+        if (commandMatcher.find())
+            return commandMatcher.group(1);
+        else
+            throw new ParseException("Es ist kein Befehl aus \"" + stringToParse + "\" identifizierbar.",
+                "There is no command identifyable in \"" + stringToParse + "\".");
     }
 
     /** Parses given stringToParse against the given list of options and flags. The first argument is ignored
@@ -63,25 +55,20 @@ public class CommandParser extends Parser {
     public void parse(List<Option> options, List<Flag> flags) throws ParseException {
         this.options = options;
         this.flags = flags;
-        this.arguments = splitStringToParseIntoArguments();
-
         resetLists();
 
-        int optionsCounter = 0;
+        int optionsIndex = 0;
+        String commandName = null;
+        String argument;
         Flag requiresParameter = null;
-        for (int i = 1; i < arguments.size(); i++) {
-            String argument = arguments.get(i);
-
-            //regex: one '-' followed by at least one arbitrary char
-            if (argument.matches("-[A-Za-z]+")) { //is flag
+        while (commandMatcher.find()) {
+            if (commandName == null) commandName = commandMatcher.group(1);
+            argument = commandMatcher.group(3);
+            if (isFlag(argument)) {
                 if (requiresParameter != null)
                     throw new ParseException("Flag " + requiresParameter.getShortName() + " erwartet einen Parameter.",
                             "Flag " + requiresParameter.getShortName() + " expects a parameter");
-
                 Flag flag = identifyFlag(argument);
-                if (flag.isGiven())
-                    throw new ParseException("Flag " + argument + " kann nicht mehrmals gesetzt werden.",
-                            "Flag " + argument + " may not be set several times.");
                 flag.given();
                 if (flag.hasParameter()) requiresParameter = flag;
             } else {    //is option
@@ -90,13 +77,13 @@ public class CommandParser extends Parser {
                     option = requiresParameter.getParameter();
                     requiresParameter = null;
                 } else {
-                    if (optionsCounter >= (options == null ? 0 : options.size()))
+                    if (options == null || optionsIndex >= options.size())
                         throw new ParseException("Argument " + argument + " wurde nicht erwartet.",
                                 "Argument " + argument + " was not expected.");
-                    option = options.get(optionsCounter++);
+                    option = options.get(optionsIndex++);
                 }
                 if (option.getType() == OptionType.FLUSH)
-                    option.setValue(stringToParse.substring(arguments.get(0).length() + 1));
+                    option.setValue(stringToParse.substring(commandName.length() + 1));
                 else
                     option.setValue(argument);
             }
@@ -104,20 +91,8 @@ public class CommandParser extends Parser {
         checkRequiredOptionsForValues();
     }
 
-    private List<String> splitStringToParseIntoArguments() {
-        List<String> arguments = new ArrayList<>();
-
-        String[] split = stringToParse.split("\"");  //TODO test this
-        for (int i = 0; i < split.length; i++) {
-            //as arguments that are bracketed with " are always bracketed using exactly two "s it is certain
-            //that every even index in the resulted array needs to be split at white spaces
-            if (i % 2 == 0) {
-                for (String temp : split[i].split(" ")) {
-                    if (!temp.equals("")) arguments.add(temp);
-                }
-            } else arguments.add(split[i]);
-        }
-        return arguments;
+    private boolean isFlag(String toCheck) {
+        return toCheck.matches("c");
     }
 
     private void resetLists() {

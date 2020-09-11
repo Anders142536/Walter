@@ -80,12 +80,12 @@ public class CommandHandler {
         Helper.instance.logCommand(author, channel, messageContent);
 
         parser.setStringToParse(messageContent);
-        String firstArgument = parser.parseFirstArgument();
-        if (!commands.containsKey(firstArgument))
-            throw new ParseException("There is no command called " + firstArgument,
-                    "Es gibt keinen Command namens " + firstArgument);
+        String commandName = parser.parseCommandName();
+        if (!commands.containsKey(commandName))
+            throw new ParseException("There is no command called " + commandName,
+                    "Es gibt keinen Command namens " + commandName);
 
-        Command toExecute = commands.get(firstArgument);
+        Command toExecute = commands.get(commandName);
         if (messageContent.charAt(0) == '!') {      //command
             if (RoleHandler.instance.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
                 parser.parse(toExecute.getOptions(), toExecute.getFlags());
@@ -97,8 +97,8 @@ public class CommandHandler {
             }
         } else if (messageContent.charAt(0) == '?') //help request
             Helper.instance.respond(author, channel,
-                    getGermanHelpText(firstArgument, toExecute),
-                    getEnglishHelpText(firstArgument, toExecute));
+                    getGermanHelpText(commandName, toExecute),
+                    getEnglishHelpText(commandName, toExecute));
     }
 
     private String getGermanHelpText(String usedArgument, Command toExecute) {

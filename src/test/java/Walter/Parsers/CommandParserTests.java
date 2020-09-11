@@ -12,7 +12,7 @@ public class CommandParserTests {
     public void resetTests() { t = new CommandParser(); }
 
     @Test
-    public void isCommand() {
+    public void isCommandTest() {
         assertFalse(CommandParser.isCommand(""));
         assertFalse(CommandParser.isCommand("!"));
         assertFalse(CommandParser.isCommand("?"));
@@ -47,8 +47,8 @@ public class CommandParserTests {
 
         //flag
         assertTrue(CommandParser.isCommand("!test -a"));
-        assertTrue(CommandParser.isCommand("!test -dYusQ"));
-        assertFalse(CommandParser.isCommand("!test --all"));
+        assertTrue(CommandParser.isCommand("!test --all"));
+        assertFalse(CommandParser.isCommand("!test -dYusQ"));
         assertFalse(CommandParser.isCommand("!test -"));
 
         //quotes
@@ -67,20 +67,32 @@ public class CommandParserTests {
     }
 
     @Test
-    public void correctStartup() {
-        assertThrows(ParseException.class, () -> t.parseFirstArgument());
-        assertThrows(ParseException.class, () -> t.parse(null, null));
+    public void correctStartupTest() {
+        assertThrows(ParseException.class, () -> t.parseCommandName());
+        assertDoesNotThrow(() -> t.parse(null, null));
     }
 
     @Test
-    public void parseFirstArgument() {
+    public void parseCommandNameTest() {
         t.setStringToParse("!test");
-        assertDoesNotThrow(() -> t.parseFirstArgument());
-        try {
-            assertEquals("test", t.parseFirstArgument());
-        } catch (ParseException e) {
-            fail();
-        }
+        assertDoesNotThrow(() -> assertEquals("test", t.parseCommandName()));
+
+        resetTests();
+        t.setStringToParse("!test");
+        assertDoesNotThrow(() -> assertEquals("test", t.parseCommandName()));
+
+        resetTests();
+        t.setStringToParse("!test test");
+        assertDoesNotThrow(() -> assertEquals("test", t.parseCommandName()));
+
+        resetTests();
+        t.setStringToParse("!test -5.5");
+        assertDoesNotThrow(() -> assertEquals("test", t.parseCommandName()));
+
+        resetTests();
+        t.setStringToParse("!test -t 234 ");
+        assertDoesNotThrow(() -> assertEquals("test", t.parseCommandName()));
+
     }
 }
 

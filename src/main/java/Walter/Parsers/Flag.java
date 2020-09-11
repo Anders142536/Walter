@@ -1,5 +1,7 @@
 package Walter.Parsers;
 
+import Walter.exceptions.ParseException;
+
 public class Flag extends Argument {
     private final String longName;
     private final char shortName;
@@ -20,7 +22,11 @@ public class Flag extends Argument {
         this.parameter = parameter;
     }
 
-    public void given() { isGiven = true; }
+    public void given() throws ParseException {
+        if (isGiven) throw new ParseException("Flag " + longName + " kann nicht mehrmals gesetzt werden.",
+                "Flag " + longName + " may not be set several times.");
+        isGiven = true;
+    }
 
     public boolean isGiven() { return isGiven; }
 

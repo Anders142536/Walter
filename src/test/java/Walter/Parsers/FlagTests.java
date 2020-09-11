@@ -1,5 +1,6 @@
 package Walter.Parsers;
 
+import Walter.exceptions.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,7 +41,8 @@ public class FlagTests {
     @Test
     public void given() {
         resetFlag();
-        t.given();
+        assertDoesNotThrow(() -> t.given());
+        assertThrows(ParseException.class, () -> t.given());
 
         assertTrue(t.isGiven());
     }
@@ -56,7 +58,7 @@ public class FlagTests {
     @Test
     public void resetOnGiven() {
         resetFlag();
-        t.given();
+        assertDoesNotThrow(() -> t.given());
         t.reset();
 
         assertFalse(t.isGiven());
@@ -65,7 +67,7 @@ public class FlagTests {
     @Test
     public void resetOnGivenParameter() {
         resetFlag(param);
-        t.given();
+        assertDoesNotThrow(() -> t.given());
         assertDoesNotThrow(() -> t.getParameter().setValue("test"));
         t.reset();
 

@@ -128,7 +128,7 @@ public class Listener extends ListenerAdapter {
         try {
             if (CommandParser.isCommand(messageContent))
                 CommandHandler.instance.process(event);
-            else if (channelID == BlackChannel.DROPZONE.ID && !messageContent.matches("[$%].*")) //$ and % are prefixes that should be ignored
+            else if (channelID == BlackChannel.DROPZONE.ID && !messageContent.matches("[$%].*")) //$ and % are prefixes that should be ignoredcd
                 mentionVoiceChat(event.getMember(), channel);
 
             if (channelID == BlackChannel.NEWS.ID) {

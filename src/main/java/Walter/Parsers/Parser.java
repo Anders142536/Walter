@@ -1,15 +1,17 @@
 package Walter.Parsers;
 
 import Walter.exceptions.ParseException;
+import org.graalvm.compiler.api.replacements.Snippet;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class Parser {
-    String stringToParse;
+    String stringToParse = "";
 
     /** Sets the String that shall be parsed and resets the state of the Parser.
      *
      * @param stringToParse
      */
-    public void setStringToParse(String stringToParse) {
+    public void setStringToParse(@NotNull String stringToParse) {
         this.stringToParse = stringToParse;
         reset();
     }
