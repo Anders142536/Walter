@@ -61,38 +61,41 @@ public class CommandParser extends Parser {
         String commandName = null;
         String argument;
         Flag requiresParameter = null;
+        commandMatcher = command.matcher(stringToParse);
         while (commandMatcher.find()) {
             if (commandName == null) commandName = commandMatcher.group(1);
             argument = commandMatcher.group(3);
-            if (isFlag(argument)) {
-                if (requiresParameter != null)
-                    throw new ParseException("Flag " + requiresParameter.getShortName() + " erwartet einen Parameter.",
-                            "Flag " + requiresParameter.getShortName() + " expects a parameter");
-                Flag flag = identifyFlag(argument);
-                flag.given();
-                if (flag.hasParameter()) requiresParameter = flag;
-            } else {    //is option
-                Option option;
-                if (requiresParameter != null) {
-                    option = requiresParameter.getParameter();
-                    requiresParameter = null;
-                } else {
-                    if (options == null || optionsIndex >= options.size())
-                        throw new ParseException("Argument " + argument + " wurde nicht erwartet.",
-                                "Argument " + argument + " was not expected.");
-                    option = options.get(optionsIndex++);
+            if (argument != null) {
+                if (isFlag(argument)) {
+                    if (requiresParameter != null)
+                        throw new ParseException("Flag " + requiresParameter.getShortName() + " erwartet einen Parameter.",
+                                "Flag " + requiresParameter.getShortName() + " expects a parameter");
+                    Flag flag = identifyFlag(argument);
+                    flag.given();
+                    if (flag.hasParameter()) requiresParameter = flag;
+                } else {    //is option
+                    Option option;
+                    if (requiresParameter != null) {
+                        option = requiresParameter.getParameter();
+                        requiresParameter = null;
+                    } else {
+                        if (options == null || optionsIndex >= options.size())
+                            throw new ParseException("Argument " + argument + " wurde nicht erwartet.",
+                                    "Argument " + argument + " was not expected.");
+                        option = options.get(optionsIndex++);
+                    }
+                    if (option.getType() == OptionType.FLUSH)
+                        option.setValue(stringToParse.substring(commandName.length() + 1));
+                    else
+                        option.setValue(argument);
                 }
-                if (option.getType() == OptionType.FLUSH)
-                    option.setValue(stringToParse.substring(commandName.length() + 1));
-                else
-                    option.setValue(argument);
             }
         }
         checkRequiredOptionsForValues();
     }
 
     private boolean isFlag(String toCheck) {
-        return toCheck.matches("c");
+        return toCheck.matches("-([A-Za-z]|-[A-Za-z]+)");
     }
 
     private void resetLists() {
