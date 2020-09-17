@@ -73,7 +73,7 @@ public class CommandParserTests {
     @Test
     public void correctStartupTest() {
         assertThrows(ParseException.class, () -> t.parseCommandName());
-        assertDoesNotThrow(() -> t.parse(null, null));
+        assertThrows(ParseException.class, () -> t.parse(null, null));
     }
 
     @Test
@@ -173,7 +173,7 @@ public class CommandParserTests {
         options.add(getTestOption(OptionType.STRING));
         flags.add(getTestFlag());
 
-        t.setStringToParse("!test 4 -t test");
+        t.setStringToParse("!test 4 -t \"test\"");
         assertDoesNotThrow(() -> t.parse(options, flags));
         IntegerOption test = (IntegerOption) options.get(0);
         StringOption testString = (StringOption) options.get(1);

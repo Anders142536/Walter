@@ -10,16 +10,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommandParser extends Parser {
-    static Pattern command;
-    static Matcher commandMatcher;
+    static String commandIdentifierRegex;
+    static String commandNameRegex;
+    static Pattern commandNameParser;
+    static Matcher commandNameMatcher;
+    static Pattern commandArgumentParser;
+    static Matcher commandArgumentMatcher;
 
     private List<Option> options = null;
     private List<Flag> flags = null;
-    private final List<String> arguments = new ArrayList<>();
     private String commandName = null;
 
     public CommandParser() {
-        command = Pattern.compile("[!?]([a-zA-Z]+)( +([^-\"][^\\s\"]*|-?\\d*[.,]?\\d+|-([A-Za-z]|-[A-Za-z]+)|\"[^\"]*\"))*");
+        commandIdentifierRegex = "^[!?]([a-zA-Z]+)( +([^-\"][^\\s\"]*|-?\\d*[.,]?\\d+|-([A-Za-z]|-[A-Za-z]+)|\"[^\"]*\"))*";
+        commandNameRegex = "^[!?]([a-zA-Z]+)";
+        commandNameParser = Pattern.compile(commandNameRegex);
+        commandArgumentParser = Pattern.compile("( +([^-\"][^\\s\"]*|-?\\d*[.,]?\\d+|-([A-Za-z]|-[A-Za-z]+)|\"[^\"]*\"))");
         /*                              *snorts cocaine* fuck yes
             A ! or ?, followed by the letters a-z case insensitive, followed by an arbitrary number of
             whitespace and either one of the following:
@@ -31,8 +37,7 @@ public class CommandParser extends Parser {
     }
 
     public static boolean isCommand(String message) {
-        commandMatcher = command.matcher(message);
-        return commandMatcher.matches();
+        return message.matches(commandIdentifierRegex);
     }
 
     public void reset() {
@@ -41,9 +46,9 @@ public class CommandParser extends Parser {
     }
 
     public String parseCommandName() throws ParseException {
-        commandMatcher = command.matcher(stringToParse);
-        if (commandMatcher.find())
-            return commandMatcher.group(1);
+        commandNameMatcher = commandNameParser.matcher(stringToParse);
+        if (commandNameMatcher.find())
+            return commandNameMatcher.group(1);
         else
             throw new ParseException("Es ist kein Befehl aus \"" + stringToParse + "\" identifizierbar.",
                 "There is no command identifyable in \"" + stringToParse + "\".");
@@ -58,21 +63,14 @@ public class CommandParser extends Parser {
         this.options = options;
         this.flags = flags;
         resetGivenLists();
-        arguments.clear();
-        commandName = null;
+        commandName = parseCommandName();
 
-        commandMatcher = command.matcher(stringToParse);
-        String foundArg;
-        while(commandMatcher.find()) {
-            if (commandName == null) commandName = commandMatcher.group(1);
-            if ((foundArg = commandMatcher.group(3)) != null) arguments.add(foundArg);
-        }
-        //The Matcher finds the last regex matches first for some reason, so we have to reverse the list
-        Collections.reverse(arguments);
-
+        commandArgumentMatcher = commandArgumentParser.matcher(stringToParse.replace(commandNameRegex, ""));
         int optionsIndex = 0;
         Flag requiresParameter = null;
-        for (String argument: arguments) {
+        String argument;
+        while(commandArgumentMatcher.find()) {
+            argument = commandArgumentMatcher.group(2);
             if (isFlag(argument)) {
                 if (requiresParameter != null)
                     throw new ParseException("Flag " + requiresParameter.getShortName() + " erwartet einen Parameter.",

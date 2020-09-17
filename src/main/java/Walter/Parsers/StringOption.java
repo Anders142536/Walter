@@ -14,7 +14,9 @@ public class StringOption extends Option {
 
     @Override
     public void setValue (String argument) {
-        this.value = argument;
+        if (argument.matches("\"[^\"]*\"")) {
+            this.value = argument.substring(1, argument.length() - 1);
+        } else this.value = argument;
     }
 
     @Override
