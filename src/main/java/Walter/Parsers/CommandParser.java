@@ -89,9 +89,10 @@ public class CommandParser extends Parser {
                                 "Argument " + argument + " was not expected.");
                     option = options.get(optionsIndex++);
                 }
-                if (option.getType() == OptionType.FLUSH)
-                    option.setValue(stringToParse.substring(commandName.length() + 1));
-                else
+                if (option.getType() == OptionType.FLUSH) {
+                    option.setValue(stringToParse.substring(commandName.length() + 2));
+                    break;
+                } else
                     option.setValue(argument);
             }
         }
