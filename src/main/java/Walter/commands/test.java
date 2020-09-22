@@ -18,7 +18,7 @@ public class test extends Command {
     private MessageChannel channel;
 
     public test () {
-        keywords = new String[]{"test"};
+        keywords = new String[][]{new String[]{"test"}};
         minimumRequiredRole = BlackRole.GUEST;
     }
 

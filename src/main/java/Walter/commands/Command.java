@@ -11,7 +11,7 @@ import java.util.List;
 //this class represents a command, including help texts
 public abstract class Command {
 
-    String[] keywords;
+    String[][] keywords;
     List<Option> options;
     List<Flag> flags;
     BlackRole minimumRequiredRole = BlackRole.ADMIN;
@@ -19,20 +19,12 @@ public abstract class Command {
     int mainKeywordEnglish;
 
     //returns the help string
-    public String[] getHelp() {
-        return new String[]{
-                "",
-                "Dieser Command hat keinen eigenen Hilfe-Text."};
-    }
-
-    //returns the english help string
-    public String[] getHelpEnglish() {
-        return new String[]{
-                "",
+    public String[] getDescription() {
+        return new String[]{"Dieser Command hat keinen eigenen Hilfe-Text.",
                 "This command does not have a help text."};
     }
 
-    public String[] getKeywords() {
+    public String[][] getKeywords() {
         return keywords;
     }
 

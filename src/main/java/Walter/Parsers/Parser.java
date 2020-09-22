@@ -1,7 +1,5 @@
 package Walter.Parsers;
 
-import Walter.exceptions.ParseException;
-import org.graalvm.compiler.api.replacements.Snippet;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class Parser {

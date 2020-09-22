@@ -20,22 +20,18 @@ public class commands extends Command {
     private String adminCommandsEnglish;
 
     public commands() {
-        keywords = new String[]{"commands", "command"};
+        keywords = new String[][]{new String[]{"commands", "command"}};
         minimumRequiredRole = BlackRole.GUEST;
     }
 
     @Override
-    public String[] getHelp() {
-        return new String[]{
-                "",
-                "Dieser Command listet alle dir zur Verfügung stehenden Commands auf."};
+    public String getDescription() {
+        return "Dieser Command listet alle dir zur Verfügung stehenden Commands auf.";
     }
 
     @Override
-    public String[] getHelpEnglish() {
-        return new String[]{
-                "",
-                "This command lists all the commands available to you."};
+    public String getDescriptionEnglish() {
+        return "This command lists all the commands available to you.";
     }
 
     @Override

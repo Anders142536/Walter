@@ -17,7 +17,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Objects;
 
 //handles events and, for reasons of simplicity, holds settings.
 public class Listener extends ListenerAdapter {
@@ -111,16 +110,21 @@ public class Listener extends ListenerAdapter {
     //TODO: write comment about what exactly is done here
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (event.getAuthor().isBot()) return;
+        User author = event.getAuthor();
+        if (author.isBot()) return;
         String messageContent = event.getMessage().getContentRaw();
         MessageChannel channel = event.getChannel();
+        Member member = event.getMember();
 
         //check if member of server
-        if (event.getMember() == null) {
-            Helper.instance.respond(channel, "I am utterly sorry, but my services are strictly limited to members of our server.");
-            Helper.instance.logInfo("Unknown User " + event.getAuthor().getAsMention() +
-                    " (" + event.getAuthor().getId() + ") tried to contact me using the following message:\n" + messageContent);
-            return;
+        if (member == null) {
+            member = Helper.instance.getMember(author);
+            if (member == null) {
+                Helper.instance.respond(channel, "I am utterly sorry, but my services are strictly limited to members of our server.");
+                Helper.instance.logInfo("Unknown User " + author.getAsMention() +
+                        " (" + author.getId() + ") tried to contact me using the following message:\n" + messageContent);
+                return;
+            }
         }
 
         //decision time
@@ -129,21 +133,23 @@ public class Listener extends ListenerAdapter {
             if (CommandParser.isCommand(messageContent))
                 CommandHandler.instance.process(event);
             else if (channelID == BlackChannel.DROPZONE.ID && !messageContent.matches("[$%].*")) //$ and % are prefixes that should be ignoredcd
-                mentionVoiceChat(event.getMember(), channel);
+                mentionVoiceChat(member, channel);
+
+            if (channelID == BlackChannel.DROPZONE.ID) Helper.instance.deleteMessagesOlderThan(channel, 50, 60);
 
             if (channelID == BlackChannel.NEWS.ID) {
                 List<Attachment> attachments = event.getMessage().getAttachments();
 
-                BlackWebhook.SERVERNEWS.sendMessage(messageContent + "\n\n*Brought to you by:* " + event.getAuthor().getAsMention(), attachments);
+                BlackWebhook.SERVERNEWS.sendMessage(messageContent + "\n\n*Brought to you by:* " + author.getAsMention(), attachments);
                 event.getMessage().delete().queue();
             }
         } catch (ParseException e) {
-            Helper.instance.respond(event.getMember(), channel,
+            Helper.instance.respond(member, channel,
                     "Es tut mir Leid, doch etwas ist beim Verstehen deines Befehls schief gelaufen.\n" + e.getReasonGerman() + "\n" + BlackRole.ADMIN.getAsMention(),
                     "I am utterly sorry, but something went wrong trying to understand your command.\n" + e.getReasonEnglish() + "\n" + BlackRole.ADMIN.getAsMention());
         } catch (Exception e) {
             String informationToAdd = "channel:        " + channel.getName() +
-                    "\nauthor:         " + event.getAuthor().getName() + " <@!" + event.getAuthor().getId() + ">" +
+                    "\nauthor:         " + author.getName() + " <@!" + author.getId() + ">" +
                     "\nmessageContent: " + messageContent + "";
             Helper.instance.respondException(channel, informationToAdd, e);
         }

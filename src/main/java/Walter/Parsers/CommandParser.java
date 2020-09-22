@@ -3,8 +3,6 @@ package Walter.Parsers;
 import Walter.exceptions.ParseException;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -97,6 +95,10 @@ public class CommandParser extends Parser {
             }
         }
         checkRequiredOptionsForValues();
+        if (requiresParameter != null) {
+            throw new ParseException(requiresParameter.getLongName() + " erfordert den Parameter " + requiresParameter.getParameter().getNameGerman() + ".",
+                    requiresParameter.getLongName() + " requires the parameter " + requiresParameter.getParameter().getNameEnglish() + ".");
+        }
     }
 
     private boolean isFlag(String toCheck) {

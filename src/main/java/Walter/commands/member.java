@@ -16,7 +16,7 @@ import java.util.List;
 public class member extends Command {
 
     public member() {
-        keywords = new String[]{"member", "mitglied"};
+        keywords = new String[][]{new String[]{"member", "mitglied"}};
         minimumRequiredRole = BlackRole.MEMBER;
         mainKeywordGerman = 1;
         options = new ArrayList<>();
@@ -26,21 +26,17 @@ public class member extends Command {
     }
 
     @Override
-    public String[] getHelp() {
-        return new String[]{
-                " NAME",
-                "Dieser Command gibt dem User mit dem Namen **NAME** die *Member*-Rolle. Dies nimmt außerdem die " +
+    public String getDescription() {
+        return "Dieser Command gibt dem User mit dem Namen **NAME** die *Member*-Rolle. Dies nimmt außerdem die " +
                         "*Guest*-Rolle falls der Ziel-User diese hat." +
-                        Collection.CAUTION_QUOTES_FOR_WHITESPACE};
+                        Collection.CAUTION_QUOTES_FOR_WHITESPACE;
     }
 
     @Override
-    public String[] getHelpEnglish() {
-        return new String[]{
-                " NAME",
-                "This command assigns the role *member* to the user with the name **NAME**. This also revokes the" +
+    public String getDescriptionEnglish() {
+        return "This command assigns the role *member* to the user with the name **NAME**. This also revokes the" +
                         " *guest*-role if the targeted user has it." +
-                        Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH};
+                        Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH;
     }
 
     @Override

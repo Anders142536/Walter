@@ -124,25 +124,41 @@ public class CommandParserTests {
         List<Option> options = new ArrayList<>();
         List<Flag> flags = new ArrayList<>();
 
-        options.add(getTestOption(OptionType.STRING));
-        flags.add(getTestFlag());
+        StringOption testStringOption = (StringOption)getTestOption(OptionType.STRING);
+        Flag testFlag = getTestFlag();
+
+        options.add(testStringOption);
+        flags.add(testFlag);
         t.setStringToParse("!test");
 
         assertDoesNotThrow(() -> t.parse(null, null));
-        assertFalse(options.get(0).hasValue());
-        assertFalse(flags.get(0).isGiven());
+        assertFalse(testStringOption.hasValue());
+        assertFalse(testFlag.isGiven());
 
         assertDoesNotThrow(() -> t.parse(null, flags));
-        assertFalse(options.get(0).hasValue());
-        assertFalse(flags.get(0).isGiven());
+        assertFalse(testStringOption.hasValue());
+        assertFalse(testFlag.isGiven());
 
         assertThrows(ParseException.class, () -> t.parse(options, null));
-        assertFalse(options.get(0).hasValue());
-        assertFalse(flags.get(0).isGiven());
+        assertFalse(testStringOption.hasValue());
+        assertFalse(testFlag.isGiven());
 
         assertThrows(ParseException.class, () -> t.parse(options, flags));
-        assertFalse(options.get(0).hasValue());
-        assertFalse(flags.get(0).isGiven());
+        assertFalse(testStringOption.hasValue());
+        assertFalse(testFlag.isGiven());
+    }
+
+    @Test
+    public void parseTestNoOptionsNoFlagsEmptyLists() {
+        List<Option> options = new ArrayList<>();
+        List<Flag> flags = new ArrayList<>();
+
+        t.setStringToParse("!test");
+
+        assertDoesNotThrow(() -> t.parse(null, null));
+        assertDoesNotThrow(() -> t.parse(null, flags));
+        assertDoesNotThrow(() -> t.parse(options, null));
+        assertDoesNotThrow(() -> t.parse(options, flags));
     }
 
     @Test
@@ -150,29 +166,30 @@ public class CommandParserTests {
         List<Option> options = new ArrayList<>();
         List<Flag> flags = new ArrayList<>();
 
-        options.add(getTestOption(OptionType.STRING));
-        flags.add(getTestFlag());
+        StringOption testStringOption = (StringOption)getTestOption(OptionType.STRING);
+        Flag testFlag = getTestFlag();
+
+        options.add(testStringOption);
+        flags.add(testFlag);
         t.setStringToParse("!test 02");
 
         assertThrows(ParseException.class, () -> t.parse(null, null));
-        assertFalse(options.get(0).hasValue());
-        assertFalse(flags.get(0).isGiven());
+        assertFalse(testStringOption.hasValue());
+        assertFalse(testFlag.isGiven());
 
         assertThrows(ParseException.class, () -> t.parse(null, flags));
-        assertFalse(options.get(0).hasValue());
-        assertFalse(flags.get(0).isGiven());
+        assertFalse(testStringOption.hasValue());
+        assertFalse(testFlag.isGiven());
 
         assertDoesNotThrow(() -> t.parse(options, null));
-        StringOption third = (StringOption)options.get(0);
-        assertTrue(third.hasValue());
-        assertEquals(third.getValue(), "02");
-        assertFalse(flags.get(0).isGiven());
+        assertTrue(testStringOption.hasValue());
+        assertEquals(testStringOption.getValue(), "02");
+        assertFalse(testFlag.isGiven());
 
         assertDoesNotThrow(() -> t.parse(options, flags));
-        StringOption fourth = (StringOption)options.get(0);
-        assertTrue(fourth.hasValue());
-        assertEquals(fourth.getValue(), "02");
-        assertFalse(flags.get(0).isGiven());
+        assertTrue(testStringOption.hasValue());
+        assertEquals(testStringOption.getValue(), "02");
+        assertFalse(testFlag.isGiven());
     }
 
     @Test
@@ -180,29 +197,30 @@ public class CommandParserTests {
         List<Option> options = new ArrayList<>();
         List<Flag> flags = new ArrayList<>();
 
-        options.add(getTestOption(OptionType.INT));
-        flags.add(getTestFlag());
+        IntegerOption testIntOption = (IntegerOption)getTestOption(OptionType.INT);
+        Flag testFlag = getTestFlag();
+
+        options.add(testIntOption);
+        flags.add(testFlag);
         t.setStringToParse("!test 2");
 
         assertThrows(ParseException.class, () -> t.parse(null, null));
-        assertFalse(options.get(0).hasValue());
-        assertFalse(flags.get(0).isGiven());
+        assertFalse(testIntOption.hasValue());
+        assertFalse(testFlag.isGiven());
 
         assertThrows(ParseException.class, () -> t.parse(null, flags));
-        assertFalse(options.get(0).hasValue());
-        assertFalse(flags.get(0).isGiven());
+        assertFalse(testIntOption.hasValue());
+        assertFalse(testFlag.isGiven());
 
         assertDoesNotThrow(() -> t.parse(options, null));
-        IntegerOption third = (IntegerOption) options.get(0);
-        assertTrue(third.hasValue());
-        assertEquals(third.getValue(), 2);
-        assertFalse(flags.get(0).isGiven());
+        assertTrue(testIntOption.hasValue());
+        assertEquals(testIntOption.getValue(), 2);
+        assertFalse(testFlag.isGiven());
 
         assertDoesNotThrow(() -> t.parse(options, flags));
-        IntegerOption fourth = (IntegerOption) options.get(0);
-        assertTrue(fourth.hasValue());
-        assertEquals(fourth.getValue(), 2);
-        assertFalse(flags.get(0).isGiven());
+        assertTrue(testIntOption.hasValue());
+        assertEquals(testIntOption.getValue(), 2);
+        assertFalse(testFlag.isGiven());
     }
 
     @Test
@@ -210,29 +228,30 @@ public class CommandParserTests {
         List<Option> options = new ArrayList<>();
         List<Flag> flags = new ArrayList<>();
 
-        options.add(getTestOption(OptionType.FLUSH));
-        flags.add(getTestFlag());
+        FlushOption testFlushOption = (FlushOption)getTestOption(OptionType.FLUSH);
+        Flag testFlag = getTestFlag();
+
+        options.add(testFlushOption);
+        flags.add(testFlag);
         t.setStringToParse("!test Lorem Ipsum\nLorem Ipsum\n");
 
         assertThrows(ParseException.class, () -> t.parse(null, null));
-        assertFalse(options.get(0).hasValue());
-        assertFalse(flags.get(0).isGiven());
+        assertFalse(testFlushOption.hasValue());
+        assertFalse(testFlag.isGiven());
 
         assertThrows(ParseException.class, () -> t.parse(null, flags));
-        assertFalse(options.get(0).hasValue());
-        assertFalse(flags.get(0).isGiven());
+        assertFalse(testFlushOption.hasValue());
+        assertFalse(testFlag.isGiven());
 
         assertDoesNotThrow(() -> t.parse(options, null));
-        FlushOption third = (FlushOption) options.get(0);
-        assertTrue(third.hasValue());
-        assertEquals(third.getValue(), "Lorem Ipsum\nLorem Ipsum\n");
-        assertFalse(flags.get(0).isGiven());
+        assertTrue(testFlushOption.hasValue());
+        assertEquals(testFlushOption.getValue(), "Lorem Ipsum\nLorem Ipsum\n");
+        assertFalse(testFlag.isGiven());
 
         assertDoesNotThrow(() -> t.parse(options, flags));
-        FlushOption fourth = (FlushOption) options.get(0);
-        assertTrue(fourth.hasValue());
-        assertEquals(fourth.getValue(), "Lorem Ipsum\nLorem Ipsum\n");
-        assertFalse(flags.get(0).isGiven());
+        assertTrue(testFlushOption.hasValue());
+        assertEquals(testFlushOption.getValue(), "Lorem Ipsum\nLorem Ipsum\n");
+        assertFalse(testFlag.isGiven());
     }
 
     @Test
@@ -240,27 +259,123 @@ public class CommandParserTests {
         List<Option> options = new ArrayList<>();
         List<Flag> flags = new ArrayList<>();
 
-        options.add(getTestOption(OptionType.STRING));
-        flags.add(getTestFlag());
+        StringOption testStringOption = (StringOption)getTestOption(OptionType.STRING);
+        Flag testFlag = getTestFlag();
+
+        options.add(testStringOption);
+        flags.add(testFlag);
 
         t.setStringToParse("!test -t");
         assertThrows(ParseException.class, () -> t.parse(null, null));
-        assertFalse(options.get(0).hasValue());
-        assertFalse(flags.get(0).isGiven());
+        assertFalse(testStringOption.hasValue());
+        assertFalse(testFlag.isGiven());
 
         assertDoesNotThrow(() -> t.parse(null, flags));
-        assertFalse(options.get(0).hasValue());
-        assertTrue(flags.get(0).isGiven());
+        assertFalse(testStringOption.hasValue());
+        assertTrue(testFlag.isGiven());
+
+        testFlag.reset(); //has to be done manually as the flags list is not given and therefore not reset by the parse method
+
+        assertThrows(ParseException.class, () -> t.parse(options, null));
+        assertFalse(testStringOption.hasValue());
+        assertFalse(testFlag.isGiven());
+
+        assertThrows(ParseException.class, () -> t.parse(options, flags));
+        assertFalse(testStringOption.hasValue());
+        assertTrue(testFlag.isGiven());
+    }
+
+    @Test
+    public void parseTestNoOptionsLongFlag() {
+        List<Option> options = new ArrayList<>();
+        List<Flag> flags = new ArrayList<>();
+
+        StringOption testStringOption = (StringOption)getTestOption(OptionType.STRING);
+        Flag testFlag = getTestFlag();
+
+        options.add(testStringOption);
+        flags.add(testFlag);
+
+        t.setStringToParse("!test --test");
+        assertThrows(ParseException.class, () -> t.parse(null, null));
+        assertFalse(testStringOption.hasValue());
+        assertFalse(testFlag.isGiven());
+
+        assertDoesNotThrow(() -> t.parse(null, flags));
+        assertFalse(testStringOption.hasValue());
+        assertTrue(testFlag.isGiven());
+
+        testFlag.reset(); //has to be done manually as the flags list is not given and therefore not reset by the parse method
+
+        assertThrows(ParseException.class, () -> t.parse(options, null));
+        assertFalse(testStringOption.hasValue());
+        assertFalse(testFlag.isGiven());
+
+        assertThrows(ParseException.class, () -> t.parse(options, flags));
+        assertFalse(testStringOption.hasValue());
+        assertTrue(testFlag.isGiven());
+    }
+
+    @Test
+    public void parseTestNoOptionsShortFlagWithOptionGiven() {
+        List<Option> options = new ArrayList<>();
+        List<Flag> flags = new ArrayList<>();
+
+        StringOption testStringOption = (StringOption)getTestOption(OptionType.STRING);
+        Flag testFlag = new Flag('t', "test", "test", "test", testStringOption);
+
+        flags.add(testFlag);
+
+        t.setStringToParse("!test -t testoption");
+        assertThrows(ParseException.class, () -> t.parse(null, null));
+        assertFalse(testStringOption.hasValue());
+        assertFalse(testFlag.isGiven());
+
+        assertDoesNotThrow(() -> t.parse(null, flags));
+        assertTrue(testStringOption.hasValue());
+        assertEquals(testStringOption.getValue(), "testoption");
+        assertTrue(testFlag.isGiven());
 
         flags.get(0).reset(); //has to be done manually as the flags list is not given and therefore not reset by the parse method
 
         assertThrows(ParseException.class, () -> t.parse(options, null));
-        assertFalse(options.get(0).hasValue());
-        assertFalse(flags.get(0).isGiven());
+        assertFalse(testStringOption.hasValue());
+        assertFalse(testFlag.isGiven());
+
+        assertDoesNotThrow(() -> t.parse(options, flags));
+        assertTrue(testStringOption.hasValue());
+        assertEquals(testStringOption.getValue(), "testoption");
+        assertTrue(testFlag.isGiven());
+    }
+
+    @Test
+    public void parseTestNoOptionsShortFlagWithOptionNotGiven() {
+        List<Option> options = new ArrayList<>();
+        List<Flag> flags = new ArrayList<>();
+
+        StringOption testStringOption = (StringOption)getTestOption(OptionType.STRING);
+        Flag testFlag = new Flag('t', "test", "test", "test", testStringOption);
+
+        flags.add(testFlag);
+
+        t.setStringToParse("!test -t");
+        assertThrows(ParseException.class, () -> t.parse(null, null));
+        assertFalse(testStringOption.hasValue());
+        assertFalse(testFlag.isGiven());
+
+        assertThrows(ParseException.class, () -> t.parse(null, flags));
+        assertFalse(testStringOption.hasValue());
+        assertTrue(testFlag.isGiven());
+
+        flags.get(0).reset(); //has to be done manually as the flags list is not given and therefore not reset by the parse method
+
+        assertThrows(ParseException.class, () -> t.parse(options, null));
+        assertFalse(testStringOption.hasValue());
+        assertFalse(testFlag.isGiven());
 
         assertThrows(ParseException.class, () -> t.parse(options, flags));
-        assertFalse(options.get(0).hasValue());
-        assertTrue(flags.get(0).isGiven());
+        assertFalse(testStringOption.hasValue());
+        assertTrue(testFlag.isGiven());
     }
 
     @Test
@@ -268,17 +383,28 @@ public class CommandParserTests {
         List<Option> options = new ArrayList<>();
         List<Flag> flags = new ArrayList<>();
 
-        options.add(getTestOption(OptionType.INT));
-        options.add(getTestOption(OptionType.STRING));
-        flags.add(getTestFlag());
+        IntegerOption testIntOption = (IntegerOption)getTestOption(OptionType.INT);
+        StringOption testStringOption = (StringOption)getTestOption(OptionType.STRING);
+        IntegerOption testOptionalOption = new IntegerOption("test", "test", "test", "test", false);
+        StringOption testFlagParam = (StringOption)getTestOption(OptionType.STRING);
+        Flag testFlag = new Flag('t', "test", "test", "test", testFlagParam);
 
-        t.setStringToParse("!test 4 -t \"test\"");
+        options.add(testIntOption);
+        options.add(testStringOption);
+        options.add(testOptionalOption);
+        flags.add(testFlag);
+
+        t.setStringToParse("!test 4 -t testFlagRequirement \"test\"");
         assertDoesNotThrow(() -> t.parse(options, flags));
-        IntegerOption test = (IntegerOption) options.get(0);
-        StringOption testString = (StringOption) options.get(1);
-        assertEquals(4, test.getValue());
-        assertEquals("test", testString.getValue());
-        assertTrue(flags.get(0).isGiven());
+        assertTrue(testIntOption.hasValue());
+        assertTrue(testStringOption.hasValue());
+        assertFalse(testOptionalOption.hasValue());
+        assertTrue(testFlagParam.hasValue());
+        assertEquals(4, testIntOption.getValue());
+        assertEquals("test", testStringOption.getValue());
+        assertTrue(testFlag.isGiven());
+        assertEquals("testFlagRequirement", ((StringOption)testFlag.getParameter()).getValue());
+
     }
 
 }

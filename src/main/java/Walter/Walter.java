@@ -2,9 +2,7 @@ package Walter;
 
 import Walter.exceptions.PathNotFoundException;
 import Walter.exceptions.TokenNotFoundException;
-import jdk.nashorn.internal.parser.Token;
 import net.dv8tion.jda.api.*;
-import org.slf4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;

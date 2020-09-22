@@ -9,25 +9,21 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class patch extends Command {
 
     public patch() {
-        keywords = new String[]{"patch"};
+        keywords = new String[][]{new String[]{"patch"}};
     }
 
     @Override
-    public String[] getHelp() {
-        return new String[]{
-                " TEXT",
-                "Dieser Command schreibt hardcodierte patch notes in <#" + BlackChannel.NEWS.ID + "> mit Hilfe des Patchnotes-Webhook."};
+    public String getDescription() {
+        return "Dieser Command schreibt hardcodierte patch notes in <#" + BlackChannel.NEWS.ID + "> mit Hilfe des Patchnotes-Webhook.";
     }
 
     @Override
-    public String[] getHelpEnglish() {
-        return new String[]{
-                " TEST",
-                "This command writes hardcoded patch notes into <#" + BlackChannel.NEWS.ID + "> using the Patchnotes webhook."};
+    public String getDescriptionEnglish() {
+        return "This command writes hardcoded patch notes into <#" + BlackChannel.NEWS.ID + "> using the Patchnotes webhook.";
     }
 
     @Override
-    public String[] getKeywords() {
+    public String[][] getKeywords() {
         return keywords;
     }
 

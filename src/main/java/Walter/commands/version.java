@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class version extends Command {
 
     public version () {
-        keywords = new String[]{"version"};
+        keywords = new String[][]{new String[]{"version"}};
         minimumRequiredRole = BlackRole.MEMBER;
     }
 

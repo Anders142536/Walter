@@ -2,8 +2,8 @@ package Walter.exceptions;
 
 
 public class UserException extends Exception {
-    private String reasonGerman;
-    private String reasonEnglish;
+    private final String reasonGerman;
+    private final String reasonEnglish;
 
     public UserException (String reasonGerman, String reasonEnglish) {
         this.reasonGerman = reasonGerman;

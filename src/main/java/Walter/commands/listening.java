@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class listening extends Command {
 
     public listening() {
-        keywords = new String[]{"listening"};
+        keywords = new String[][]{new String[]{"listening"}};
         minimumRequiredRole = BlackRole.GUEST;
         options = new ArrayList<>();
         options.add(new StringOption("soundsource", "tonquelle",
@@ -21,19 +21,15 @@ public class listening extends Command {
     }
 
     @Override
-    public String[] getHelp() {
-        return new String[]{
-                " TEXT",
-                "Dieser Command ändert was Walter gerade hört zu **TEXT**."
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE};
+    public String getDescription() {
+        return "Dieser Command ändert was Walter gerade hört zu **TEXT**."
+                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE;
     }
 
     @Override
-    public String[] getHelpEnglish() {
-        return new String[]{
-                " TEXT",
-                "This command changes what Walter is listening to to **TEXT**."
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH};
+    public String getDescriptionEnglish() {
+        return "This command changes what Walter is listening to to **TEXT**."
+                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH;
     }
 
     @Override

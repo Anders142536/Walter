@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class watching extends Command {
 
     public watching() {
-        keywords = new String[]{"watching"};
+        keywords = new String[][]{new String[]{"watching"}};
         minimumRequiredRole = BlackRole.GUEST;
         options = new ArrayList<>();
         options.add(new StringOption("media source", "medienquelle",
@@ -20,19 +20,15 @@ public class watching extends Command {
     }
 
     @Override
-    public String[] getHelp() {
-        return new String[]{
-                " TEXT",
-                "Dieser Command ändert was Walter gerade schaut zu **TEXT**."
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE};
+    public String getDescription() {
+        return "Dieser Command ändert was Walter gerade schaut zu **TEXT**."
+                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE;
     }
 
     @Override
-    public String[] getHelpEnglish() {
-        return new String[]{
-                " TEXT",
-                "This command changes what Walter is watching to **TEXT**."
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE};
+    public String getDescriptionEnglish() {
+        return "This command changes what Walter is watching to **TEXT**."
+                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE;
     }
 
     @Override

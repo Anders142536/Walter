@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class Helper {
 
     public static Helper instance;
-    private JDA jda;
+    private final JDA jda;
 
     final private static long GUILD_ID = 254263827237961729L;
 

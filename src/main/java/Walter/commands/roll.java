@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class roll extends Command {
 
     public roll() {
-        keywords = new String[]{"roll", "würfel", "wuerfel"};
+        keywords = new String[][]{{"würfel", "wuerfel"}{"roll"}};
         minimumRequiredRole = BlackRole.GUEST;
         options = new ArrayList<>();
         options.add(new IntegerOption("limit", "limit",
@@ -21,23 +21,19 @@ public class roll extends Command {
     }
 
     @Override
-    public String[] getHelp() {
-        return new String[]{
-                " NUMMER",
-                "Ich gebe dir eine Zufallszahl zwischen 1 und **NUMMER**. Wenn keine **NUMMER** angegeben ist, gebe ich" +
-                        "dir eine Zufallszahl zwischen 1 und 6."};
+    public String getDescription() {
+        return "Ich gebe dir eine Zufallszahl zwischen 1 und **NUMMER**. Wenn keine **NUMMER** angegeben ist, gebe ich" +
+                        "dir eine Zufallszahl zwischen 1 und 6.";
     }
 
     @Override
-    public String[] getHelpEnglish() {
-        return new String[]{
-                " NUMBER",
-                "I give you a random number between 1 and **NUMBER**. If no **NUMBER** is given I give you a random " +
-                        "number between 1 and 6."};
+    public String getDescriptionEnglish() {
+        return "I give you a random number between 1 and **NUMBER**. If no **NUMBER** is given I give you a random " +
+                        "number between 1 and 6.";
     }
 
     @Override
-    public String[] getKeywords() {
+    public String[][] getKeywords() {
         return keywords;
     }
 
