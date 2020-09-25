@@ -12,23 +12,20 @@ import java.util.ArrayList;
 public class playing extends Command {
 
     public playing() {
-        keywords = new String[][]{new String[]{"playing"}};
+        super(new String[] {
+                "This command changes the game Walter is playing to **TEXT**."
+                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH,
+                "Dieser Command ändert das Spiel, das Walter gerade spielt, zu **TEXT**."
+                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE
+        });
+        keywords = new String[][]{
+                {"playing"},
+                {"spiele"}
+        };
         minimumRequiredRole = BlackRole.GUEST;
         options = new ArrayList<>();
         options.add(new StringOption("game", "spiel",
                 "Game I should play.", "Spiel, das ich spielen soll."));
-    }
-
-    @Override
-    public String getDescription() {
-        return "Dieser Command ändert das Spiel, das Walter gerade spielt, zu **TEXT**."
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE;
-    }
-
-    @Override
-    public String getDescriptionEnglish() {
-        return "This command changes the game Walter is playing to **TEXT**."
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH;
     }
 
     @Override

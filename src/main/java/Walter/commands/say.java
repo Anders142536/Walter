@@ -3,17 +3,13 @@ package Walter.commands;
 public class say extends Command {
 
     public say() {
-        keywords = new String[][]{new String[]{"say", "echo"}};
-    }
-
-    @Override
-    public String getDescription() {
-        return "Ich poste die Nachricht **TEXT** in den Chat.";
-    }
-
-    @Override
-    public String getDescriptionEnglish() {
-        return "I post the message **TEXT** into the chat.";
+        super(new String[] {
+                "I post the message **TEXT** into the chat.",
+                "Ich poste die Nachricht **TEXT** in den Chat."
+        });
+        keywords = new String[][]{
+                {"say", "echo"}
+        };
     }
 
 //    @Override

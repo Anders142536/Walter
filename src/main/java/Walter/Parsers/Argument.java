@@ -1,18 +1,20 @@
 package Walter.Parsers;
 
+import Walter.Language;
+
 public abstract class Argument {
-    protected final String descriptionEnglish;
-    protected final String descriptionGerman;
+    protected final String[] description;
     protected final int argMaxLength = 15;
 
-    public Argument(String descriptionEnglish, String descriptionGerman) {
-        this.descriptionEnglish = descriptionEnglish;
-        this.descriptionGerman = descriptionGerman;
+    public Argument(String[] description) {
+        this.description = description;
     }
 
-    public abstract String getDescriptionEnglish();
-
-    public abstract String getDescriptionGerman();
+    public String getDescription(Language lang) {
+        if (description == null) return "No description";
+        if (description.length >= lang.index) return description[0];
+        return description[lang.index];
+    }
 
     public abstract void reset();
 

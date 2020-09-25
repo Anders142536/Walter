@@ -11,21 +11,15 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class english extends Command {
 
     public english() {
-        keywords = new String[][]{new String[]{"english", "englisch"}};
+        super(new String[] {
+                "This command gives you the role *English*, switching the Info-channel and the language I speak to you" +
+                        "in to english. This is the opposite of !german.",
+                "Dieser Command gibt dir die Rolle *English*. Dadurch wird der Info-Channel auf Englisch angezeigt" +
+                        " und ich spreche Englisch mit dir. Dies ist das Gegenstück zu !deutsch."});
+        keywords = new String[][]{
+                {"english"},
+                {"englisch"}};
         minimumRequiredRole = BlackRole.GUEST;
-        mainKeywordGerman = 1;
-    }
-
-    @Override
-    public String getDescription() {
-        return "Dieser Command gibt dir die Rolle *English*. Dadurch wird der Info-Channel auf Englisch angezeigt" +
-                        " und ich spreche Englisch mit dir. Dies ist das Gegenstück zu !deutsch.";
-    }
-
-    @Override
-    public String getDescriptionEnglish() {
-        return "This command gives you the role *English*, switching the Info-channel and the language I speak to you" +
-                        "in to english. This is the opposite of !german.";
     }
 
     @Override

@@ -1,6 +1,7 @@
 package Walter.commands;
 
 import Walter.*;
+import Walter.Parsers.Flag;
 import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.entities.Member;
@@ -20,18 +21,14 @@ public class commands extends Command {
     private String adminCommandsEnglish;
 
     public commands() {
-        keywords = new String[][]{new String[]{"commands", "command"}};
+        super(new String[] {
+            "This command lists all the commands available to you.",
+            "Dieser Command listet alle dir zur Verfügung stehenden Commands auf."});
+        keywords = new String[][]{
+                {"commands"},
+                {"befehle"}};
+//        Flag all = new Flag('a', "all", new String[] {"Also show non-available commands", "Zeige auch nicht verfügbare Befehle"});
         minimumRequiredRole = BlackRole.GUEST;
-    }
-
-    @Override
-    public String getDescription() {
-        return "Dieser Command listet alle dir zur Verfügung stehenden Commands auf.";
-    }
-
-    @Override
-    public String getDescriptionEnglish() {
-        return "This command lists all the commands available to you.";
     }
 
     @Override
@@ -71,12 +68,12 @@ public class commands extends Command {
         String footerEnglish = "Please keep in mind that many of the commands listet here have synonyms. For a" +
                 "detailed explanation of a command please call the command with a ? instead of a !.";
 
-        String guestCommandsListString = createStringFromList("__Guest-Commands:__",guestCommandsList);
-        String memberCommandsListString = createStringFromList("__Member-Commands:__", memberCommandsList);
-        String adminCommandListString = createStringFromList("__Admin-Commands:__", adminCommandsList);
-        String guestCommandsListStringEnglish = createStringFromListEnglish("__Guest-Commands:__", guestCommandsList);
-        String memberCommandsListStringEnglish = createStringFromListEnglish("__Member-Commands:__", memberCommandsList);
-        String adminCommandsListStringEnglish = createStringFromListEnglish("__Admin-Commands:__", adminCommandsList);
+        String guestCommandsListString = createStringFromList("__Guest-Commands:__",guestCommandsList, Language.GERMAN);
+        String memberCommandsListString = createStringFromList("__Member-Commands:__", memberCommandsList, Language.GERMAN);
+        String adminCommandListString = createStringFromList("__Admin-Commands:__", adminCommandsList, Language.GERMAN);
+        String guestCommandsListStringEnglish = createStringFromList("__Guest-Commands:__", guestCommandsList, Language.ENGLISH);
+        String memberCommandsListStringEnglish = createStringFromList("__Member-Commands:__", memberCommandsList, Language.ENGLISH);
+        String adminCommandsListStringEnglish = createStringFromList("__Admin-Commands:__", adminCommandsList, Language.ENGLISH);
 
         guestCommands = header + guestCommandsListString + footer;
         memberCommands = header + guestCommandsListString + memberCommandsListString + footer;
@@ -86,7 +83,7 @@ public class commands extends Command {
         adminCommandsEnglish = headerEnglish + guestCommandsListStringEnglish + memberCommandsListStringEnglish + adminCommandsListStringEnglish + footerEnglish;
     }
 
-    private String createStringFromList(String header, List<Command> list) {
+    private String createStringFromList(String header, List<Command> list, Language lang) {
         StringBuilder builder = new StringBuilder();
         builder.append(header);
         builder.append("\n```diff");
@@ -95,25 +92,9 @@ public class commands extends Command {
                 list) {
             if (command.keywords == null) continue;
             builder.append("\n!");
-            builder.append(command.keywords[command.mainKeywordGerman]);
+            builder.append(command.keywords[lang.index][0]);
         }
         builder.append("```\n");
         return builder.toString();
     }
-
-    private String createStringFromListEnglish(String header, List<Command> list) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(header);
-        builder.append("\n```diff");
-
-        for (Command command :
-                list) {
-            if (command.keywords == null) continue;
-            builder.append("\n!");
-            builder.append(command.keywords[command.mainKeywordEnglish]);
-        }
-        builder.append("```\n");
-        return builder.toString();
-    }
-
 }

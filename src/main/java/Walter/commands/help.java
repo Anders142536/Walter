@@ -5,19 +5,14 @@ import Walter.entities.BlackRole;
 public class help extends Command {
 
     public help() {
-        keywords = new String[][]{new String[]{"help", "hilfe"}};
+        super(new String[] {
+                "This command displays the general help page with a short explanation where you can find information.",
+                "Dieser Command zeigt dir die allgemeine Hilfe-Seite an mit einer kurzen Erklärung wo du Informationen findest."
+        });
+        keywords = new String[][]{
+                {"help"},
+                {"hilfe"}};
         minimumRequiredRole = BlackRole.GUEST;
-        mainKeywordGerman = 1;
-    }
-
-    @Override
-    public String getDescription() {
-        return "Dieser Command zeigt dir die allgemeine Hilfe-Seite an mit einer kurzen Erklärung wo du Informationen findest.";
-    }
-
-    @Override
-    public String getDescriptionEnglish() {
-        return "This command displays the general help page with a short explanation where you can find information.";
     }
 
 //    @Override

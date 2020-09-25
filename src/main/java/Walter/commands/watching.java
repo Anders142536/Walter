@@ -12,23 +12,20 @@ import java.util.ArrayList;
 public class watching extends Command {
 
     public watching() {
-        keywords = new String[][]{new String[]{"watching"}};
+        super(new String[] {
+                "This command changes what Walter is watching to **media source**."
+                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE,
+                "Dieser Command ändert was Walter gerade schaut zu **Medienquelle**."
+                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE
+        });
+        keywords = new String[][]{
+                {"watching"},
+                {"schaue"}
+        };
         minimumRequiredRole = BlackRole.GUEST;
         options = new ArrayList<>();
         options.add(new StringOption("media source", "medienquelle",
                 "What I should watch.", "Was ich schauen soll"));
-    }
-
-    @Override
-    public String getDescription() {
-        return "Dieser Command ändert was Walter gerade schaut zu **TEXT**."
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE;
-    }
-
-    @Override
-    public String getDescriptionEnglish() {
-        return "This command changes what Walter is watching to **TEXT**."
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE;
     }
 
     @Override

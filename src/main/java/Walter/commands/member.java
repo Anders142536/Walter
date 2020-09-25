@@ -16,27 +16,23 @@ import java.util.List;
 public class member extends Command {
 
     public member() {
-        keywords = new String[][]{new String[]{"member", "mitglied"}};
+        super(new String[] {
+                "This command assigns the role *member* to the user with the name **NAME**. This also revokes the" +
+                        " *guest*-role if the targeted user has it." +
+                        Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH,
+                "Dieser Command gibt dem User mit dem Namen **NAME** die *Member*-Rolle. Dies nimmt außerdem die " +
+                        "*Guest*-Rolle falls der Ziel-User diese hat." +
+                        Collection.CAUTION_QUOTES_FOR_WHITESPACE
+        });
+        keywords = new String[][]{
+                {"member"},
+                {"mitglied"}
+        };
         minimumRequiredRole = BlackRole.MEMBER;
-        mainKeywordGerman = 1;
         options = new ArrayList<>();
         options.add(new StringOption("nickname", "nickname",
                 "Visible nickname of user that should become member.",
                 "Sichtbarer nickname des Users, der member werden soll."));
-    }
-
-    @Override
-    public String getDescription() {
-        return "Dieser Command gibt dem User mit dem Namen **NAME** die *Member*-Rolle. Dies nimmt außerdem die " +
-                        "*Guest*-Rolle falls der Ziel-User diese hat." +
-                        Collection.CAUTION_QUOTES_FOR_WHITESPACE;
-    }
-
-    @Override
-    public String getDescriptionEnglish() {
-        return "This command assigns the role *member* to the user with the name **NAME**. This also revokes the" +
-                        " *guest*-role if the targeted user has it." +
-                        Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH;
     }
 
     @Override

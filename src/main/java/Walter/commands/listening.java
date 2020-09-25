@@ -12,24 +12,21 @@ import java.util.ArrayList;
 public class listening extends Command {
 
     public listening() {
-        keywords = new String[][]{new String[]{"listening"}};
+        super(new String[] {
+                "This command changes what Walter is listening to to **TEXT**."
+                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH,
+                "Dieser Command ändert was Walter gerade hört zu **TEXT**."
+                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE
+        });
+        keywords = new String[][]{
+                {"listening"},
+                {"höre", "hoere"}
+        };
         minimumRequiredRole = BlackRole.GUEST;
         options = new ArrayList<>();
         options.add(new StringOption("soundsource", "tonquelle",
                 "What I should listen to, given as text.",
                 "Was ich hören soll, gegeben in Text-Form."));
-    }
-
-    @Override
-    public String getDescription() {
-        return "Dieser Command ändert was Walter gerade hört zu **TEXT**."
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE;
-    }
-
-    @Override
-    public String getDescriptionEnglish() {
-        return "This command changes what Walter is listening to to **TEXT**."
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH;
     }
 
     @Override

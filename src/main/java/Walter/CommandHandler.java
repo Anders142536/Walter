@@ -4,6 +4,7 @@ package Walter;
 
 import Walter.Parsers.*;
 import Walter.commands.*;
+import Walter.entities.BlackRole;
 import Walter.exceptions.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
@@ -18,20 +19,24 @@ import java.util.List;
 public class CommandHandler {
 
     public static CommandHandler instance;
-    private final HashMap<String[], Command> commands = new HashMap<String[], Command>();
+    private final HashMap<String, Command> commands = new HashMap<>();
     private List<Command> commandList;
     private final CommandParser parser;
+    private HelpEmbedFactory helpEmbedFactory;
 
     CommandHandler() {
         parser = new CommandParser();
         loadCommandsToHashMap();
+        helpEmbedFactory = new HelpEmbedFactory();
     }
 
     private void loadCommandsToHashMap() {
         //TODO: in the long run, use reflection to find all classes instead of this list here
         for (Command command : createListOfCommands()) {
-            for (String[] keyword : command.getKeywords()) {
-                commands.put(keyword, command);
+            for (String[] keywords : command.getKeywords()) {
+                for (String keyword : keywords) {
+                    commands.put(keyword, command);
+                }
             }
         }
     }
@@ -97,67 +102,8 @@ public class CommandHandler {
                         "Du hast nicht die minimale benötigte Rolle \"" + roleName + "\" für diesen Command.");
             }
         } else if (messageContent.charAt(0) == '?') //help request
-            Helper.instance.respond(author, channel,
-                    getGermanHelpText(commandName, toExecute),
-                    getEnglishHelpText(commandName, toExecute));
+            channel.sendMessage(helpEmbedFactory.create(commandName, toExecute, RoleHandler.instance.getLanguage(author))).queue();
     }
 
-    private MessageEmbed getGermanHelpText(String usedArgument, Command comm) {
-        EmbedBuilder builder = new EmbedBuilder();
 
-        builder.setColor(7854123);
-        builder.setTitle(usedArgument + " Hilfeseite");
-        builder.setDescription(comm.getDescription(Language.GERMAN));
-        builder.addField("Syntax", getSyntaxString(comm, Language.GERMAN), false);
-        String[] keywordsString = getKeywordsString(comm, Language.GERMAN);
-        builder.addField("Options", keywordsString[0], true);
-        builder.addField("Benötigt", keywordsString[1], true);
-        builder.addField("Beschreibung", keywordsString[2], true);
-        builder.addField("Synonyme", "", false);
-        builder.setFooter("Walter " + Walter.VERSION);
-
-//        String helpReturn = toExecute.getDescription();
-//        return "__**Hilfeseite " + usedArgument +  "**__\n\n" +
-//                "**Syntax:**" +
-//                "```diff\n!" +
-//                usedArgument + helpReturn[0] +
-//                "```\n**Synonyme:**```" +
-//                buildKeywordList(toExecute.getKeywords()) +
-//                "```\n**Minimale benötigte Rolle:** " + toExecute.getMinimumRequiredRole().getName() + "\n\n" +
-//                helpReturn[1];
-        return builder.build();
-    }
-
-    private MessageEmbed getEnglishHelpText(String usedArgument, Command toExecute) {
-//        String[] helpReturn = toExecute.getDescriptionEnglish();
-//        return "__**Help page " + usedArgument +  "**__\n\n" +
-//                "**Syntax:**" +
-//                "```diff\n!" +
-//                usedArgument + helpReturn[0] +
-//                "```\n**Synonyms:**```" +
-//                buildKeywordList(toExecute.getKeywords()) +
-//                "```\n**Minimum required Role:** " + toExecute.getMinimumRequiredRole().getName() + "\n\n" +
-//                helpReturn[1];
-        return null;
-    }
-
-    private String getSyntaxString(Command comm, Language lang) {
-        return "";
-    }
-
-    private String[] getKeywordsString(Command comm, Language lang) {
-        return null;
-    }
-
-    private String getSynonymsString(Command comm, Language lang) {
-        return "";
-    }
-
-    private String buildKeywordList(String[] keywords) {
-        StringBuilder keywordList = new StringBuilder();
-        for (String keyword : keywords) {
-            keywordList.append(keyword).append("\n");
-        }
-        return keywordList.toString();
-    }
 }

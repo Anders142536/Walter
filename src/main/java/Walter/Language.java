@@ -1,8 +1,8 @@
 package Walter;
 
 public enum Language {
-    GERMAN (0),
-    ENGLISH(1);
+    ENGLISH(0),
+    GERMAN (1);
 
     public final int index;
 

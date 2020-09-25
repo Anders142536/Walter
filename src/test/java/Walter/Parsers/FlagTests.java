@@ -1,5 +1,6 @@
 package Walter.Parsers;
 
+import Walter.Language;
 import Walter.exceptions.ParseException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +14,7 @@ public class FlagTests {
         resetFlag(null);
     }
     public void resetFlag(Option parameter) {
-        t = new Flag('t', "test", "des e", "des d", parameter);
+        t = new Flag('t', "test", new String[] {"des e", "des d"}, parameter);
     }
 
     @Test
@@ -25,8 +26,8 @@ public class FlagTests {
         assertNull(t.getParameter());
         assertEquals('t', t.getShortName());
         assertEquals("test", t.getLongName());
-        assertEquals("-t, --test     des e", t.getDescriptionEnglish());
-        assertEquals("-t, --test     des d", t.getDescriptionGerman());
+        assertEquals("-t, --test     des e", t.getDescription(Language.ENGLISH));
+        assertEquals("-t, --test     des d", t.getDescription(Language.GERMAN));
     }
 
     @Test

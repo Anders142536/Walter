@@ -116,7 +116,7 @@ public class CommandParserTests {
     }
 
     private Flag getTestFlag(String name) {
-        return new Flag(name.charAt(0), name, name, name);
+        return new Flag(name.charAt(0), name, null);
     }
 
     @Test
@@ -322,7 +322,7 @@ public class CommandParserTests {
         List<Flag> flags = new ArrayList<>();
 
         StringOption testStringOption = (StringOption)getTestOption(OptionType.STRING);
-        Flag testFlag = new Flag('t', "test", "test", "test", testStringOption);
+        Flag testFlag = new Flag('t', "test", null, testStringOption);
 
         flags.add(testFlag);
 
@@ -354,7 +354,7 @@ public class CommandParserTests {
         List<Flag> flags = new ArrayList<>();
 
         StringOption testStringOption = (StringOption)getTestOption(OptionType.STRING);
-        Flag testFlag = new Flag('t', "test", "test", "test", testStringOption);
+        Flag testFlag = new Flag('t', "test", null, testStringOption);
 
         flags.add(testFlag);
 
@@ -387,7 +387,7 @@ public class CommandParserTests {
         StringOption testStringOption = (StringOption)getTestOption(OptionType.STRING);
         IntegerOption testOptionalOption = new IntegerOption("test", "test", "test", "test", false);
         StringOption testFlagParam = (StringOption)getTestOption(OptionType.STRING);
-        Flag testFlag = new Flag('t', "test", "test", "test", testFlagParam);
+        Flag testFlag = new Flag('t', "test", null, testFlagParam);
 
         options.add(testIntOption);
         options.add(testStringOption);
