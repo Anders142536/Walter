@@ -88,8 +88,9 @@ public class CommandHandler {
         parser.setStringToParse(messageContent);
         String commandName = parser.parseCommandName();
         if (!commands.containsKey(commandName))
-            throw new ParseException("There is no command called " + commandName,
-                    "Es gibt keinen Command namens " + commandName);
+            throw new ParseException(new String[] {
+                    "There is no command called " + commandName,
+                    "Es gibt keinen Command namens " + commandName});
 
         Command toExecute = commands.get(commandName);
         if (messageContent.charAt(0) == '!') {      //command
@@ -98,8 +99,9 @@ public class CommandHandler {
                 toExecute.execute(event);
             } else {
                 String roleName = toExecute.getMinimumRequiredRole().getName();
-                throw new CommandExecutionException("You do not have the minimum required role \"" + roleName + "\" for this command.",
-                        "Du hast nicht die minimale benötigte Rolle \"" + roleName + "\" für diesen Command.");
+                throw new CommandExecutionException(new String[] {
+                        "You do not have the minimum required role \"" + roleName + "\" for this command.",
+                        "Du hast nicht die minimale benötigte Rolle \"" + roleName + "\" für diesen Command."});
             }
         } else if (messageContent.charAt(0) == '?') //help request
             channel.sendMessage(helpEmbedFactory.create(commandName, toExecute, RoleHandler.instance.getLanguage(author))).queue();

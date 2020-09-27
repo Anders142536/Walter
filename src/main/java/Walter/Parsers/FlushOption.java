@@ -1,10 +1,12 @@
 package Walter.Parsers;
 
+import javax.annotation.Nonnull;
+
 public class FlushOption extends Option{
     String value = null;
 
-    public FlushOption(String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman) {
-        super(OptionType.FLUSH, nameEnglish, nameGerman, descriptionEnglish, descriptionGerman);
+    public FlushOption(@Nonnull String[] name, String[] description) {
+        super(OptionType.FLUSH, name, description);
     }
 
     @Override

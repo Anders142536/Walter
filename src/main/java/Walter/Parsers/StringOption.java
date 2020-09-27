@@ -1,15 +1,17 @@
 package Walter.Parsers;
 
+import javax.annotation.Nonnull;
+
 public class StringOption extends Option {
 
     String value = null;
 
-    public StringOption(String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman) {
-        super(OptionType.STRING, nameEnglish, nameGerman, descriptionEnglish, descriptionGerman);
+    public StringOption(@Nonnull String[] name, String[] description) {
+        super(OptionType.STRING, name, description);
     }
 
-    public StringOption(String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman, boolean required) {
-        super(OptionType.STRING, nameEnglish, nameGerman, descriptionEnglish, descriptionGerman, required);
+    public StringOption(@Nonnull String[] name, String[] description, boolean required) {
+        super(OptionType.STRING, name, description, required);
     }
 
     @Override

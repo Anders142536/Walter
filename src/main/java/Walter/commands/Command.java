@@ -37,6 +37,11 @@ public abstract class Command {
         return keywords;
     }
 
+    public String[] getKeywords(Language lang) {
+        if (keywords.length <= lang.index) return keywords[0];
+        return keywords[lang.index];
+    }
+
     public BlackRole getMinimumRequiredRole() {
         return minimumRequiredRole;
     }
@@ -55,7 +60,8 @@ public abstract class Command {
 
     //executes the command with the given parameters
     public void execute(MessageReceivedEvent event) throws CommandExecutionException {
-        throw new CommandExecutionException("This command is not yet implemented. Please report to <@!151010441043116032> so he can implement this.",
-                "Es tut mir Leid, doch dies ist noch nicht implementiert. Bitte melde dies <@!151010441043116032> damit er es implementieren kann.");
+        throw new CommandExecutionException(new String[] {
+                "This command is not yet implemented. Please report to <@!151010441043116032> so he can implement this.",
+                "Dieser Befehl ist noch nicht implementiert. Bitte melde dies <@!151010441043116032> damit er es implementieren kann."});
     }
 }

@@ -1,27 +1,36 @@
 package Walter.commands;
 
 import Walter.Helper;
-import Walter.Parsers.CommandParser;
 import Walter.Parsers.Flag;
-import Walter.Parsers.Option;
 import Walter.Parsers.StringOption;
 import Walter.entities.BlackRole;
-import Walter.exceptions.ParseException;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class test extends Command {
+    Flag test;
+    Flag anothertest;
+    StringOption text;
 
-    private MessageChannel channel;
 
     public test () {
         keywords = new String[][]{
                 {"test"}
         };
         minimumRequiredRole = BlackRole.GUEST;
+        test = new Flag('t', "test", new String[] {
+                "testflag for demonstration purposes, with awfully long description",
+                "testschalter aus demo zwecken"
+        });
+        anothertest = new Flag('a', "all", null);
+        text = new StringOption(new String[] {"text", "Text"}, null, false);
+        options = new ArrayList<>();
+        flags = new ArrayList<>();
+
+        options.add(text);
+        flags.add(test);
+        flags.add(anothertest);
     }
 
     @Override

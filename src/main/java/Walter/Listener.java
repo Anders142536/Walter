@@ -145,8 +145,8 @@ public class Listener extends ListenerAdapter {
             }
         } catch (ParseException e) {
             Helper.instance.respond(member, channel,
-                    "Es tut mir Leid, doch etwas ist beim Verstehen deines Befehls schief gelaufen.\n" + e.getReasonGerman() + "\n" + BlackRole.ADMIN.getAsMention(),
-                    "I am utterly sorry, but something went wrong trying to understand your command.\n" + e.getReasonEnglish() + "\n" + BlackRole.ADMIN.getAsMention());
+                    "Es tut mir Leid, doch etwas ist beim Verstehen deines Befehls schief gelaufen.\n" + e.getReason(Language.GERMAN) + "\n" + BlackRole.ADMIN.getAsMention(),
+                    "I am utterly sorry, but something went wrong trying to understand your command.\n" + e.getReason(Language.ENGLISH) + "\n" + BlackRole.ADMIN.getAsMention());
         } catch (Exception e) {
             String informationToAdd = "channel:        " + channel.getName() +
                     "\nauthor:         " + author.getName() + " <@!" + author.getId() + ">" +

@@ -100,13 +100,14 @@ public class CommandParserTests {
     }
 
     private Option getTestOption(OptionType type) {
+        String[] name = new String[]{"test", "test"};
         switch (type) {
             case STRING:
-                return new StringOption("test", "test", "test", "test");
+                return new StringOption(name, null);
             case INT:
-                return new IntegerOption("test", "test", "test", "test");
+                return new IntegerOption(name, null);
             case FLUSH:
-                return new FlushOption("test", "test", "test", "test");
+                return new FlushOption(name, null);
         }
         return null;
     }
@@ -385,7 +386,7 @@ public class CommandParserTests {
 
         IntegerOption testIntOption = (IntegerOption)getTestOption(OptionType.INT);
         StringOption testStringOption = (StringOption)getTestOption(OptionType.STRING);
-        IntegerOption testOptionalOption = new IntegerOption("test", "test", "test", "test", false);
+        IntegerOption testOptionalOption = new IntegerOption(new String[] {"test", "test"}, null, false);
         StringOption testFlagParam = (StringOption)getTestOption(OptionType.STRING);
         Flag testFlag = new Flag('t', "test", null, testFlagParam);
 

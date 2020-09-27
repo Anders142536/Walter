@@ -1,6 +1,10 @@
 package Walter.Parsers;
 
+import Walter.Language;
 import Walter.exceptions.ParseException;
+import org.graalvm.compiler.api.replacements.Snippet;
+
+import javax.annotation.Nonnull;
 
 /** Class representing Options.
  *
@@ -9,26 +13,18 @@ import Walter.exceptions.ParseException;
 public abstract class Option extends Argument {
 
     private final boolean required;
-    private final String nameEnglish;
-    private final String nameGerman;
+    private final String[] name;
     private final OptionType type;
 
-    /** When not giving a boolean wether or not this option is required it defaults to being required
-     *
-     */
-    public Option(OptionType type, String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman) {
-        this(type, nameEnglish, nameGerman, descriptionEnglish, descriptionGerman, true);
+    public Option(@Nonnull OptionType type, @Nonnull String[] name, String[] description) {
+        this(type, name, description, true);
     }
 
-    public Option(OptionType type, String nameEnglish, String nameGerman, String descriptionEnglish, String descriptionGerman, boolean required) {
-        super(descriptionEnglish, descriptionGerman);
-
-        assert nameEnglish.length() <= argMaxLength : "argument name " + nameEnglish + " is longer than the hardcoded limit of " + argMaxLength;
-        assert nameGerman.length() <= argMaxLength : "argument name " + nameGerman + "is longer than the hardcoded limit of " + argMaxLength;
+    public Option(@Nonnull OptionType type, @Nonnull String[] name, String[] description, boolean required) {
+        super(description);
 
         this.type = type;
-        this.nameEnglish = nameEnglish;
-        this.nameGerman = nameGerman;
+        this.name = name;
         this.required = required;
     }
 
@@ -42,23 +38,8 @@ public abstract class Option extends Argument {
 
     public abstract void setValue(String argument) throws ParseException;
 
-    public String getNameGerman() { return nameGerman; }
-
-    public String getNameEnglish() { return nameEnglish; }
-
-    /**
-     * @return Formatted german description of option
-     */
-    public String getDescriptionGerman() {
-        return formatArgumentDescription(nameGerman, descriptionGerman);
-
+    public String getName(Language lang) {
+        if (name.length <= lang.index) return name[0];
+        return name[lang.index];
     }
-
-    /**
-     * @return Formatted english description of option
-     */
-    public String getDescriptionEnglish() {
-        return formatArgumentDescription(nameEnglish, descriptionEnglish);
-    }
-
 }

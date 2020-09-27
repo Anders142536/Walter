@@ -50,7 +50,6 @@ public class BlackWebhook {
     }
 
     private static HashMap<String, String> parseWebhookFile(String path) throws ParseException {
-        //URGENT TODO: make this part of the parser of 2.5!!!!!!!!
         try {
             BufferedReader file = new BufferedReader(new FileReader(Walter.location + path));
 
@@ -62,13 +61,16 @@ public class BlackWebhook {
                 try {
                     result.put(splitLine[0].toLowerCase(), splitLine[1]);
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    throw new ParseException("Zeile \"" + nextLine + "\" konnte nicht geparsed werden.","Couldnt parse line \"" + nextLine + "\"");
+                    throw new ParseException(new String[] {
+                            "Couldnt parse line \"" + nextLine + "\"",
+                            "Zeile \"" + nextLine + "\" konnte nicht geparsed werden."});
                 }
             }
             return result;
         } catch (IOException e) {
-            throw new ParseException("Fehler beim lesen der Webhook-Datei:\n" + e.getMessage(),
-                    "Error whilst reading the webhook file:\n" + e.getMessage());
+            throw new ParseException(new String[] {
+                    "Error whilst reading the webhook file:\n" + e.getMessage(),
+                    "Fehler beim lesen der Webhook-Datei:\n" + e.getMessage()});
         }
     }
 }

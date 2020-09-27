@@ -18,7 +18,13 @@ public class patch extends Command {
 
     @Override
     public void execute(MessageReceivedEvent event) throws CommandExecutionException {
-        String toSend = "__**Walter " + Walter.VERSION + " Parser Update**__\n" +
+        String toSend = getPatchMessage();
+
+        BlackWebhook.PATCHNOTES.sendMessage(toSend);
+    }
+
+    public String getPatchMessage() {
+        return "__**Walter " + Walter.VERSION + " Parser Update**__\n" +
                 "\n**New Features**\n" +
                 // enter new features between here..
                 item("From now on Updates will have titles/themes") +
@@ -32,10 +38,15 @@ public class patch extends Command {
                         "Before Walter identified a command by checking the first sign in a message for being ! or ?." +
                         " The rest of the message was then split at whitespace and arguments bracketed in quotes. " +
                         "This behaviour caused a lot of checks and half of the code of most commands was catching user " +
-                        "mistakes. This is now way more streamlined.\n") +
+                        "mistakes. This is now way more streamlined by heavy use of Regular Expressions\n") +
                 item("Commands are now more standardized to how commands are usually designed and standardized.") +
                 note("The changes mostly affect admin-exclusive commands. The commands that members or guests may use" +
-                        " whose behaviour changed are listed below:") +
+                        " whose behaviour changed are listed below:\n" +
+                        "# listening\n" +
+                        "# playing\n" +
+                        "# watching") +
+                item("Help pages are redesigned and use embeds now.") +
+                note("I'm not happy with them, but they work and are an improvement. yay.") +
                 item("On detected user error admins are now tagged so they can more effectively help you.") +
                 // ..and here
                 "\n**Bug Fixes & Improvements**\n" +
@@ -45,8 +56,6 @@ public class patch extends Command {
                 item("Changed various wordings.") +
                 // ..and here
                 "\nIn case you encounter any issues, have any questions or wish for new features please contact <@!151010441043116032>";
-
-        BlackWebhook.PATCHNOTES.sendMessage(toSend);
     }
 
     private String item(String text) {

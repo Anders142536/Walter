@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FlagTests {
 
     private Flag t;
-    StringOption param = new StringOption("name e", "name d", "des e", "des d");
+    StringOption param = new StringOption(new String[] {"name e", "name d"}, null);
 
     public void resetFlag() {
         resetFlag(null);
@@ -26,8 +26,8 @@ public class FlagTests {
         assertNull(t.getParameter());
         assertEquals('t', t.getShortName());
         assertEquals("test", t.getLongName());
-        assertEquals("-t, --test     des e", t.getDescription(Language.ENGLISH));
-        assertEquals("-t, --test     des d", t.getDescription(Language.GERMAN));
+        assertEquals("des e", t.getDescription(Language.ENGLISH));
+        assertEquals("des d", t.getDescription(Language.GERMAN));
     }
 
     @Test

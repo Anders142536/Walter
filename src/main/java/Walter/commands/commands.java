@@ -20,14 +20,21 @@ public class commands extends Command {
     private String memberCommandsEnglish;
     private String adminCommandsEnglish;
 
+    private Flag all;
+
     public commands() {
         super(new String[] {
-            "This command lists all the commands available to you.",
-            "Dieser Command listet alle dir zur Verfügung stehenden Commands auf."});
+            "This command lists all the commands available to you",
+            "Dieser Command listet alle dir zur Verfügung stehenden Commands auf"});
         keywords = new String[][]{
                 {"commands"},
                 {"befehle"}};
-//        Flag all = new Flag('a', "all", new String[] {"Also show non-available commands", "Zeige auch nicht verfügbare Befehle"});
+        all = new Flag('a', "all", new String[] {
+                "Also show non-available commands",
+                "Zeige auch nicht verfügbare Befehle"
+        });
+        flags = new ArrayList<>();
+        flags.add(all);
         minimumRequiredRole = BlackRole.GUEST;
     }
 
@@ -39,7 +46,7 @@ public class commands extends Command {
         if (adminCommands == null)
             fillCommandStrings();
 
-        if (RoleHandler.instance.hasRole(author, BlackRole.ADMIN))
+        if (all.isGiven() || RoleHandler.instance.hasRole(author, BlackRole.ADMIN))
             Helper.instance.respond(author, channel, adminCommands, adminCommandsEnglish);
         else if (RoleHandler.instance.hasRole(author, BlackRole.MEMBER))
             Helper.instance.respond(author, channel, memberCommands, memberCommandsEnglish);
@@ -88,11 +95,9 @@ public class commands extends Command {
         builder.append(header);
         builder.append("\n```diff");
 
-        for (Command command :
-                list) {
-            if (command.keywords == null) continue;
+        for (Command command : list) {
             builder.append("\n!");
-            builder.append(command.keywords[lang.index][0]);
+            builder.append(command.getKeywords(lang)[0]);
         }
         builder.append("```\n");
         return builder.toString();

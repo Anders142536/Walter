@@ -1,20 +1,23 @@
 package Walter;
 
+import Walter.Parsers.Flag;
+import Walter.Parsers.Option;
 import Walter.commands.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import sun.security.x509.OtherName;
 
 public class HelpEmbedFactory {
     final String[] titles;
-    final String[] syntaxFieldnames;
+    final String[] exampleFieldnames;
     final String[] argumentsFieldNames;
     final String[] flagFieldNames;
     final String[] requiredFieldNames;
+    final String[][] requiredValues;
     final String[] descriptionFieldNames;
     final String[] synonymFieldNames;
     final String[] requiredRoleFieldNames;
 
+    String usedArgument;
     Command comm;
     Language lang;
 
@@ -23,9 +26,9 @@ public class HelpEmbedFactory {
                 " help page",
                 " Hilfeseite"
         };
-        syntaxFieldnames = new String[] {
-                "Syntax",
-                "Syntax"
+        exampleFieldnames = new String[] {
+                "Example",
+                "Beispiel"
         };
         argumentsFieldNames = new String[] {
                 "Arguments",
@@ -38,6 +41,10 @@ public class HelpEmbedFactory {
         requiredFieldNames = new String[] {
                 "Required",
                 "Benötigt"
+        };
+        requiredValues = new String[][]{
+                {"Yes", "No"},
+                {"Ja", "Nein"}
         };
         descriptionFieldNames = new String[] {
                 "Descriptions",
@@ -54,6 +61,7 @@ public class HelpEmbedFactory {
     }
 
     public MessageEmbed create(String usedArgument, Command comm, Language lang) {
+        this.usedArgument = usedArgument;
         this.comm = comm;
         this.lang = lang;
 
@@ -63,7 +71,7 @@ public class HelpEmbedFactory {
         builder.setColor(7854123);
         builder.setTitle(usedArgument + titles[i]);
         builder.setDescription(comm.getDescription(lang));
-        builder.addField(syntaxFieldnames[i], getSyntaxString(), false);
+        builder.addField(exampleFieldnames[i], getExampleString(), false);
 
         if (comm.hasOptions()) {
             String[] optionsStrings = getOptionsStrings();
@@ -79,28 +87,56 @@ public class HelpEmbedFactory {
         }
 
         String synonymString = getSynonymsString();
-        if (synonymString != null) {
+        if (!synonymString.equals("")) {
             builder.addField(synonymFieldNames[i], synonymString, false);
         }
 
         builder.addField(requiredRoleFieldNames[i], comm.getMinimumRequiredRole().getName(), false);
-        builder.setFooter("Walter " + Walter.VERSION);
+        builder.setFooter("Walter v" + Walter.VERSION);
         return builder.build();
     }
 
-    private String getSyntaxString() {
-        return "";
+    private String getExampleString() {
+        StringBuilder example = new StringBuilder("```yaml\n!" + usedArgument);
+
+        for (Option option: comm.getOptions()) {
+            example.append(" " + option.getName(lang));
+        }
+
+        for (Flag flag: comm.getFlags()) {
+            example.append(" --" + flag.getLongName());
+        }
+        return example.append("```").toString();
     }
 
     private String[] getOptionsStrings() {
-        return null;
+        String[] options = new String[3];
+
+        for (Option option: comm.getOptions()) {
+            options[0] += option.getName(lang) + "\n";
+            options[1] += (option.isRequired() ? requiredValues[lang.index][0] : requiredValues[lang.index][1]) + "\n";
+            options[2] += option.getDescription(lang) + "\n";
+        }
+        return options;
     }
 
     private String[] getFlagStrings() {
-        return null;
+        String[] flags = new String[2];
+
+        for (Flag flag: comm.getFlags()) {
+            flags[0] += "-" + flag.getShortName() + ", --" + flag.getLongName() + "\n";
+            flags[1] += flag.getDescription(lang) + "\n";
+        }
+        return flags;
     }
 
     private String getSynonymsString() {
-        return "";
+        StringBuilder synonyms = new StringBuilder();
+        for (String[] keywords: comm.getKeywords()) {
+            for (String keyword: keywords) {
+                if (!usedArgument.equals(keyword)) synonyms.append("!" + keyword + " ");
+            }
+        }
+        return synonyms.toString();
     }
 }

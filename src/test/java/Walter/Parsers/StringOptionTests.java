@@ -9,7 +9,7 @@ public class StringOptionTests {
 
     @BeforeEach
     public void resetTests() {
-        t = new StringOption("name e", "name d", "des e", "des d");
+        t = new StringOption(new String[] {"name e", "name d"}, null);
     }
 
     @Test

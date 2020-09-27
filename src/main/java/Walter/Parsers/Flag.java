@@ -15,16 +15,15 @@ public class Flag extends Argument {
     public Flag (char shortName, String longName, String[] description, Option parameter) {
         super(description);
 
-        assert longName.length() <= argMaxLength - 6 : "flag long name " + longName + " is longer than the hardcoded limit of " + (argMaxLength - 6);
-
         this.shortName = shortName;
         this.longName = longName;
         this.parameter = parameter;
     }
 
     public void given() throws ParseException {
-        if (isGiven) throw new ParseException("Flag " + longName + " kann nicht mehrmals gesetzt werden.",
-                "Flag " + longName + " may not be set several times.");
+        if (isGiven) throw new ParseException(new String[] {
+                "Flag " + longName + " may not be set several times.",
+                "Flag " + longName + " kann nicht mehrmals gesetzt werden."});
         isGiven = true;
     }
 

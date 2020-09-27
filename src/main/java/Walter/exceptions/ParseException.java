@@ -1,8 +1,8 @@
 package Walter.exceptions;
 
-public class ParseException extends UserException {
+public class ParseException extends ReasonedException {
 
-    public ParseException(String reasonGerman, String reasonEnglish) {
-        super(reasonGerman, reasonEnglish);
+    public ParseException(String[] reason) {
+        super(reason);
     }
 }

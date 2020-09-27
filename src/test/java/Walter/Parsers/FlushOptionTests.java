@@ -9,7 +9,8 @@ public class FlushOptionTests {
 
     @BeforeEach
     public void resetTests() {
-        t = new FlushOption("name e", "name d", "des e", "des d");
+        t = new FlushOption(new String[] {"name e", "name d"},
+                new String[] {"des e", "des d"});
     }
 
     @Test

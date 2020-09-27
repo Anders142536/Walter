@@ -1,6 +1,7 @@
 package Walter.commands;
 
 import Walter.Collection;
+import Walter.Parsers.Flag;
 import Walter.Parsers.StringOption;
 import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
@@ -10,12 +11,14 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import java.util.ArrayList;
 
 public class watching extends Command {
+    Flag clear;
+    StringOption source;
 
     public watching() {
         super(new String[] {
-                "This command changes what Walter is watching to **media source**."
+                "This command changes what Walter is watching to **media source**"
                         + Collection.CAUTION_QUOTES_FOR_WHITESPACE,
-                "Dieser Command ändert was Walter gerade schaut zu **Medienquelle**."
+                "Dieser Command ändert was Walter gerade schaut zu **Medienquelle**"
                         + Collection.CAUTION_QUOTES_FOR_WHITESPACE
         });
         keywords = new String[][]{
@@ -23,14 +26,29 @@ public class watching extends Command {
                 {"schaue"}
         };
         minimumRequiredRole = BlackRole.GUEST;
+        clear = new Flag('c', "clear", new String[] {
+                "Clears the current activity",
+                "Löscht die aktuelle Aktivität"
+        });
+        source = new StringOption(new String[] {"media source", "Medienquelle"},
+                new String[] {"What I should watch, given as text", "Was ich schauen soll, gegeben als Text"}, false
+        );
         options = new ArrayList<>();
-        options.add(new StringOption("media source", "medienquelle",
-                "What I should watch.", "Was ich schauen soll"));
+        options.add(source);
     }
 
     @Override
     public void execute(MessageReceivedEvent event) throws CommandExecutionException {
-        StringOption media = (StringOption)options.get(0);
-        event.getJDA().getPresence().setActivity(Activity.watching(media.getValue()));
+        if (clear.isGiven()) {
+            event.getJDA().getPresence().setActivity(null);
+        } else {
+            if (!source.hasValue() || source.getValue().trim().equals(""))
+                throw new CommandExecutionException(new String[] {
+                        "If you don't want to clear my activity a source is required",
+                        "Wenn du meine Aktivität nicht löschen willst ist eine Quelle erforderlich"
+                });
+            event.getJDA().getPresence().setActivity(Activity.watching(source.getValue()));
+
+        }
     }
 }

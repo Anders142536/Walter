@@ -10,7 +10,7 @@ public class IntegerOptionTest {
 
     @BeforeEach
     public void resetTests() {
-        t = new IntegerOption("name e", "name d", "des e", "des d");
+        t = new IntegerOption(new String[] {"name e", "name d"}, null);
     }
 
     @Test
