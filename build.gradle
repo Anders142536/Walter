@@ -28,6 +28,8 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.12.1'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'
     compile 'org.reflections:reflections:0.9.11'
+    compile group: 'org.ini4j', name: 'ini4j', version: '0.5.4'
+
 }
 
 test {

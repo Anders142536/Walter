@@ -6,6 +6,10 @@ import Walter.Language;
 public class ReasonedException extends Exception {
     private final String[] reason;
 
+    public ReasonedException() {
+        this(null);
+    }
+
     public ReasonedException(String[] reason) {
         if (reason == null) reason = new String[] {
                 "No reason given",

@@ -29,7 +29,7 @@ public abstract class Command {
 
     //returns the help string
     public String getDescription(Language lang) {
-        if (description.length >= lang.index) return description[0];
+        if (description.length <= lang.index) return description[0];
         return description[lang.index];
     }
 

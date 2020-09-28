@@ -34,7 +34,10 @@ public class watching extends Command {
                 new String[] {"What I should watch, given as text", "Was ich schauen soll, gegeben als Text"}, false
         );
         options = new ArrayList<>();
+        flags = new ArrayList<>();
+
         options.add(source);
+        flags.add(clear);
     }
 
     @Override

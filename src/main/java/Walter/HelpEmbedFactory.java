@@ -99,18 +99,25 @@ public class HelpEmbedFactory {
     private String getExampleString() {
         StringBuilder example = new StringBuilder("```yaml\n!" + usedArgument);
 
-        for (Option option: comm.getOptions()) {
-            example.append(" " + option.getName(lang));
+        if (comm.hasOptions()) {
+            for (Option option : comm.getOptions()) {
+                example.append(" " + option.getName(lang));
+            }
         }
 
-        for (Flag flag: comm.getFlags()) {
-            example.append(" --" + flag.getLongName());
+        if (comm.hasFlags()) {
+            for (Flag flag : comm.getFlags()) {
+                example.append(" --" + flag.getLongName());
+                if (flag.hasParameter()) {
+                    example.append(" " + flag.getParameter().getName(lang));
+                }
+            }
         }
         return example.append("```").toString();
     }
 
     private String[] getOptionsStrings() {
-        String[] options = new String[3];
+        String[] options = new String[] {"", "", ""};
 
         for (Option option: comm.getOptions()) {
             options[0] += option.getName(lang) + "\n";
@@ -121,7 +128,7 @@ public class HelpEmbedFactory {
     }
 
     private String[] getFlagStrings() {
-        String[] flags = new String[2];
+        String[] flags = new String[] {"", ""};
 
         for (Flag flag: comm.getFlags()) {
             flags[0] += "-" + flag.getShortName() + ", --" + flag.getLongName() + "\n";

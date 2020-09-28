@@ -42,6 +42,7 @@ public class patch extends Command {
                 item("Commands are now more standardized to how commands are usually designed and standardized.") +
                 note("The changes mostly affect admin-exclusive commands. The commands that members or guests may use" +
                         " whose behaviour changed are listed below:\n" +
+                        "# commands\n" +
                         "# listening\n" +
                         "# playing\n" +
                         "# watching") +

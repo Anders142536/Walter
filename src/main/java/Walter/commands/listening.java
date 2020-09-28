@@ -35,7 +35,10 @@ public class listening extends Command {
                 new String[] {"What I should listen to, given as text", "Was ich hören soll, gegeben als Text"}, false
         );
         options = new ArrayList<>();
+        flags = new ArrayList<>();
+
         options.add(source);
+        flags.add(clear);
     }
 
     @Override

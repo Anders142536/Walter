@@ -10,7 +10,7 @@ import java.io.FileReader;
 
 public class Walter {
 
-    final public static String VERSION = "2.4.3";   //REWRITES . NEW FEATURES . PURE BUGFIX
+    final public static String VERSION = "2.5.0";   //REWRITES . NEW FEATURES . PURE BUGFIX
     public static String location;
 
     public static void main(String[] args) {

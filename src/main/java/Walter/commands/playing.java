@@ -8,6 +8,7 @@ import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 public class playing extends Command {
@@ -34,7 +35,10 @@ public class playing extends Command {
                 new String[] {"What I should listen to, given as text", "Was ich hören soll, gegeben als Text"}, false
         );
         options = new ArrayList<>();
+        flags = new ArrayList<>();
+
         options.add(game);
+        flags.add(clear);
     }
 
     @Override

@@ -5,6 +5,7 @@ import Walter.entities.BlackChannel;
 import Walter.entities.BlackRole;
 import Walter.entities.BlackWebhook;
 import Walter.exceptions.ParseException;
+import Walter.exceptions.ReasonedException;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.Message.Attachment;
@@ -23,13 +24,6 @@ public class Listener extends ListenerAdapter {
 
     //required objects
     private JDA jda;
-
-    //settings
-    private int dropzoneLimit;
-
-    /* ******** *
-     *  EVENTS  *
-     * ******** */
 
     //new members are announced in the general channel, tagging the admins
     @Override
@@ -179,39 +173,22 @@ public class Listener extends ListenerAdapter {
         RoleHandler.instance = new RoleHandler();
 
         try {
-            BlackWebhook.loadWebhooks();
-        } catch (ParseException e) {
+            Config.startUp();
+            System.out.println("Walter launched successfully");
+        } catch (ReasonedException e) {
+            jda.shutdown();
+        } catch (Exception e) {
             System.out.println("> ERROR An exception was thrown!" +
                     "\n" + e.toString() + "\n");
             e.printStackTrace();
             jda.shutdown();
         }
-        System.out.println("onReady finished, Walter launched successfully");
     }
 
     //prints the shudown code in the logger
     @Override
     public void onShutdown(ShutdownEvent event) {
         //TODO: make the logger print event.getCloseCode().getMeaning() once its implemented
-    }
-
-
-
-
-    /* ********* *
-     *  METHODS  *
-     * ********* */
-
-    void test() {
-
-    }
-
-    void load() {
-
-    }
-
-    void save() {
-
     }
 
 }

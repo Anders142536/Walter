@@ -72,7 +72,7 @@ public class commands extends Command {
         String headerEnglish = "These are the commands at your disposal:\n\n";
         String footer = "Bitte bedenke, dass viele der hier gelisteten Commands Synonyme haben. Für eine " +
                 "genaue Erklärung eines Commands rufe ihn bitte mit einem ? anstelle eines ! auf.";
-        String footerEnglish = "Please keep in mind that many of the commands listet here have synonyms. For a" +
+        String footerEnglish = "Please keep in mind that many of the commands listed here have synonyms. For a " +
                 "detailed explanation of a command please call the command with a ? instead of a !.";
 
         String guestCommandsListString = createStringFromList("__Guest-Commands:__",guestCommandsList, Language.GERMAN);
