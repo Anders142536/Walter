@@ -58,6 +58,7 @@ public class Config {
         for (Map.Entry<String, String> entry: config.get("General").entrySet()) {
             toWrite.append(String.format("%-20s = %s\n", entry.getKey(), entry.getValue()));
         }
+        toWrite.append("```");
         TextChannel configChannel = Helper.instance.getTextChannel(BlackChannel.CONFIG);
         Message configMessage = configChannel.retrieveMessageById(configMessageID).complete();
         if (configMessage != null) configMessage.editMessage(toWrite.toString()).queue();

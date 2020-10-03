@@ -27,34 +27,14 @@ public class patch extends Command {
         return "__**Walter " + Walter.VERSION + " Parser Update**__\n" +
                 "\n**New Features**\n" +
                 // enter new features between here..
-                item("From now on Updates will have titles/themes") +
-                note("Until now a version increment (2.4.* -> 2.5.0) was done whenever a somewhat" +
-                        " big-ish feature was added. Now every update will have a theme or concept that it will" +
-                        " focus on. This helps me writing this shit and hopefully you understanding this shit.") +
-                item("Complete rewrite of how Walter understands commands") +
-                note("Until now walters approach to parsing commands was... primitive, to say the least. The" +
-                        " new approach now orients itself way closer to a few professional command line parsers that are " +
-                        "open source, mainly **Apache CLI**.\n" +
-                        "Before Walter identified a command by checking the first sign in a message for being ! or ?." +
-                        " The rest of the message was then split at whitespace and arguments bracketed in quotes. " +
-                        "This behaviour caused a lot of checks and half of the code of most commands was catching user " +
-                        "mistakes. This is now way more streamlined by heavy use of Regular Expressions\n") +
-                item("Commands are now more standardized to how commands are usually designed and standardized.") +
-                note("The changes mostly affect admin-exclusive commands. The commands that members or guests may use" +
-                        " whose behaviour changed are listed below:\n" +
-                        "# commands\n" +
-                        "# listening\n" +
-                        "# playing\n" +
-                        "# watching") +
-                item("Help pages are redesigned and use embeds now.") +
-                note("I'm not happy with them, but they work and are an improvement. yay.") +
-                item("On detected user error admins are now tagged so they can more effectively help you.") +
                 // ..and here
                 "\n**Bug Fixes & Improvements**\n" +
                 // enter bugfixes between here..
-                item("User errors are now caught differently") +
-                note("Mostly done to avoid having \"I am utterly sorry, but...\" written in the code **EVERYWHERE**") +
-                item("Changed various wordings.") +
+                item("Fixed issue with walter throwing an error on sending a message to the dropzone") +
+                note("As a bot it is only possible to fetch a maximum of 100 messages at a time from a channel. The amount fetched is " +
+                        "defined in a setting on walter, and this was more than 100. Now the amount caps at 100.") +
+                item("All commands can now again be used in direct messages with Walter, instead of just the server channels.") +
+                item("The config message visible only to admins is now displayed correctly.") +
                 // ..and here
                 "\nIn case you encounter any issues, have any questions or wish for new features please contact <@!151010441043116032>";
     }

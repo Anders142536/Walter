@@ -47,7 +47,7 @@ public class Helper {
     VoiceChannel getVoiceChannel(long channelID) { return getGuild().getVoiceChannelById(channelID); }
 
     public Member getMember(User user) {
-        return getGuild().getMember(user);
+        return getGuild().retrieveMember(user).complete();
     }
 
     public List<Member> getMembersByName(String name) {
@@ -109,7 +109,7 @@ public class Helper {
         //unfortunately retrievePast() does not terminate .complete() if more messages are asked for than there are,
         //therefore the forced return after 1 seconds.
         List<Message> pinned = channel.retrievePinnedMessages().completeAfter(1, TimeUnit.SECONDS);  //TODO see if the wait on time basis can be avoided
-        List<Message> history = channel.getHistory().retrievePast(limit + pinned.size() + catchAmount).completeAfter(1, TimeUnit.SECONDS);
+        List<Message> history = channel.getHistory().retrievePast(Math.min(limit + pinned.size() + catchAmount, 100)).completeAfter(1, TimeUnit.SECONDS);
 
 
         //if the number of messages in a channel has surpassed the allowed limit

@@ -129,7 +129,7 @@ public class Listener extends ListenerAdapter {
             else if (channelID == BlackChannel.DROPZONE.ID && !messageContent.matches("[$%].*")) //$ and % are prefixes that should be ignoredcd
                 mentionVoiceChat(member, channel);
 
-            if (channelID == BlackChannel.DROPZONE.ID) Helper.instance.deleteMessagesOlderThan(channel, 50, 60);
+            if (channelID == BlackChannel.DROPZONE.ID) Helper.instance.deleteMessagesOlderThan(channel, 50, 10);
 
             if (channelID == BlackChannel.NEWS.ID) {
                 List<Attachment> attachments = event.getMessage().getAttachments();
