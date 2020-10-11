@@ -12,6 +12,8 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class patch extends Command {
 
@@ -43,34 +45,24 @@ public class patch extends Command {
 
     @Override
     public void execute(MessageReceivedEvent event) throws CommandExecutionException {
-        String[] messages = getPatchMessage(version.hasValue() ? version.getValue() : Walter.VERSION);
+        ArrayList<String> messages = getPatchMessage(version.hasValue() ? version.getValue() : Walter.VERSION);
 
         if (here.isGiven()) {
-            for (String msg: messages) {
+            for (String msg: messages)
                 Helper.instance.respond(event.getChannel(), msg);
-            }
         } else {
-            for (String msg: messages) {
+            for (String msg: messages)
                 BlackWebhook.PATCHNOTES.sendMessage(msg);
-            }
         }
     }
 
-    public String[] getPatchMessage(String version) throws CommandExecutionException {
-        loadPatchFileToYaml(version);
-
-        return null;
-//        return "__**Walter " + Walter.VERSION + " Commands Update**__\n" +
-//                "\n**New Features**\n" +
-//                // enter new features between here..
-//                // ..and here
-//                "\n**Bug Fixes & Improvements**\n" +
-//                // enter bugfixes between here..
-//                // ..and here
-//                "\nIn case you encounter any issues, have any questions or wish for new features please contact <@!151010441043116032>";
+    public ArrayList<String> getPatchMessage(String version) throws CommandExecutionException {
+        Map<String, Object> list = loadPatchFileToYaml(version);
+        String msg = convertYamlToFormattedMessage(list);
+        return splitMessageOnLinebreak(msg, 1900);
     }
 
-    private void loadPatchFileToYaml(String version) throws CommandExecutionException {
+    private Map<String, Object> loadPatchFileToYaml(String version) throws CommandExecutionException {
         String filename = Walter.location + "/patchnotes/"+ version + ".patch";
         try {
             File file = new File(filename);
@@ -79,7 +71,7 @@ public class patch extends Command {
             reader.read(filedata);
             reader.close();
 
-            notes.load(new String(filedata, "UTF-8"));
+            return notes.load(new String(filedata, "UTF-8"));
         } catch (FileNotFoundException e) {
             throw new CommandExecutionException(new String[] {
                     "The file " + filename + " was not found",
@@ -93,11 +85,42 @@ public class patch extends Command {
         }
     }
 
-    private String item(String text) {
-        return ":small_orange_diamond: " + text + "\n";
+    private String convertYamlToFormattedMessage(Map<String, Object> list) throws CommandExecutionException {
+        if (!list.containsKey("name")) throw new CommandExecutionException(new String[] {"Failed to find patch notes name"});
+
+        StringBuilder patchmsg = new StringBuilder("__**" + list.get("name") + "**__\n");
+        for (Map.Entry<String, Object> entry: list.entrySet()) {
+            if (entry.getKey().equals("name")) continue;
+
+            patchmsg.append("\n**").append(entry.getKey()).append("**\n");
+            for (LinkedHashMap<String, String> item : (ArrayList<LinkedHashMap>) entry.getValue()) {
+                if (!item.containsKey("title")) throw new CommandExecutionException(new String[] {
+                        "No title found for " + entry.getKey() + " entry"});
+                patchmsg.append(":small_orange_diamond: ").append(item.get("title")).append("\n");
+                if (item.containsKey("description"))
+                    patchmsg.append("    *").append(item.get("description")).append("*\n");
+            }
+        }
+        return patchmsg.toString();
     }
 
-    private String note(String text) {
-        return "    *" + text + "*\n";
+    private ArrayList<String> splitMessageOnLinebreak(String msg, int limit) {
+        ArrayList<String> submsgs = new ArrayList<>();
+
+        if (msg.length() < limit) submsgs.add(msg);
+        else {
+            StringBuilder submsg = new StringBuilder();
+            for(String line: msg.split(System.lineSeparator())) {
+                if (line.length() + submsg.length() > limit) {
+                    submsgs.add(submsg.toString());
+                    submsg.setLength(0); //clearing the builder
+                }
+                submsg.append(line).append("\n");
+            }
+            submsgs.add(submsg.toString());
+        }
+
+
+        return submsgs;
     }
 }

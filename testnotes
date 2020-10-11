@@ -3,9 +3,9 @@ New Features:
   - title: Testfeature that adds a lot of functionality
     description: Testdescriptions just to see if it works
   - title: Another testfeature
+    asdf: test
     description: Another testdescription
 Bugfixes:
-  - title: Testbugfix that fixed a lot of shit
+  - title:
     description: Testdescription that explains what the issue was
   - title: Another nasty bug being squashed
-    description: Well, the reason is im stupid

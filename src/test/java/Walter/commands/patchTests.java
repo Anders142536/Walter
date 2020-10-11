@@ -15,14 +15,26 @@ public class patchTests {
     @Test
     public void yamltests() {
         Yaml notes = new Yaml();
+//        Map<String, Object> list = notes.load(getNotesExample());
         Map<String, Object> list = notes.load(getNotesExample());
 
-        String name = list.get("name").toString();
+        if (!list.containsKey("name")) return; //throw exception
 
-        for (LinkedHashMap<String, String> entry: (ArrayList<LinkedHashMap>)list.get("New Features")) {
-            System.out.println("entry found");
+        StringBuilder patchmsg = new StringBuilder("__**" + list.get("name") + "**__\n");
+        for (Map.Entry<String, Object> entry: list.entrySet()) {
+            if (entry.getKey().equals("name")) continue;
+
+            patchmsg.append("\n**").append(entry.getKey()).append("**\n");
+            for (LinkedHashMap<String, String> item : (ArrayList<LinkedHashMap>) entry.getValue()) {
+                if (!item.containsKey("title")) return; //throw exception
+                patchmsg.append(":small_orange_diamond: ").append(item.get("title")).append("\n");
+                if (item.containsKey("description"))
+                    patchmsg.append("    *").append(item.get("description")).append("*\n");
+            }
         }
 
+
+        String result = patchmsg.toString();
         System.out.println("just for debugger stopping");
 
     }
