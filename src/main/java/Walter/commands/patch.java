@@ -44,7 +44,7 @@ public class patch extends Command {
     }
 
     @Override
-    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
+    public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
         ArrayList<String> messages = getPatchMessage(version.hasValue() ? version.getValue() : Walter.VERSION);
 
         if (here.isGiven()) {

@@ -8,7 +8,6 @@ import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 public class playing extends Command {
@@ -42,7 +41,7 @@ public class playing extends Command {
     }
 
     @Override
-    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
+    public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
         if (clear.isGiven()) {
             event.getJDA().getPresence().setActivity(null);
         } else {

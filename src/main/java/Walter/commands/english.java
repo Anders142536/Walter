@@ -23,7 +23,7 @@ public class english extends Command {
     }
 
     @Override
-    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
+    public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
         Member author = event.getMember();
         MessageChannel channel = event.getChannel();
 

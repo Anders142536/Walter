@@ -59,7 +59,7 @@ public abstract class Command {
     public List<Flag> getFlags() { return flags; }
 
     //executes the command with the given parameters
-    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
+    public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
         throw new CommandExecutionException(new String[] {
                 "This command is not yet implemented. Please report to <@!151010441043116032> so he can implement this.",
                 "Dieser Befehl ist noch nicht implementiert. Bitte melde dies <@!151010441043116032> damit er es implementieren kann."});

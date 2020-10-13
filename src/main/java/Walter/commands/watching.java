@@ -41,7 +41,7 @@ public class watching extends Command {
     }
 
     @Override
-    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
+    public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
         if (clear.isGiven()) {
             event.getJDA().getPresence().setActivity(null);
         } else {

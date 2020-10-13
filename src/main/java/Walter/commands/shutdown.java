@@ -1,5 +1,10 @@
 package Walter.commands;
 
+
+import Walter.Helper;
+import Walter.exceptions.CommandExecutionException;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
 public class shutdown extends Command {
 
     public shutdown() {
@@ -12,8 +17,15 @@ public class shutdown extends Command {
         };
     }
 
-//    @Override
-//    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
-    //TODO: add in CommandHandler.createListOfCommands()
-//    }
+    @Override
+    public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
+        //TODO: add in CommandHandler.createListOfCommands()
+        if (event.getAuthor().getIdLong() == 151010441043116032L) { // if Anders
+            event.getJDA().shutdown();
+        } else {
+            Helper.instance.respond(event.getMember(), event.getChannel(),
+                    "Es tut mir Leid, doch dieser Command steht nur Anders zu Verfügung",
+                    "I am utterly sorry, but this command is only meant for Anders");
+        }
+    }
 }

@@ -21,7 +21,7 @@ public class version extends Command {
     }
 
     @Override
-    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
+    public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
         MessageChannel channel = event.getChannel();
         Helper.instance.respond(channel, Walter.VERSION);
     }

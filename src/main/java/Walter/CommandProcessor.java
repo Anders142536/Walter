@@ -4,9 +4,7 @@ package Walter;
 
 import Walter.Parsers.*;
 import Walter.commands.*;
-import Walter.entities.BlackRole;
 import Walter.exceptions.*;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.*;
 
@@ -16,15 +14,15 @@ import java.util.List;
 
 
 //this class handles the recognition of commands and their execution, as well as their loading
-public class CommandHandler {
+public class CommandProcessor {
 
-    public static CommandHandler instance;
+    public static CommandProcessor instance;
     private final HashMap<String, Command> commands = new HashMap<>();
     private List<Command> commandList;
     private final CommandParser parser;
     private HelpEmbedFactory helpEmbedFactory;
 
-    CommandHandler() {
+    CommandProcessor() {
         parser = new CommandParser();
         loadCommandsToHashMap();
         helpEmbedFactory = new HelpEmbedFactory();
@@ -54,7 +52,7 @@ public class CommandHandler {
         commandList.add(new german());
 //        commandList.add(new getmsg());
 //        commandList.add(new guest());
-//        commandList.add(new hello());
+        commandList.add(new hello());
 //        commandList.add(new help());
         commandList.add(new listening());
         commandList.add(new member());
@@ -62,8 +60,8 @@ public class CommandHandler {
         commandList.add(new playing());
 //        commandList.add(new reprint());
         commandList.add(new roll());
-//        commandList.add(new say());
-//        commandList.add(new shutdown());
+        commandList.add(new say());
+        commandList.add(new shutdown());
         commandList.add(new test());
         commandList.add(new version());
         commandList.add(new watching());
@@ -96,7 +94,7 @@ public class CommandHandler {
         if (messageContent.charAt(0) == '!') {      //command
             if (RoleHandler.instance.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
                 parser.parse(toExecute.getOptions(), toExecute.getFlags());
-                toExecute.execute(event);
+                toExecute.execute(commandName, event);
             } else {
                 String roleName = toExecute.getMinimumRequiredRole().getName();
                 throw new CommandExecutionException(new String[] {

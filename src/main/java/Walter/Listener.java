@@ -125,7 +125,7 @@ public class Listener extends ListenerAdapter {
         long channelID = channel.getIdLong();
         try {
             if (CommandParser.isCommand(messageContent))
-                CommandHandler.instance.process(event);
+                CommandProcessor.instance.process(event);
             else if (channelID == BlackChannel.DROPZONE.ID && !messageContent.matches("[$%].*")) //$ and % are prefixes that should be ignoredcd
                 mentionVoiceChat(member, channel);
 
@@ -169,7 +169,7 @@ public class Listener extends ListenerAdapter {
         System.out.println("onReady triggered, JDA object launched without exception.");
         jda = event.getJDA();
         Helper.instance = new Helper(jda);
-        CommandHandler.instance = new CommandHandler();
+        CommandProcessor.instance = new CommandProcessor();
         RoleHandler.instance = new RoleHandler();
 
         try {

@@ -2,7 +2,6 @@ package Walter.commands;
 
 import Walter.Collection;
 import Walter.Parsers.Flag;
-import Walter.Parsers.Option;
 import Walter.Parsers.StringOption;
 import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
@@ -42,7 +41,7 @@ public class listening extends Command {
     }
 
     @Override
-    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
+    public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
         if (clear.isGiven()) {
             event.getJDA().getPresence().setActivity(null);
         } else {

@@ -2,13 +2,11 @@ package Walter.commands;
 
 import Walter.Collection;
 import Walter.Helper;
-import Walter.Parsers.Option;
 import Walter.Parsers.StringOption;
 import Walter.RoleHandler;
 import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
@@ -40,7 +38,7 @@ public class member extends Command {
     }
 
     @Override
-    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
+    public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
         String memberToSearchFor = nick.getValue();
         List<Member> foundMembers = Helper.instance.getMembersByName(memberToSearchFor);
 

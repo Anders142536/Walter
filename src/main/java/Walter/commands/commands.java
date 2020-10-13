@@ -39,7 +39,7 @@ public class commands extends Command {
     }
 
     @Override
-    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
+    public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
         Member author = Helper.instance.getMember(event.getAuthor());
         MessageChannel channel = event.getChannel();
 
@@ -55,7 +55,7 @@ public class commands extends Command {
     }
 
     private void fillCommandStrings() {
-        List<Command> commands = CommandHandler.instance.getListOfCommands();
+        List<Command> commands = CommandProcessor.instance.getListOfCommands();
         List<Command> guestCommandsList = new ArrayList<Command>();
         List<Command> memberCommandsList = new ArrayList<Command>();
         List<Command> adminCommandsList = new ArrayList<Command>();

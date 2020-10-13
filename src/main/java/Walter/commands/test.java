@@ -34,7 +34,7 @@ public class test extends Command {
     }
 
     @Override
-    public void execute(MessageReceivedEvent event) {
+    public void execute(String usedKeyword, MessageReceivedEvent event) {
         if (event.getAuthor().getIdLong() == 151010441043116032L) { // if Anders
 
         } else {
