@@ -6,19 +6,17 @@ import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class commands extends Command {
-
-    private String guestCommands;
-    private String memberCommands;
-    private String adminCommands;
-    private String guestCommandsEnglish;
-    private String memberCommandsEnglish;
-    private String adminCommandsEnglish;
+    //Arrays due to languages
+    MessageEmbed[] guestCommands;
+    MessageEmbed[] memberCommands;
+    MessageEmbed[] adminCommands;
 
     private Flag all;
 
@@ -44,21 +42,22 @@ public class commands extends Command {
         MessageChannel channel = event.getChannel();
 
         if (adminCommands == null)
-            fillCommandStrings();
+            fillCommandEmbeds();
 
-        if (all.isGiven() || RoleHandler.instance.hasRole(author, BlackRole.ADMIN))
+        if (all.isGiven() || RoleHandler.hasRole(author, BlackRole.ADMIN))
             Helper.instance.respond(author, channel, adminCommands, adminCommandsEnglish);
-        else if (RoleHandler.instance.hasRole(author, BlackRole.MEMBER))
+        else if (RoleHandler.hasRole(author, BlackRole.MEMBER))
             Helper.instance.respond(author, channel, memberCommands, memberCommandsEnglish);
         else
             Helper.instance.respond(author, channel, guestCommands, guestCommandsEnglish);
     }
 
-    private void fillCommandStrings() {
+    private void fillCommandEmbeds() {
         List<Command> commands = CommandProcessor.instance.getListOfCommands();
         List<Command> guestCommandsList = new ArrayList<Command>();
         List<Command> memberCommandsList = new ArrayList<Command>();
         List<Command> adminCommandsList = new ArrayList<Command>();
+        Language.values();
 
         //filling the command lists
         for (Command command :

@@ -29,8 +29,8 @@ public class german extends Command {
         Member author = event.getMember();
         MessageChannel channel = event.getChannel();
 
-        if (RoleHandler.instance.hasRole(author, BlackRole.ENGLISH)) {
-            RoleHandler.instance.removeRole(author, BlackRole.ENGLISH);
+        if (RoleHandler.hasRole(author, BlackRole.ENGLISH)) {
+            RoleHandler.removeRole(author, BlackRole.ENGLISH);
             Helper.instance.respond(author, channel,
                     "Ich kommuniziere nun mit dir in Deutsch.",
                     "I will now communicate with you in german.");

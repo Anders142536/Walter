@@ -20,7 +20,7 @@ public class CommandProcessor {
     private final HashMap<String, Command> commands = new HashMap<>();
     private List<Command> commandList;
     private final CommandParser parser;
-    private HelpEmbedFactory helpEmbedFactory;
+    private final HelpEmbedFactory helpEmbedFactory;
 
     CommandProcessor() {
         parser = new CommandParser();
@@ -92,7 +92,7 @@ public class CommandProcessor {
 
         Command toExecute = commands.get(commandName);
         if (messageContent.charAt(0) == '!') {      //command
-            if (RoleHandler.instance.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
+            if (RoleHandler.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
                 parser.parse(toExecute.getOptions(), toExecute.getFlags());
                 toExecute.execute(commandName, event);
             } else {
@@ -102,7 +102,7 @@ public class CommandProcessor {
                         "Du hast nicht die minimale benötigte Rolle \"" + roleName + "\" für diesen Command."});
             }
         } else if (messageContent.charAt(0) == '?') //help request
-            channel.sendMessage(helpEmbedFactory.create(commandName, toExecute, RoleHandler.instance.getLanguage(author))).queue();
+            channel.sendMessage(helpEmbedFactory.create(commandName, toExecute, Language.getLanguage(author))).queue();
     }
 
 

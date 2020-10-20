@@ -29,7 +29,7 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         TextChannel general = Helper.instance.getTextChannel(BlackChannel.GENERAL);
-        RoleHandler.instance.assignRole(event.getMember(), BlackRole.GUEST);
+        RoleHandler.assignRole(event.getMember(), BlackRole.GUEST);
 
         general.sendMessage("Werte " + BlackRole.MEMBER.getName() + ", unser Gast " + event.getMember().getAsMention() +
                 " ist eingetroffen. Herzlich Willkommen!").queue();
@@ -170,7 +170,6 @@ public class Listener extends ListenerAdapter {
         jda = event.getJDA();
         Helper.instance = new Helper(jda);
         CommandProcessor.instance = new CommandProcessor();
-        RoleHandler.instance = new RoleHandler();
 
         try {
             Config.startUp();

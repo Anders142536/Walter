@@ -52,13 +52,13 @@ public class member extends Command {
                     "\"" + memberToSearchFor + "\" könnte auf mehrere Benutzer zutreffen"});
 
         Member memberToAssignTo = foundMembers.get(0);
-        if (RoleHandler.instance.hasRole(memberToAssignTo, BlackRole.MEMBER))
+        if (RoleHandler.hasRole(memberToAssignTo, BlackRole.MEMBER))
             throw new CommandExecutionException(new String[] {
                     "The user \"" + memberToSearchFor + "\" already is a member",
                     "Der Benutzer \"" + memberToSearchFor + "\" ist bereits Member"});
 
-        RoleHandler.instance.assignRole(memberToAssignTo, BlackRole.MEMBER);
-        if (RoleHandler.instance.hasRole(memberToAssignTo, BlackRole.GUEST))
-            RoleHandler.instance.removeRole(memberToAssignTo, BlackRole.GUEST);
+        RoleHandler.assignRole(memberToAssignTo, BlackRole.MEMBER);
+        if (RoleHandler.hasRole(memberToAssignTo, BlackRole.GUEST))
+            RoleHandler.removeRole(memberToAssignTo, BlackRole.GUEST);
     }
 }

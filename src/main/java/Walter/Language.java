@@ -1,5 +1,9 @@
 package Walter;
 
+import Walter.entities.BlackRole;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
+
 public enum Language {
     ENGLISH(0),
     GERMAN (1);
@@ -7,4 +11,15 @@ public enum Language {
     public final int index;
 
     Language(int index) { this.index = index; }
+
+    public static Language getLanguage(User user) {
+        Member member = Helper.instance.getMember(user);
+        if (member == null) return Language.ENGLISH;
+        return getLanguage(member);
+    }
+
+    public static Language getLanguage(Member member) {
+        if (RoleHandler.hasRole(member, BlackRole.ENGLISH)) return Language.ENGLISH;
+        return Language.GERMAN;
+    }
 }

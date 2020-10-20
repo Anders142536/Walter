@@ -20,7 +20,7 @@ public enum BlackRole {
 
     //role instances have an expiring life span, therefore we must fetch freshly everytime
     public Role getInstance() {
-        return RoleHandler.instance.getRole(ID);
+        return RoleHandler.getRole(ID);
     }
 
     public String getName() { return getInstance().getName(); }

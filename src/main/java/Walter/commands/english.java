@@ -27,8 +27,8 @@ public class english extends Command {
         Member author = event.getMember();
         MessageChannel channel = event.getChannel();
 
-        if (!RoleHandler.instance.hasRole(author, BlackRole.ENGLISH)) {
-            RoleHandler.instance.assignRole(author, BlackRole.ENGLISH);
+        if (!RoleHandler.hasRole(author, BlackRole.ENGLISH)) {
+            RoleHandler.assignRole(author, BlackRole.ENGLISH);
             Helper.instance.respond(author, channel,
                     "Ich kommuniziere nun mit dir in Englisch.",
                     "I will now communicate with you in english.");

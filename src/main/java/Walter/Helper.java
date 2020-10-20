@@ -95,7 +95,7 @@ public class Helper {
     }
 
     public void respond(Member member, MessageChannel channel, String german, String english) {
-        if (RoleHandler.instance.hasRole(member, BlackRole.ENGLISH))
+        if (RoleHandler.hasRole(member, BlackRole.ENGLISH))
             channel.sendMessage(english).queue();
         else
             channel.sendMessage(german).queue();
