@@ -2,7 +2,7 @@ name: Commands Update
 New Features:
   - title: Added all commands Walter knew before the rewrite and a few more. Some commands were expanded. For a full explanation of the commands please use ? instead of ! to look at the help pages.
   - title: !commands
-    description: Now has the flag `-a`, making the command print all commands, even the ones unaccessible to the user.
+    description: Now has the flag `-a`, making the command print all commands, even the ones unaccessible to the user. Also uses embeds now, making it waaaay prettier imo.
   - title: !getmsg
     description: Returns the given message raw, without markdown formatting, with only triple backticks (`) removed. Now looks nicer than before, is nicer formatted.
   - title: !hello

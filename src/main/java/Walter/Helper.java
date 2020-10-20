@@ -80,8 +80,9 @@ public class Helper {
     }
 
     public void logError(String logMessage) {
-        String messageToSend = "ERROR:   " + logMessage;
-        getTextChannel(BlackChannel.LOG).sendMessage("```yaml\n" + messageToSend + "```").queue();
+        String messageToSend = "ERROR :   " + logMessage;
+
+        getTextChannel(BlackChannel.LOG).sendMessage("```yaml\n<@!151010441043116032>\n" + messageToSend + "```").queue();
         System.out.println(messageToSend);
     }
 

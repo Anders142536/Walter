@@ -4,6 +4,7 @@ import Walter.*;
 import Walter.Parsers.Flag;
 import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -13,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class commands extends Command {
-    //Arrays due to languages
-    MessageEmbed[] guestCommands;
-    MessageEmbed[] memberCommands;
-    MessageEmbed[] adminCommands;
+    //lists contain one embed per language
+    List<MessageEmbed> guestCommands;
+    List<MessageEmbed> memberCommands;
+    List<MessageEmbed> adminCommands;
 
     private Flag all;
 
@@ -34,71 +35,83 @@ public class commands extends Command {
         flags = new ArrayList<>();
         flags.add(all);
         minimumRequiredRole = BlackRole.GUEST;
+
+        fillCommandEmbeds();
+    }
+
+    private void fillCommandEmbeds() {
+        List<StringBuilder> guestCommandsStrings = new ArrayList<>();
+        List<StringBuilder> memberCommandsStrings = new ArrayList<>();
+        List<StringBuilder> adminCommandsStrings = new ArrayList<>();
+
+        //One StringBuilder per commandtype (guest, member, admin) and language, as those represent logically distinct blocks
+        for (Language lang : Language.values()) {
+            guestCommandsStrings.add(new StringBuilder());
+            memberCommandsStrings.add(new StringBuilder());
+            adminCommandsStrings.add(new StringBuilder());
+        }
+
+        for (Command command : CommandProcessor.instance.getListOfCommands()) {
+            if (command.getMinimumRequiredRole() == BlackRole.GUEST) appendCommandString(guestCommandsStrings, command);
+            else if (command.getMinimumRequiredRole() == BlackRole.MEMBER) appendCommandString(memberCommandsStrings, command);
+            else appendCommandString(adminCommandsStrings, command);
+        }
+
+        EmbedBuilder builder;
+        String[] headers = getHeaderStrings();
+        for (Language lang : Language.values()) {
+            builder = new EmbedBuilder();
+            builder.setDescription(headers[lang.index]);
+            builder.setFooter("Walter v" + Walter.VERSION);
+
+            builder.addField("Guest", guestCommandsStrings.get(lang.index).toString(), false);
+            guestCommands.add(builder.build());
+
+            builder.addField("Member", memberCommandsStrings.get(lang.index).toString(), false);
+            memberCommands.add(builder.build());
+
+            builder.addField("Admin", adminCommandsStrings.get(lang.index).toString(), false);
+            adminCommands.add(builder.build());
+        }
+}
+
+    private String[] getHeaderStrings() {
+        String[] headers = {
+                "Dies sind die Commands die dir zur Verfügung stehen. \n\n" +
+                    "Bitte bedenke, dass viele der hier gelisteten Commands Synonyme haben. Für eine genaue " +
+                    "Erklärung eines Commands rufe ihn bitte mit einem ? anstelle eines ! auf.",
+                "These are the commands at your disposal:\n\n" +
+                    "Please keep in mind that many of the commands listed here have synonyms. For a " +
+                    "detailed explanation of a command please call the command with a ? instead of a !."};
+        if (headers.length < Language.values().length)
+            Helper.instance.logError("Walter.commands.commands::getHeaderStrings\n" +
+                    "headers list is shorter than number of languages");
+        return headers;
+    }
+
+    private void appendCommandString(List<StringBuilder> builders, Command command) {
+        for (Language lang : Language.values()) {
+            builders.get(lang.index)
+                    .append("!")
+                    .append(command.getKeywords(lang)[0])
+                    .append("\n");
+        }
     }
 
     @Override
     public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
         Member author = Helper.instance.getMember(event.getAuthor());
         MessageChannel channel = event.getChannel();
-
-        if (adminCommands == null)
-            fillCommandEmbeds();
+        int languageIndex = Language.getLanguage(author).index;
 
         if (all.isGiven() || RoleHandler.hasRole(author, BlackRole.ADMIN))
-            Helper.instance.respond(author, channel, adminCommands, adminCommandsEnglish);
+            if (languageIndex >= adminCommands.size()) channel.sendMessage(adminCommands.get(0)).queue();
+            else channel.sendMessage(adminCommands.get(languageIndex)).queue();
         else if (RoleHandler.hasRole(author, BlackRole.MEMBER))
-            Helper.instance.respond(author, channel, memberCommands, memberCommandsEnglish);
+            if (languageIndex >= memberCommands.size()) channel.sendMessage(memberCommands.get(0)).queue();
+            else channel.sendMessage(memberCommands.get(languageIndex)).queue();
         else
-            Helper.instance.respond(author, channel, guestCommands, guestCommandsEnglish);
-    }
-
-    private void fillCommandEmbeds() {
-        List<Command> commands = CommandProcessor.instance.getListOfCommands();
-        List<Command> guestCommandsList = new ArrayList<Command>();
-        List<Command> memberCommandsList = new ArrayList<Command>();
-        List<Command> adminCommandsList = new ArrayList<Command>();
-        Language.values();
-
-        //filling the command lists
-        for (Command command :
-                commands) {
-            if (command.getMinimumRequiredRole() == BlackRole.GUEST) guestCommandsList.add(command);
-            else if (command.getMinimumRequiredRole() == BlackRole.MEMBER) memberCommandsList.add(command);
-            else adminCommandsList.add(command);
-        }
-
-        String header = "Dies sind die Commands die dir zur Verfügung stehen:\n\n";
-        String headerEnglish = "These are the commands at your disposal:\n\n";
-        String footer = "Bitte bedenke, dass viele der hier gelisteten Commands Synonyme haben. Für eine " +
-                "genaue Erklärung eines Commands rufe ihn bitte mit einem ? anstelle eines ! auf.";
-        String footerEnglish = "Please keep in mind that many of the commands listed here have synonyms. For a " +
-                "detailed explanation of a command please call the command with a ? instead of a !.";
-
-        String guestCommandsListString = createStringFromList("__Guest-Commands:__",guestCommandsList, Language.GERMAN);
-        String memberCommandsListString = createStringFromList("__Member-Commands:__", memberCommandsList, Language.GERMAN);
-        String adminCommandListString = createStringFromList("__Admin-Commands:__", adminCommandsList, Language.GERMAN);
-        String guestCommandsListStringEnglish = createStringFromList("__Guest-Commands:__", guestCommandsList, Language.ENGLISH);
-        String memberCommandsListStringEnglish = createStringFromList("__Member-Commands:__", memberCommandsList, Language.ENGLISH);
-        String adminCommandsListStringEnglish = createStringFromList("__Admin-Commands:__", adminCommandsList, Language.ENGLISH);
-
-        guestCommands = header + guestCommandsListString + footer;
-        memberCommands = header + guestCommandsListString + memberCommandsListString + footer;
-        adminCommands = header + guestCommandsListString + memberCommandsListString + adminCommandListString + footer;
-        guestCommandsEnglish = headerEnglish + guestCommandsListStringEnglish + footerEnglish;
-        memberCommandsEnglish = headerEnglish + guestCommandsListStringEnglish + memberCommandsListStringEnglish + footerEnglish;
-        adminCommandsEnglish = headerEnglish + guestCommandsListStringEnglish + memberCommandsListStringEnglish + adminCommandsListStringEnglish + footerEnglish;
-    }
-
-    private String createStringFromList(String header, List<Command> list, Language lang) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(header);
-        builder.append("\n```diff");
-
-        for (Command command : list) {
-            builder.append("\n!");
-            builder.append(command.getKeywords(lang)[0]);
-        }
-        builder.append("```\n");
-        return builder.toString();
+        if (languageIndex >= guestCommands.size()) channel.sendMessage(guestCommands.get(0)).queue();
+        else channel.sendMessage(guestCommands.get(languageIndex)).queue();
     }
 }
