@@ -63,7 +63,7 @@ public class patch extends Command {
     }
 
     private Map<String, Object> loadPatchFileToYaml(String version) throws CommandExecutionException {
-        String filename = Walter.location + "/patchnotes/"+ version + ".patch";
+        String filename = Walter.location + "/patchnotes/"+ version + "-patchnotes.yaml";
         try {
             File file = new File(filename);
             FileInputStream reader = new FileInputStream(file);

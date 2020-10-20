@@ -50,7 +50,7 @@ public class CommandProcessor {
         commandList.add(new english());
 //        commandList.add(new file());
         commandList.add(new german());
-//        commandList.add(new getmsg());
+        commandList.add(new getmsg());
 //        commandList.add(new guest());
         commandList.add(new hello());
 //        commandList.add(new help());

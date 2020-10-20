@@ -1,0 +1,17 @@
+name: Commands Update
+New Features:
+  - title: Added all commands Walter knew before the rewrite and a few more. Some commands were expanded. For a full explanation of the commands please use ? instead of ! to look at the help pages.
+  - title: !commands
+    description: Now has the flag `-a`, making the command print all commands, even the ones unaccessible to the user.
+  - title: !getmsg
+    description: Returns the given message raw, without markdown formatting, with only triple backticks (`) removed. Now looks nicer than before, is nicer formatted.
+  - title: !hello
+    description: You greet walter and he greets you back.
+  - title: !listening, !playing, !watching
+    description: Allows clearing now.
+  - title: !patch
+    description: Now works with patchnotes files on the server. Accepts version number to print patchnotes for.
+  - title: !say
+    description: Makes Walter say stuff.
+  - title: !shutdown
+    description: Anders-only command to shut Walter down.

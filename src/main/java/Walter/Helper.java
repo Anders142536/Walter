@@ -5,6 +5,8 @@ import Walter.entities.BlackChannel;
 import Walter.entities.BlackRole;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.Calendar;
 import java.util.List;
@@ -19,7 +21,7 @@ public class Helper {
     final private static long GUILD_ID = 254263827237961729L;
 
 
-    public Helper (JDA jda) {
+    public Helper(JDA jda) {
         this.jda = jda;
     }
 
@@ -32,19 +34,29 @@ public class Helper {
         return jda.getGuildById(GUILD_ID);
     }
 
-    net.dv8tion.jda.api.entities.Category getCategory(BlackCategory blackCategory) { return getCategory(blackCategory.ID); }
+    net.dv8tion.jda.api.entities.Category getCategory(BlackCategory blackCategory) {
+        return getCategory(blackCategory.ID);
+    }
 
-    net.dv8tion.jda.api.entities.Category getCategory(long categoryID) { return getGuild().getCategoryById(categoryID); }
+    net.dv8tion.jda.api.entities.Category getCategory(long categoryID) {
+        return getGuild().getCategoryById(categoryID);
+    }
 
-    TextChannel getTextChannel(BlackChannel blackChannel) { return getTextChannel(blackChannel.ID); }
+    TextChannel getTextChannel(BlackChannel blackChannel) {
+        return getTextChannel(blackChannel.ID);
+    }
 
-    TextChannel getTextChannel(long channelID) { return getGuild().getTextChannelById(channelID);}
+    TextChannel getTextChannel(long channelID) {
+        return getGuild().getTextChannelById(channelID);
+    }
 
     VoiceChannel getVoiceChannel(BlackChannel blackChannel) {
         return getVoiceChannel(blackChannel.ID);
     }
 
-    VoiceChannel getVoiceChannel(long channelID) { return getGuild().getVoiceChannelById(channelID); }
+    VoiceChannel getVoiceChannel(long channelID) {
+        return getGuild().getVoiceChannelById(channelID);
+    }
 
     public Member getMember(User user) {
         return getGuild().retrieveMember(user).complete();
@@ -53,6 +65,7 @@ public class Helper {
     public List<Member> getMembersByName(String name) {
         return getGuild().getMembersByEffectiveName(name, true);
     }
+
 
     /* ******************* *
      *  Other Helpmethods  *
@@ -92,13 +105,18 @@ public class Helper {
         channel.sendMessage(text).queue();
     }
 
-    public void respondException(MessageChannel channel, String informationToAdd, Exception e) {
+    public void respondException(MessageReceivedEvent event, Exception e) {
         String corePrint = "I am utterly sorry, but something went seriously wrong here." +
-                "\n\n<@!151010441043116032>:\n" +
-                "```timestamp:      " + getFormattedNowString() + "\n" +
-                (informationToAdd != null ? informationToAdd : "") + "```";
+                "\n\n<@!151010441043116032>:\n" + //tagging anders
+                "```timestamp:      " + getFormattedNowString() +
+                "\nchannel:        " + event.getChannel().getName() +
+                "\nauthor:         " + event.getAuthor().getName() + " <@!" + event.getAuthor().getId() + ">" +
+                "\nmessageContent: " + event.getMessage().getContentRaw() + "```";
+
+        Helper.instance.respondException(event, e);
         System.out.println("> ERROR An exception was thrown!" + corePrint);
-        channel.sendMessage(corePrint + getStackTraceString(e)).queue();
+        event.getChannel().sendMessage(corePrint + getStackTraceString(e)).queue();
+
         logException(corePrint + getStackTraceString(e));
         e.printStackTrace();
     }

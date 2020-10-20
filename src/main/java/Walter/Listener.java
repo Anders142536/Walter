@@ -145,7 +145,7 @@ public class Listener extends ListenerAdapter {
             String informationToAdd = "channel:        " + channel.getName() +
                     "\nauthor:         " + author.getName() + " <@!" + author.getId() + ">" +
                     "\nmessageContent: " + messageContent + "";
-            Helper.instance.respondException(channel, informationToAdd, e);
+            Helper.instance.respondException(event, e);
         }
     }
 
