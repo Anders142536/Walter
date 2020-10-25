@@ -30,7 +30,7 @@ public class member extends Command {
         };
         minimumRequiredRole = BlackRole.MEMBER;
         nick = new StringOption(new String[] {"nickname", "Nickname"},
-                new String[] {"Visible nickname of user that should become member",
+                new String[] {"Visible nickname of user that should become a member",
                         "Angezeigter Nickname des Benutzers der ein Mitglied werden soll"}
         );
         options = new ArrayList<>();

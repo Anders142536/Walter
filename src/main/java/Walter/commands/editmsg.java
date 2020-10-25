@@ -1,6 +1,16 @@
 package Walter.commands;
 
+import Walter.Helper;
+import Walter.Parsers.StringOption;
+import Walter.exceptions.CommandExecutionException;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
+import java.util.ArrayList;
+
 public class editmsg extends Command {
+    StringOption messageID;
+    StringOption newContent;
 
     public editmsg() {
         super(new String[] {
@@ -14,10 +24,37 @@ public class editmsg extends Command {
                 "kannst hiermit nur Nachrichten editieren, die von mir verfasst worden sind."});
                 keywords = new String[][]{
                 {"editmsg"}};
+        messageID = new StringOption(new String[] {"message ID", "Nachrichten ID"}, new String[] {
+                "ID of the message to edit",
+                "ID der zu editierenden Nachricht"
+        });
+        newContent = new StringOption(new String[] {"Content", "Inhalt"}, new String[] {
+                "New content for the message",
+                "Neuer Inhalt für die Nachricht"
+        });
+        options = new ArrayList<>();
+        options.add(messageID);
+        options.add(newContent);
     }
 
-//    @Override
-//    public void execute(MessageReceivedEvent event) throws CommandExecutionException {
-    //TODO: add in CommandHandler.createListOfCommands()
-//    }
+    @Override
+    public void execute(String commandName, MessageReceivedEvent event) throws CommandExecutionException {
+        event.getChannel().retrieveMessageById(messageID.getValue()).queue(
+                success -> {
+                    success.editMessage(newContent.getValue()).queue(
+                            editSuccess -> {
+                                event.getMessage().delete().queue();
+                            },
+                            editError -> {
+                                Helper.instance.respondException(event, new CommandExecutionException(new String[]{
+                                    "Something went wrong on editing the message:\n" + editError.getMessage()
+                            }));}
+                    );
+                },
+                error -> {
+                    Helper.instance.respondException(event, new CommandExecutionException(new String[]{
+                            "Couldn't get the given message:\n" + error.getMessage()
+                    }));}
+        );
+    }
 }

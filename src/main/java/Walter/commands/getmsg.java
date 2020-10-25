@@ -5,7 +5,6 @@ import Walter.Parsers.StringOption;
 import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
@@ -27,8 +26,7 @@ public class getmsg extends Command {
         });
         minimumRequiredRole = BlackRole.GUEST;
         keywords = new String[][]{
-                {"getmsg"}
-        };
+                {"getmsg"}};
         messageID = new StringOption(new String[] {"message ID", "Nachrichten ID"}, new String[] {
                 "ID of the message to throw",
                 "ID der auszuwerfenden Nachricht"
@@ -49,7 +47,7 @@ public class getmsg extends Command {
                     metaInfo.addField("Author", success.getAuthor().getId() + "   " + success.getAuthor().getAsMention() + (authorName.equals(memberName) ? "" : " (" + memberName + ")"), false);
                     event.getChannel().sendMessage(metaInfo.build()).queue();
                     event.getChannel().sendMessage("```\n" + success.getContentRaw().replaceAll("```", "") + "```").queue();
-//                    event.getMessage().delete().queue();
+                    event.getMessage().delete().queue();
                 },
                 error -> {
                     Helper.instance.respondException(event, new CommandExecutionException(new String[]{

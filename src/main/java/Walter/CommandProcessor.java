@@ -22,13 +22,13 @@ public class CommandProcessor {
     private final CommandParser parser;
     private final HelpEmbedFactory helpEmbedFactory;
 
-    CommandProcessor() {
+    CommandProcessor() throws ReasonedException {
         parser = new CommandParser();
         loadCommandsToHashMap();
         helpEmbedFactory = new HelpEmbedFactory();
     }
 
-    private void loadCommandsToHashMap() {
+    private void loadCommandsToHashMap() throws ReasonedException {
         //TODO: in the long run, use reflection to find all classes instead of this list here
         for (Command command : createListOfCommands()) {
             for (String[] keywords : command.getKeywords()) {
@@ -40,18 +40,18 @@ public class CommandProcessor {
     }
 
     //If it is missing here it cannot be found in any way
-    private List<Command> createListOfCommands() {
+    private List<Command> createListOfCommands() throws ReasonedException {
         commandList = new ArrayList<Command>();
 
 //        commandList.add(new analyse());
         commandList.add(new commands());
-//        commandList.add(new config());
-//        commandList.add(new editmsg());
+        commandList.add(new config());
+        commandList.add(new editmsg());
         commandList.add(new english());
 //        commandList.add(new file());
         commandList.add(new german());
         commandList.add(new getmsg());
-//        commandList.add(new guest());
+        commandList.add(new guest());
         commandList.add(new hello());
 //        commandList.add(new help());
         commandList.add(new listening());

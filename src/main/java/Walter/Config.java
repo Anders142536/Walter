@@ -67,20 +67,45 @@ public class Config {
 
     public static int getDropZoneLimit() { return dropZoneLimit; }
 
-    public static void setDropZoneLimit(int value) throws ReasonedException, IOException{
-        if (value >= 30) {
-            dropZoneLimit = value;
-            config.store();
-            writeToConfigChannel();
+    public static void setDropZoneLimit(int value) throws ReasonedException{
+        try {
+            if (value >= 30) {
+                dropZoneLimit = value;
+                config.put("General", "dropZoneLimit", value);
+                config.store();
+                writeToConfigChannel();
+            } else throw new ReasonedException(new String[]{
+                    "dropZoneLimit must not be lower than 30",
+                    "dropZoneLimit darf nicht niedriger als 30 sein"
+            });
+        } catch (IOException e) {
+            throw new ReasonedException(new String[] {
+                    "Something went wrong on storing the dropZoneLimit:\n" + e.getMessage(),
+                    "Etwas ist beim speichern des dropZoneLimits schief gelaufen:\n" + e.getMessage()
+            });
         }
-        else throw new ReasonedException(new String[] {
-                "dropZoneLimit must not be lower than 30",
-                "dropZoneLimit darf nicht niedriger als 30 sein"
-        });
     }
 
     public static Map<String, String> getWebhooks() {
         return config.get("Webhooks");
     }
 
+    /*
+     * TODO: change this to use a settings class
+     *
+     * this was just a small idea of doing it generically. if possible this should be avoided
+     * as proper polymorphism is always better than this crap
+     *
+     * Method[] methods = Config.class.getMethods();
+     *         for (Method m: methods) {
+     *             if (m.getName().toLowerCase().equals("set" + toFind)) {
+     *                 System.out.println("found");
+     *                 try {
+     *                     m.invoke(Config.class, 1);
+     *                 } catch (Exception e) {
+     *                     ;
+     *                 }
+     *             }
+     *         }
+     */
 }

@@ -169,12 +169,13 @@ public class Listener extends ListenerAdapter {
         System.out.println("onReady triggered, JDA object launched without exception.");
         jda = event.getJDA();
         Helper.instance = new Helper(jda);
-        CommandProcessor.instance = new CommandProcessor();
 
         try {
+            CommandProcessor.instance = new CommandProcessor();
             Config.startUp();
             System.out.println("Walter launched successfully");
         } catch (ReasonedException e) {
+            Helper.instance.logException(e.getReason(Language.ENGLISH));
             jda.shutdown();
         } catch (Exception e) {
             System.out.println("> ERROR An exception was thrown!" +

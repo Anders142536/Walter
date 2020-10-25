@@ -4,23 +4,27 @@ package Walter.exceptions;
 import Walter.Language;
 
 public class ReasonedException extends Exception {
-    private final String[] reason;
+    private final String[] reasons;
 
     public ReasonedException() {
         this(null);
     }
 
-    public ReasonedException(String[] reason) {
-        if (reason == null) reason = new String[] {
+    public ReasonedException(String[] reasons) {
+        if (reasons == null) reasons = new String[] {
                 "No reason given",
                 "Kein Grund gegeben"
         };
-        this.reason = reason;
+        this.reasons = reasons;
     }
 
     public String getReason(Language lang) {
-        if (reason.length >=lang.index) return reason[0];
-        return reason[lang.index];
+        if (reasons.length >=lang.index) return reasons[0];
+        return reasons[lang.index];
+    }
+
+    public String[] getReasons() {
+        return reasons;
     }
 
 }

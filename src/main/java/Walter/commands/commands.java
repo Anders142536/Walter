@@ -61,6 +61,7 @@ public class commands extends Command {
         String[] headers = getHeaderStrings();
         for (Language lang : Language.values()) {
             builder = new EmbedBuilder();
+            builder.setColor(7854123);
             builder.setDescription(headers[lang.index]);
             builder.setFooter("Walter v" + Walter.VERSION);
 
@@ -77,12 +78,13 @@ public class commands extends Command {
 
     private String[] getHeaderStrings() {
         String[] headers = {
+                "These are the commands at your disposal:\n\n" +
+                        "Please keep in mind that many of the commands listed here have synonyms. For a " +
+                        "detailed explanation of a command please call the command with a ? instead of a !.",
                 "Dies sind die Commands die dir zur Verfügung stehen. \n\n" +
                     "Bitte bedenke, dass viele der hier gelisteten Commands Synonyme haben. Für eine genaue " +
-                    "Erklärung eines Commands rufe ihn bitte mit einem ? anstelle eines ! auf.",
-                "These are the commands at your disposal:\n\n" +
-                    "Please keep in mind that many of the commands listed here have synonyms. For a " +
-                    "detailed explanation of a command please call the command with a ? instead of a !."};
+                    "Erklärung eines Commands rufe ihn bitte mit einem ? anstelle eines ! auf."
+                };
         if (headers.length < Language.values().length)
             Helper.instance.logError("Walter.commands.commands::getHeaderStrings\n" +
                     "headers list is shorter than number of languages");
