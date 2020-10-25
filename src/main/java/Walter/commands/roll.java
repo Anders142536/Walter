@@ -57,7 +57,7 @@ public class roll extends Command {
         int throwLimit = (limit.hasValue() ? limit.getValue() : 6);
         int throwTimes = (times.hasValue() ? times.getValue() : 1);
 
-        StringBuilder results = new StringBuilder(getRandomNumber(throwLimit));
+        StringBuilder results = new StringBuilder("" + getRandomNumber(throwLimit));
         for (int i = 1; i < throwTimes; i++) //only start doing commas after the first number
             results.append(", ").append(getRandomNumber(throwLimit));
 

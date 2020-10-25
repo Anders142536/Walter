@@ -4,6 +4,7 @@ import Walter.Parsers.CommandParser;
 import Walter.entities.BlackChannel;
 import Walter.entities.BlackRole;
 import Walter.entities.BlackWebhook;
+import Walter.exceptions.CommandExecutionException;
 import Walter.exceptions.ParseException;
 import Walter.exceptions.ReasonedException;
 import net.dv8tion.jda.api.JDA;
@@ -141,10 +142,9 @@ public class Listener extends ListenerAdapter {
             Helper.instance.respond(member, channel,
                     "Es tut mir Leid, doch etwas ist beim Verstehen deines Befehls schief gelaufen.\n" + e.getReason(Language.GERMAN) + "\n" + BlackRole.ADMIN.getAsMention(),
                     "I am utterly sorry, but something went wrong trying to understand your command.\n" + e.getReason(Language.ENGLISH) + "\n" + BlackRole.ADMIN.getAsMention());
+        } catch (CommandExecutionException e) {
+            Helper.instance.respondError(event, e);
         } catch (Exception e) {
-            String informationToAdd = "channel:        " + channel.getName() +
-                    "\nauthor:         " + author.getName() + " <@!" + author.getId() + ">" +
-                    "\nmessageContent: " + messageContent + "";
             Helper.instance.respondException(event, e);
         }
     }

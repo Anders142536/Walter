@@ -1,5 +1,8 @@
 package Walter.entities;
 
+import Walter.Helper;
+import net.dv8tion.jda.api.entities.TextChannel;
+
 public enum BlackChannel {
     ADMIN (391278094352121857L),
     CINEMA (305417211508555776L),
@@ -13,4 +16,7 @@ public enum BlackChannel {
 
     BlackChannel(long ID) { this.ID = ID; }
 
+    public TextChannel getInstance() {
+        return Helper.instance.getTextChannel(this);
+    }
 }

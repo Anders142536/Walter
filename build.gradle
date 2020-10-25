@@ -18,7 +18,7 @@ compileJava.options.encoding = 'UTF-8'
 
 dependencies {
 
-    testImplementation('org.junit.jupiter:junit-jupiter:5.6.2')
+    testCompile('org.junit.jupiter:junit-jupiter:5.6.2')
 //    testImplementation 'junit:junit:5.6.2'
     compile ('net.dv8tion:JDA:4.2.0_204') {
         exclude module: 'opus-java'

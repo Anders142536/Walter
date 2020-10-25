@@ -35,8 +35,6 @@ public class commands extends Command {
         flags = new ArrayList<>();
         flags.add(all);
         minimumRequiredRole = BlackRole.GUEST;
-
-        fillCommandEmbeds();
     }
 
     private void fillCommandEmbeds() {
@@ -56,6 +54,10 @@ public class commands extends Command {
             else if (command.getMinimumRequiredRole() == BlackRole.MEMBER) appendCommandString(memberCommandsStrings, command);
             else appendCommandString(adminCommandsStrings, command);
         }
+
+        guestCommands = new ArrayList<>();
+        memberCommands = new ArrayList<>();
+        adminCommands = new ArrayList<>();
 
         EmbedBuilder builder;
         String[] headers = getHeaderStrings();
@@ -105,6 +107,8 @@ public class commands extends Command {
         Member author = Helper.instance.getMember(event.getAuthor());
         MessageChannel channel = event.getChannel();
         int languageIndex = Language.getLanguage(author).index;
+
+        if (adminCommands == null || memberCommands == null || guestCommands == null) fillCommandEmbeds();
 
         if (all.isGiven() || RoleHandler.hasRole(author, BlackRole.ADMIN))
             if (languageIndex >= adminCommands.size()) channel.sendMessage(adminCommands.get(0)).queue();

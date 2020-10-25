@@ -53,8 +53,9 @@ public class CommandProcessor {
         commandList.add(new getmsg());
         commandList.add(new guest());
         commandList.add(new hello());
-//        commandList.add(new help());
+        commandList.add(new help());
         commandList.add(new listening());
+        commandList.add(new maintenance());
         commandList.add(new member());
         commandList.add(new patch());
         commandList.add(new playing());

@@ -17,7 +17,7 @@ public class version extends Command {
         keywords = new String[][]{
                 {"version", "v"}
         };
-        minimumRequiredRole = BlackRole.MEMBER;
+        minimumRequiredRole = BlackRole.GUEST;
     }
 
     @Override

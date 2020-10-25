@@ -45,6 +45,7 @@ public class config extends Command {
             switch (key.getValue().toLowerCase().trim()) {
                 case "dropzonelimit":
                         Config.setDropZoneLimit(Integer.parseInt(value.getValue()));
+                    break;
                 default:
                     throw new CommandExecutionException(new String[] {
                             "There is no setting called " + key.getValue(),

@@ -10,22 +10,18 @@ import Walter.exceptions.ReasonedException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class help extends Command {
-    StringOption page;
+    StringOption chosenPage;
 
-    HashMap<String, HelpPage> pages;
+    HashMap<String, HelpPage> pageMap;
     List<HelpPage> pageList;
     String[] pageListHeaders;
 
@@ -38,20 +34,21 @@ public class help extends Command {
                 {"help"},
                 {"hilfe"}};
         minimumRequiredRole = BlackRole.GUEST;
-        page = new StringOption(new String[] {"topic", "thema"},
+
+        chosenPage = new StringOption(new String[] {"topic", "thema"},
                 new String[] {
                         "Which page is shown",
                         "Welche Seite gezeigt wird"
                 }, false);
 
         options = new ArrayList<>();
-        options.add(page);
+        options.add(chosenPage);
 
         pageListHeaders = new String[] {
             "List of Help pages", "Liste der Hilfeseiten"
         };
         if (pageListHeaders.length < Language.values().length)
-            Helper.instance.logError("Walter.commands.help::help\n" +
+            Helper.instance.logError("Walter.commands.help::help()\n" +
                     "headers list is shorter than number of languages");
 
         loadPages();
@@ -59,23 +56,26 @@ public class help extends Command {
 
     private void loadPages() throws ReasonedException {
         String foldername = Walter.location + "/helppages";
-        pages = new HashMap<>();
+        pageMap = new HashMap<>();
         pageList = new ArrayList<>();
 
         File folder = new File(foldername);
-        Map<String, Object> yaml;
+        Map<String, Object> pageYamlDefinition;
+
+        if (!folder.exists()) folder.mkdir();
 
         for (File f: folder.listFiles((file, filename) -> filename.endsWith(".yaml"))) {
-            yaml = loadYamlFromFile(f);
-            String pageName;
+            pageYamlDefinition = loadYamlFromFile(f);
+            LinkedHashMap<String, Object> page;
             HelpPage helpPage = new HelpPage(f);
             pageList.add(helpPage);
 
             for (Language lang: Language.values()) {
-                if (yaml.containsKey("name" + lang.name())) {
-                    pageName = (String)yaml.get("name" + lang.name());
-                    helpPage.names.add(pageName);
-                    pages.put(pageName, helpPage);
+                if (pageYamlDefinition.containsKey(lang.name())) {
+                    page = (LinkedHashMap)pageYamlDefinition.get(lang.name());
+                    String name = (String)page.get("name");
+                    helpPage.names.add(name);
+                    pageMap.put(name, helpPage);
                 } else {
                     //if the language is not specified in the helppage file the name of the file is taken instead
                     helpPage.names.add(f.getName().replace(".yaml", ""));
@@ -101,16 +101,18 @@ public class help extends Command {
 
     @Override
     public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
-        //TODO: add in CommandHandler.createListOfCommands()
         Language desiredLanguage = Language.getLanguage(event.getAuthor());
 
         try {
-            if (page.hasValue()) {
-                if (!pages.containsKey(page.getValue())) throw new CommandExecutionException(new String[]{
-                        "No helppage called " + page.getValue() + " found",
-                        "Keine Hilfeseite namens " + page.getValue() + "gefunden"
-                });
-                HelpPage helpPage = pages.get(page.getValue());
+            if (chosenPage.hasValue()) {
+                if (!pageMap.containsKey(chosenPage.getValue()))
+                    throw new CommandExecutionException(new String[]{
+                            "No helppage called " + chosenPage.getValue() + " found",
+                            "Keine Hilfeseite namens " + chosenPage.getValue() + "gefunden"
+                    });
+
+                //TODO find out why exception above is not thrown
+                HelpPage helpPage = pageMap.get(chosenPage.getValue());
                 event.getChannel().sendMessage(helpPage.getPageEmbed(desiredLanguage)).queue();
             } else {
                 event.getChannel().sendMessage(getPageListEmbed(desiredLanguage)).queue();
@@ -147,20 +149,27 @@ public class help extends Command {
 
         public HelpPage(@Nonnull File file){
             this.file = file;
+            names = new ArrayList<>();
         }
 
         MessageEmbed getPageEmbed(Language lang) throws ReasonedException {
             EmbedBuilder builder = new EmbedBuilder();
             builder.setColor(7854123);
-            builder.setTitle(names.get(lang.index));
 
             Map<String, Object> pageYaml = loadYamlFromFile(file);
 
-            //TODO this
+            if (!pageYaml.containsKey(lang.name())) lang = Language.ENGLISH;
+            LinkedHashMap<String, Object> languageEntry = (LinkedHashMap)pageYaml.get(lang.name());
+            builder.setTitle((String)languageEntry.get("title"));
+            builder.setDescription((String)languageEntry.get("description"));
 
+            if (languageEntry.containsKey("fields")) {
+                for (LinkedHashMap<String, String> field : (ArrayList<LinkedHashMap>) languageEntry.get("fields")) {
+                    builder.addField(field.get("title"), field.get("description"), false);
+                }
+            }
 
             builder.setFooter("Walter v" + Walter.VERSION);
-
             return builder.build();
         }
     }

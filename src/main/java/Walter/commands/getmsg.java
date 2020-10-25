@@ -50,8 +50,8 @@ public class getmsg extends Command {
                     event.getMessage().delete().queue();
                 },
                 error -> {
-                    Helper.instance.respondException(event, new CommandExecutionException(new String[]{
-                            "Couldn't get the given message"
+                    Helper.instance.respondError(event, new CommandExecutionException(new String[]{
+                            "Couldn't get the given message. It has to be in the same channel as your " + commandName + " command!"
                     }));}
         );
 

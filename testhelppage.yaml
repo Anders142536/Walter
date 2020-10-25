@@ -1,0 +1,18 @@
+ENGLISH:
+  name: testhelppage
+  title: Testhelppage title
+  description: testdescription
+  fields:
+    - title: Field 1
+      description: Description 1
+    - title: Field 2
+      description: Description 2
+GERMAN:
+  name: Test Hilfeseite
+  title: Test Hilfeseite Titel
+  description: Testbeschreibung
+  fields:
+    - title: Feld 1
+      description: Beschreibung 1
+    - title: Feld 2
+      description: Beschreibung 2

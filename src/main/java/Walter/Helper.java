@@ -3,6 +3,9 @@ package Walter;
 import Walter.entities.BlackCategory;
 import Walter.entities.BlackChannel;
 import Walter.entities.BlackRole;
+import Walter.exceptions.CommandExecutionException;
+import Walter.exceptions.ReasonedException;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.Event;
@@ -42,7 +45,7 @@ public class Helper {
         return getGuild().getCategoryById(categoryID);
     }
 
-    TextChannel getTextChannel(BlackChannel blackChannel) {
+    public TextChannel getTextChannel(BlackChannel blackChannel) {
         return getTextChannel(blackChannel.ID);
     }
 
@@ -72,27 +75,51 @@ public class Helper {
      * ******************* */
 
     public void logCommand(Member author, MessageChannel channel, String commandMessageRaw) {
-        String messageToSend = "\nAUTHOR:  " + author.getEffectiveName() + " (" + author.getId() + ")" +
-                "\nCHANNEL: " + channel.getName() + " (" + channel.getId() + ") " +
-                "\nCOMMAND: " + commandMessageRaw;
-        getTextChannel(BlackChannel.LOG).sendMessage("```yaml" + messageToSend + "```").queue();
+        String messageToSend =
+                "`AUTHOR: ` " + author.getEffectiveName() + " (" + author.getId() + ")\n" +
+                "`CHANNEL:` " + channel.getName() + " (" + channel.getId() + ")\n" +
+                "`COMMAND:` " + commandMessageRaw;
         System.out.println(messageToSend);
+
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setTitle("Command");
+        builder.setColor(7854123);
+        builder.setDescription(messageToSend);
+        builder.setFooter("Walter v" + Walter.VERSION);
+        getTextChannel(BlackChannel.LOG).sendMessage(builder.build()).queue();
     }
 
     public void logError(String logMessage) {
-        String messageToSend = "ERROR :   " + logMessage;
+        System.out.println("ERROR :   " + logMessage);
 
-        getTextChannel(BlackChannel.LOG).sendMessage("```yaml\n<@!151010441043116032>\n" + messageToSend + "```").queue();
-        System.out.println(messageToSend);
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setTitle("Error");
+        builder.setColor(13722624);
+        builder.setDescription("<@!151010441043116032>\n" + logMessage);
+        builder.setFooter("Walter v" + Walter.VERSION);
+        getTextChannel(BlackChannel.LOG).sendMessage(builder.build()).queue();
     }
 
     public void logException(String logMessage) {
-        logError("AN UNHANDLED EXCEPTION OCCURED\n" + logMessage);
+        System.out.println("AN UNHANDLED EXCEPTION OCCURED\n" + logMessage);
+
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setTitle("Exception");
+        builder.setColor(13697024);
+        builder.setDescription("<@!151010441043116032>\n" + logMessage);
+        builder.setFooter("Walter v" + Walter.VERSION);
+        getTextChannel(BlackChannel.LOG).sendMessage(builder.build()).queue();
     }
 
     public void logInfo(String logMessage) {
-        String messageToSend = "INFO:    " + logMessage;
-        getTextChannel(BlackChannel.LOG).sendMessage("```yaml\n" + messageToSend + "```").queue();
+        System.out.println("INFO:    " + logMessage);
+
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setTitle("Info");
+        builder.setColor(7854123);
+        builder.setDescription(logMessage);
+        builder.setFooter("Walter v" + Walter.VERSION);
+        getTextChannel(BlackChannel.LOG).sendMessage(builder.build()).queue();
     }
 
     public void respond(Member member, MessageChannel channel, String german, String english) {
@@ -106,19 +133,32 @@ public class Helper {
         channel.sendMessage(text).queue();
     }
 
+    public void respondError(MessageReceivedEvent event, CommandExecutionException e) {
+        respond(getMember(event.getAuthor()), event.getChannel(),
+                "Es tut mir Leid, doch etwas ist beim Ausführen deines Befehls schief gelaufen:\n" +
+                        e.getReason(Language.GERMAN) + "\n" + BlackRole.ADMIN.getAsMention(),
+                "I am utterly sorry, but something went wrong trying to execute your command:\n" +
+                        e.getReason(Language.ENGLISH) + "\n" + BlackRole.ADMIN.getAsMention());
+        String errorlogMessage =
+                "```channel:        " + event.getChannel().getName() +
+                        "\nauthor:         " + event.getAuthor().getName() + " <@!" + event.getAuthor().getId() + ">" +
+                        "\nmessageContent: " + event.getMessage().getContentRaw() +
+                        "\nError Reason:   " + e.getReason(Language.ENGLISH) + "```";
+        Helper.instance.logError(errorlogMessage);
+    }
+
     public void respondException(MessageReceivedEvent event, Exception e) {
-        String corePrint = "I am utterly sorry, but something went seriously wrong here." +
-                "\n\n<@!151010441043116032>:\n" + //tagging anders
-                "```timestamp:      " + getFormattedNowString() +
+        String corePrint = "timestamp:      " + getFormattedNowString() +
                 "\nchannel:        " + event.getChannel().getName() +
                 "\nauthor:         " + event.getAuthor().getName() + " <@!" + event.getAuthor().getId() + ">" +
-                "\nmessageContent: " + event.getMessage().getContentRaw() + "```";
+                "\nmessageContent: " + event.getMessage().getContentRaw();
 
-        Helper.instance.respondException(event, e);
         System.out.println("> ERROR An exception was thrown!" + corePrint);
-        event.getChannel().sendMessage(corePrint + getStackTraceString(e)).queue();
+        event.getChannel().sendMessage("I am utterly sorry, but something went seriously wrong here.\n" +
+                (e instanceof ReasonedException ? ((ReasonedException) e).getReason(Language.ENGLISH) : e.getMessage()) +
+                "\n\n<@!151010441043116032>:\n```" + corePrint + "```" + getStackTraceString(e)).queue();
 
-        logException(corePrint + getStackTraceString(e));
+        logException("```" + corePrint + "```" + getStackTraceString(e));
         e.printStackTrace();
     }
 
@@ -143,7 +183,7 @@ public class Helper {
 
     public String getFormattedNowString() {
         Calendar now = Calendar.getInstance();
-        return now.get(Calendar.YEAR) + "/" + now.get(Calendar.MONTH) + "/" + now.get(Calendar.DAY_OF_MONTH) + " " + now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+        return now.get(Calendar.YEAR) + "/" + (now.get(Calendar.MONTH) + 1) + "/" + now.get(Calendar.DAY_OF_MONTH) + " " + now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
     }
 
     private String getStackTraceString(Exception e) {
