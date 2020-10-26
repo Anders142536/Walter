@@ -58,7 +58,7 @@ public class patch extends Command {
 
     public ArrayList<String> getPatchMessage(String version) throws CommandExecutionException {
         Map<String, Object> list = loadPatchFileToYaml(version);
-        String msg = convertYamlToFormattedMessage(list);
+        String msg = convertYamlToFormattedMessage(list, version);
         return splitMessageOnLinebreak(msg, 1900);
     }
 
@@ -85,10 +85,10 @@ public class patch extends Command {
         }
     }
 
-    private String convertYamlToFormattedMessage(Map<String, Object> list) throws CommandExecutionException {
+    private String convertYamlToFormattedMessage(Map<String, Object> list, String version) throws CommandExecutionException {
         if (!list.containsKey("name")) throw new CommandExecutionException(new String[] {"Failed to find patch notes name"});
 
-        StringBuilder patchmsg = new StringBuilder("__**" + list.get("name") + "**__\n");
+        StringBuilder patchmsg = new StringBuilder("__**" + version + " " + list.get("name") + "**__\n");
         for (Map.Entry<String, Object> entry: list.entrySet()) {
             if (entry.getKey().equals("name")) continue;
 

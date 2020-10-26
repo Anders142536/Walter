@@ -35,6 +35,7 @@ public class roll extends Command {
                 new String[] {"Integer upper limit of the roll", "Ganzzahlige obere Schranke für den Wurf"}, false);
         times = new IntegerOption(new String[] {"throws", "würfe"},
                 new String[] {"Amount of throws", "Anzahl der Würfe"}, false);
+        //set limit of times to 500
 
         options = new ArrayList<>();
         options.add(limit);
@@ -57,14 +58,24 @@ public class roll extends Command {
         int throwLimit = (limit.hasValue() ? limit.getValue() : 6);
         int throwTimes = (times.hasValue() ? times.getValue() : 1);
 
+
+
         StringBuilder results = new StringBuilder("" + getRandomNumber(throwLimit));
         for (int i = 1; i < throwTimes; i++) //only start doing commas after the first number
             results.append(", ").append(getRandomNumber(throwLimit));
 
+        String numberString = results.toString();
+
+        //discords limit for embed descriptions
+        if (numberString.length() > 2048) throw new CommandExecutionException(new String[] {
+                "The list of numbers is too long! It must not exceed 2048 characters",
+                "Die Liste an Zahlen ist zu lang! Sie darf nicht länger als 2048 Zeichen sein"
+        });
+
         EmbedBuilder embed = new EmbedBuilder();
         embed.setColor(7854123);
         embed.setTitle(throwTimes + getHeader(Language.getLanguage(author)) + throwLimit);
-        embed.setDescription(results.toString());
+        embed.setDescription(numberString);
         embed.setFooter("Walter v" + Walter.VERSION);
         channel.sendMessage(embed.build()).queue();
     }

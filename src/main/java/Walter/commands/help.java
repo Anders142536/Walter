@@ -73,6 +73,7 @@ public class help extends Command {
             for (Language lang: Language.values()) {
                 if (pageYamlDefinition.containsKey(lang.name())) {
                     page = (LinkedHashMap)pageYamlDefinition.get(lang.name());
+                    //unchecked access. Only done on startup, so it is allowed to fail, as I can immediatly take care of it then
                     String name = (String)page.get("name");
                     helpPage.names.add(name);
                     pageMap.put(name, helpPage);

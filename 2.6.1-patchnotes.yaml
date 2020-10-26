@@ -1,0 +1,8 @@
+name: Commands Update
+New Features:
+
+Optimizations:
+  - title: Patchnotes now also show the version they are made for in the title
+Bug Fixes:
+  - title: !roll now checks if the list of numbers became too long
+    description: Before it was throwing an exception that was displayed. To a non-programmer that might look confusing af, so I changed that
