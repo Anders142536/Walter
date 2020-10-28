@@ -33,9 +33,11 @@ public class roll extends Command {
         minimumRequiredRole = BlackRole.GUEST;
         limit = new IntegerOption(new String[] {"limit", "Limit"},
                 new String[] {"Integer upper limit of the roll", "Ganzzahlige obere Schranke für den Wurf"}, false);
+        limit.setLowerLimit(1);
         times = new IntegerOption(new String[] {"throws", "würfe"},
                 new String[] {"Amount of throws", "Anzahl der Würfe"}, false);
-        //set limit of times to 500
+        times.setLowerLimit(1);
+        times.setUpperLimit(500);
 
         options = new ArrayList<>();
         options.add(limit);
@@ -57,8 +59,6 @@ public class roll extends Command {
 
         int throwLimit = (limit.hasValue() ? limit.getValue() : 6);
         int throwTimes = (times.hasValue() ? times.getValue() : 1);
-
-
 
         StringBuilder results = new StringBuilder("" + getRandomNumber(throwLimit));
         for (int i = 1; i < throwTimes; i++) //only start doing commas after the first number

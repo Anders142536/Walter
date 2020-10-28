@@ -58,6 +58,7 @@ public class CommandProcessor {
         commandList.add(new maintenance());
         commandList.add(new member());
         commandList.add(new patch());
+        commandList.add(new pin());
         commandList.add(new playing());
 //        commandList.add(new reprint());
         commandList.add(new roll());

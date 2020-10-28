@@ -5,6 +5,7 @@ import Walter.Parsers.StringOption;
 import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
@@ -37,21 +38,25 @@ public class getmsg extends Command {
 
     @Override
     public void execute(String commandName, MessageReceivedEvent event) throws CommandExecutionException {
-    //TODO: add in CommandHandler.createListOfCommands()
         event.getChannel().retrieveMessageById(messageID.getValue()).queue(
                 success -> {
+                    //we first send a message we will edit immediatly. On edit the mention tag does not push a notification
+                    Message mes = event.getChannel().sendMessage("").complete();
+
                     EmbedBuilder metaInfo = new EmbedBuilder();
                     metaInfo.addField("Id", success.getId(), false);
                     String authorName = success.getAuthor().getName();
-                    String memberName = Helper.instance.getMember(event.getAuthor()).getEffectiveName();
-                    metaInfo.addField("Author", success.getAuthor().getId() + "   " + success.getAuthor().getAsMention() + (authorName.equals(memberName) ? "" : " (" + memberName + ")"), false);
-                    event.getChannel().sendMessage(metaInfo.build()).queue();
+                    String memberName = Helper.instance.getMember(success.getAuthor()).getEffectiveName();
+                    metaInfo.addField("Author", success.getAuthor().getId() + "   " + success.getAuthor().getAsMention() +
+                            (authorName.equals(memberName) ? "" : " (" + memberName + ")"), false);
+                    mes.editMessage(metaInfo.build()).queue();
                     event.getChannel().sendMessage("```\n" + success.getContentRaw().replaceAll("```", "") + "```").queue();
                     event.getMessage().delete().queue();
                 },
                 error -> {
                     Helper.instance.respondError(event, new CommandExecutionException(new String[]{
-                            "Couldn't get the given message. It has to be in the same channel as your " + commandName + " command!"
+                            "Couldn't get the given message. It has to be in the same channel as your " + commandName + " command!",
+                            "Konnte die gegebene Nachricht nicht finden. Sie muss im selben Kanal sein wie dein " + commandName + " Befehl!"
                     }));}
         );
 

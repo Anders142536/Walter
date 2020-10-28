@@ -1,8 +1,15 @@
 name: Commands Update
 New Features:
-
+  - title: Integer arguments have limits now
+    description: These will not be displayed in the help pages, but you will be told so if you hit a limit.
+  - title: Added "!pin" command on request of <@628516712043773952>
+    description: The command is limited to members, so i trust everyone to use this responsibly and not abuse it.
 Optimizations:
   - title: Patchnotes now also show the version they are made for in the title
+  - title: tags in "!getmsg" results will no longer push notifications
+    description: If a tag is added to a message via editing it does not push a notification. Now the message is sent empty first and the metainformation embed is edited into it afterwards. Please tell me if this does not work as expected.
 Bug Fixes:
-  - title: !roll now checks if the list of numbers became too long
+  - title: "!roll" now checks if the list of numbers became too long
     description: Before it was throwing an exception that was displayed. To a non-programmer that might look confusing af, so I changed that
+  - title: fixed issue of "!getmsg" not showing the correct nickname after the user in brackets
+    description: It always showed the nickname of the user who issued the command, as the nickname was fetched from the wrong object. Maybe writing 700 lines of code in one sitting was not the beeeeest of ideas >.>

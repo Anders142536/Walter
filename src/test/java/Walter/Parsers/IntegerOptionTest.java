@@ -11,6 +11,8 @@ public class IntegerOptionTest {
     @BeforeEach
     public void resetTests() {
         t = new IntegerOption(new String[] {"name e", "name d"}, null);
+        t.setLowerLimit(-5);
+        t.setUpperLimit(5);
     }
 
     @Test
@@ -29,11 +31,53 @@ public class IntegerOptionTest {
     }
 
     @Test
+    public void setValueWithoutLimits() {
+        t = new IntegerOption(new String[] {"name e", "name d"}, null);
+
+        assertDoesNotThrow(() -> t.setValue("1"));
+
+        assertTrue(t.hasValue());
+        assertEquals(1, t.getValue());
+    }
+
+    @Test
     public void setIncorrectValue() {
         assertThrows(ParseException.class, () -> t.setValue("a"));
 
         assertFalse(t.hasValue());
         assertNull(t.getValue());
+    }
+
+    @Test
+    public void setTooHighValue() {
+        assertThrows(ParseException.class, () -> t.setValue("6"));
+
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+    }
+
+    @Test
+    public void setTooLowValue() {
+        assertThrows(ParseException.class, () -> t.setValue("-6"));
+
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+    }
+
+    @Test
+    public void setUpperLimitAsValue() {
+        assertDoesNotThrow(() -> t.setValue("5"));
+
+        assertTrue(t.hasValue());
+        assertEquals(5, t.getValue());
+    }
+
+    @Test
+    public void setLowerLimitAsValue() {
+        assertDoesNotThrow(() -> t.setValue("-5"));
+
+        assertTrue(t.hasValue());
+        assertEquals(-5, t.getValue());
     }
 
     @Test
