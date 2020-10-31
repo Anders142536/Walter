@@ -1,6 +1,7 @@
 package Walter.playground;
 
 import Walter.Language;
+import Walter.commands.Command;
 import Walter.exceptions.CommandExecutionException;
 import Walter.exceptions.ReasonedException;
 import org.junit.jupiter.api.Test;
@@ -55,4 +56,12 @@ public class common {
 
         System.out.println("debug stopper");
     }
+
+//    @Test
+//    public void commonTest() {
+//        Package commands = Command.class.;
+//
+//
+//        System.out.println("stopper");
+//    }
 }

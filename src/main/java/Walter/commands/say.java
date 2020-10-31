@@ -1,6 +1,7 @@
 package Walter.commands;
 
 import Walter.Parsers.FlushOption;
+import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -18,6 +19,7 @@ public class say extends Command {
         keywords = new String[][]{
                 {"say", "echo"}
         };
+        minimumRequiredRole = BlackRole.MEMBER;
         text = new FlushOption(new String[] {"text"}, new String[] {
                 "Text I should say",
                 "Text, den ich sagen soll"
@@ -27,8 +29,7 @@ public class say extends Command {
     }
 
     @Override
-    public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
-//    TODO: add in CommandHandler.createListOfCommands()
+    public void execute(String usedKeyword, MessageReceivedEvent event) {
         event.getChannel().sendMessage(text.getValue()).queue();
         event.getMessage().delete().queue();
     }

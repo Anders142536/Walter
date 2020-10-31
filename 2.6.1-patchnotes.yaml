@@ -4,10 +4,18 @@ New Features:
     description: These will not be displayed in the help pages, but you will be told so if you hit a limit.
   - title: Added "!pin" command on request of <@628516712043773952>
     description: The command is limited to members, so i trust everyone to use this responsibly and not abuse it.
+  - title: Added "!lockdown" command
+    description: Lockdown means that the automatic assignment of the guest role will no longer happen. This is for the case of invite link leakage or spam joining in general. This command is admin only. If this happens you will be notified in the news channel.
+  - title: The foyer is active again, but with wrong texts in there.
+  - title: Added "!react" command
+    description: Allows members to let walter add reactions to messages
 Optimizations:
   - title: Patchnotes now also show the version they are made for in the title
   - title: tags in "!getmsg" results will no longer push notifications
     description: If a tag is added to a message via editing it does not push a notification. Now the message is sent empty first and the metainformation embed is edited into it afterwards. Please tell me if this does not work as expected.
+  - title: When someone leaves, they are now mentioned instead of writing their names as text.
+    description: Only admins can see these messages.
+  - title: The minimum required Role for "!say" is now lowered to Member
 Bug Fixes:
   - title: "!roll" now checks if the list of numbers became too long
     description: Before it was throwing an exception that was displayed. To a non-programmer that might look confusing af, so I changed that

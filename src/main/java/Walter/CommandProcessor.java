@@ -43,6 +43,7 @@ public class CommandProcessor {
     private List<Command> createListOfCommands() throws ReasonedException {
         commandList = new ArrayList<Command>();
 
+
 //        commandList.add(new analyse());
         commandList.add(new commands());
         commandList.add(new config());
@@ -55,11 +56,13 @@ public class CommandProcessor {
         commandList.add(new hello());
         commandList.add(new help());
         commandList.add(new listening());
+        commandList.add(new lockdown());
         commandList.add(new maintenance());
         commandList.add(new member());
         commandList.add(new patch());
         commandList.add(new pin());
         commandList.add(new playing());
+        commandList.add(new react());
 //        commandList.add(new reprint());
         commandList.add(new roll());
         commandList.add(new say());

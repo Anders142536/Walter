@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class getmsg extends Command {
 
@@ -41,17 +42,19 @@ public class getmsg extends Command {
         event.getChannel().retrieveMessageById(messageID.getValue()).queue(
                 success -> {
                     //we first send a message we will edit immediatly. On edit the mention tag does not push a notification
-                    Message mes = event.getChannel().sendMessage("").complete();
-
-                    EmbedBuilder metaInfo = new EmbedBuilder();
-                    metaInfo.addField("Id", success.getId(), false);
-                    String authorName = success.getAuthor().getName();
-                    String memberName = Helper.instance.getMember(success.getAuthor()).getEffectiveName();
-                    metaInfo.addField("Author", success.getAuthor().getId() + "   " + success.getAuthor().getAsMention() +
-                            (authorName.equals(memberName) ? "" : " (" + memberName + ")"), false);
-                    mes.editMessage(metaInfo.build()).queue();
-                    event.getChannel().sendMessage("```\n" + success.getContentRaw().replaceAll("```", "") + "```").queue();
-                    event.getMessage().delete().queue();
+                    event.getChannel().sendMessage(" ").queue(
+                            mes -> {
+                                EmbedBuilder metaInfo = new EmbedBuilder();
+                                metaInfo.addField("Id", success.getId(), false);
+                                String authorName = success.getAuthor().getName();
+                                String memberName = Helper.instance.getMember(success.getAuthor()).getEffectiveName();
+                                metaInfo.addField("Author", success.getAuthor().getId() + "   " + success.getAuthor().getAsMention() +
+                                        (authorName.equals(memberName) ? "" : " (" + memberName + ")"), false);
+                                mes.editMessage(metaInfo.build()).queue();
+                                event.getChannel().sendMessage("```\n" + success.getContentRaw().replaceAll("```", "") + "```").queue();
+                                event.getMessage().delete().queue();
+                            }
+                    );
                 },
                 error -> {
                     Helper.instance.respondError(event, new CommandExecutionException(new String[]{

@@ -30,10 +30,15 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         TextChannel general = Helper.instance.getTextChannel(BlackChannel.GENERAL);
-        RoleHandler.assignRole(event.getMember(), BlackRole.GUEST);
+        if (Config.getIsLockdown()) {
+            Helper.instance.logInfo("User " + event.getUser().getAsMention() + " joined us during lockdown " +
+                    "and might still need permissions");
+        } else {
+            RoleHandler.assignRole(event.getMember(), BlackRole.GUEST);
 
-        general.sendMessage("Werte " + BlackRole.MEMBER.getName() + ", unser Gast " + event.getMember().getAsMention() +
-                " ist eingetroffen. Herzlich Willkommen!").queue();
+            general.sendMessage("Werte " + BlackRole.MEMBER.getName() + ", unser Gast " + event.getMember().getAsMention() +
+                    " ist eingetroffen. Herzlich Willkommen!").queue();
+        }
     }
 
     //leaving members will be announced in the admin channel
@@ -42,8 +47,9 @@ public class Listener extends ListenerAdapter {
     public void onGuildMemberRemove(GuildMemberRemoveEvent event) {
         TextChannel admin = Helper.instance.getTextChannel(BlackChannel.ADMIN);
 
-        admin.sendMessage(event.getMember().getEffectiveName() + " hat unseren Server verlassen.").queue();
-        //TODO: this
+        String leftUserMention = event.getUser().getAsMention();
+
+        admin.sendMessage(leftUserMention + " hat unseren Server verlassen.").queue();
     }
 
     //when someone is given the member or guest role walter sends them a private message with some basic information

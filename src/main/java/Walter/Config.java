@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.ini4j.Ini;
 
+import java.awt.desktop.UserSessionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -19,6 +20,7 @@ public class Config {
 
     //Hidden
     private static long configMessageID;
+    private static boolean isLockdown;
 
     public static void startUp() throws IOException, ReasonedException {
         File iniFile = new File(Walter.location + "/config.ini");
@@ -31,6 +33,7 @@ public class Config {
             config.put("Hidden", "servernews", "URL");
             config.put("Hidden", "patchnotes", "URL");
             config.put("Hidden", "configMessageID", "ID");
+            config.put("Hidden", "isLockdown", "false");
             config.store();
 
             System.out.println("Config template created in " + templateFile.getPath());
@@ -47,6 +50,7 @@ public class Config {
 
         //Hidden
         configMessageID = Long.parseLong(config.get("Hidden", "configMessageID"));
+        isLockdown = Boolean.parseBoolean(config.get("Hidden", "isLockdown"));
         BlackWebhook.SERVERNEWS = new BlackWebhook(config.get("Hidden", "servernews"));
         BlackWebhook.PATCHNOTES = new BlackWebhook(config.get("Hidden", "patchnotes"));
 
@@ -67,7 +71,7 @@ public class Config {
 
     public static int getDropZoneLimit() { return dropZoneLimit; }
 
-    public static void setDropZoneLimit(int value) throws ReasonedException{
+    public static void setDropZoneLimit(int value) throws ReasonedException {
         try {
             if (value >= 30) {
                 dropZoneLimit = value;
@@ -86,9 +90,23 @@ public class Config {
         }
     }
 
-    public static Map<String, String> getWebhooks() {
-        return config.get("Webhooks");
+    public static boolean getIsLockdown() { return isLockdown; }
+
+    public static void setIsLockdown(boolean value) throws ReasonedException {
+        isLockdown = isLockdown;
+        try {
+            isLockdown = value;
+            config.put("General", "isLockdown", value);
+            config.store();
+            writeToConfigChannel();
+        } catch (IOException e) {
+            throw new ReasonedException(new String[] {
+                    "Something went wrong on storing the dropZoneLimit:\n" + e.getMessage(),
+                    "Etwas ist beim speichern des dropZoneLimits schief gelaufen:\n" + e.getMessage()
+            });
+        }
     }
+
 
     /*
      * TODO: change this to use a settings class
