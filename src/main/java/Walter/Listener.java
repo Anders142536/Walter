@@ -2,6 +2,7 @@ package Walter;
 
 import Walter.Parsers.CommandParser;
 import Walter.entities.BlackChannel;
+import Walter.entities.BlackEmoji;
 import Walter.entities.BlackRole;
 import Walter.entities.BlackWebhook;
 import Walter.exceptions.CommandExecutionException;
@@ -71,7 +72,7 @@ public class Listener extends ListenerAdapter {
             if (channel.getMembers().size() == 1) {
                 //gets the current time and truncates it to only show hours and minutes
                 LocalTime currentTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
-                channel.getManager().setName("\uD83C\uDF7F Cinema (" + currentTime + ")").complete();
+                channel.getManager().setName(BlackEmoji.POPCORN.identifier + " Cinema (" + currentTime + ")").complete();
             }
         }
     }
@@ -84,13 +85,13 @@ public class Listener extends ListenerAdapter {
         if (IDvoiceLeft == BlackChannel.CINEMA.ID) {
             VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceLeft);
             if (channel.getMembers().size() == 0)
-                channel.getManager().setName("\uD83C\uDF7F Cinema").complete();
+                channel.getManager().setName(BlackEmoji.POPCORN.identifier + " Cinema").complete();
         } else if (IDvoiceJoined == BlackChannel.CINEMA.ID) {
             VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceJoined);
             if (channel.getMembers().size() == 1) {
                 //gets the current time and truncates it to only show hours and minutes
                 LocalTime currentTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
-                channel.getManager().setName("\uD83C\uDF7F Cinema (" + currentTime + ")").complete();
+                channel.getManager().setName(BlackEmoji.POPCORN.identifier + " Cinema (" + currentTime + ")").complete();
             }
         }
     }
@@ -104,7 +105,7 @@ public class Listener extends ListenerAdapter {
         if (IDvoiceLeft == BlackChannel.CINEMA.ID) {
             VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceLeft);
             if (channel.getMembers().size() == 0)
-                channel.getManager().setName("\uD83C\uDF7F Cinema").complete();
+                channel.getManager().setName(BlackEmoji.POPCORN.identifier + " Cinema").complete();
         }
     }
 
