@@ -16,7 +16,7 @@ public class hello extends Command {
         });
         keywords = new String[][]{
                 {"hi", "hallo", "hello", "hey", "hola",
-                "moin", "servus", "griaßdi", "grüzi", "tag"}};
+                "moin", "servus", "griasdi", "grüzi", "tag"}};
         minimumRequiredRole = BlackRole.GUEST;
     }
 

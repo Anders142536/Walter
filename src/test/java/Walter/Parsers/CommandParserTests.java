@@ -33,9 +33,10 @@ public class CommandParserTests {
         assertTrue(CommandParser.isCommand("!test"));
         assertTrue(CommandParser.isCommand("?test"));
         assertTrue(CommandParser.isCommand("!test   "));
+        assertTrue(CommandParser.isCommand("!testßüäöÖÄÜ"));
 
         //normal text argument
-        assertTrue(CommandParser.isCommand("!test test"));
+        assertTrue(CommandParser.isCommand("!test täßtöÜ"));
 
         //number argument
         assertTrue(CommandParser.isCommand("!test 42"));
@@ -50,8 +51,8 @@ public class CommandParserTests {
         assertFalse(CommandParser.isCommand("!test -0,3e10"));
 
         //flag
-        assertTrue(CommandParser.isCommand("!test -a"));
-        assertTrue(CommandParser.isCommand("!test --all"));
+        assertTrue(CommandParser.isCommand("!test -ä"));
+        assertTrue(CommandParser.isCommand("!test --äll"));
         assertFalse(CommandParser.isCommand("!test -dYusQ"));
         assertFalse(CommandParser.isCommand("!test -"));
 
@@ -64,8 +65,8 @@ public class CommandParserTests {
         assertFalse(CommandParser.isCommand("!test \"\"\""));
 
         //several arguments and flags combined
-        assertTrue(CommandParser.isCommand("!test test test test"));
-        assertTrue(CommandParser.isCommand("!test -92.5 \"test\ntest\" -a"));
+        assertTrue(CommandParser.isCommand("!test test tÖst teßt"));
+        assertTrue(CommandParser.isCommand("!test -92.5 \"test\ntest\" -ä"));
         assertFalse(CommandParser.isCommand("!test 0,5 test \""));
         assertFalse(CommandParser.isCommand("!test -0,4.6 test"));
     }

@@ -42,9 +42,10 @@ public class getmsg extends Command {
         event.getChannel().retrieveMessageById(messageID.getValue()).queue(
                 success -> {
                     //we first send a message we will edit immediatly. On edit the mention tag does not push a notification
-                    event.getChannel().sendMessage(" ").queue(
+                    event.getChannel().sendMessage(new EmbedBuilder().setTitle("Metainfo").build()).queue(
                             mes -> {
                                 EmbedBuilder metaInfo = new EmbedBuilder();
+                                metaInfo.setTitle("Metainfo");
                                 metaInfo.addField("Id", success.getId(), false);
                                 String authorName = success.getAuthor().getName();
                                 String memberName = Helper.instance.getMember(success.getAuthor()).getEffectiveName();

@@ -21,10 +21,10 @@ public class CommandParser extends Parser {
     private String commandName = null;
 
     public CommandParser() {
-        commandIdentifierRegex = "^[!?]([a-zA-Z]+)( +([^-\"][^\\s\"]*|-?\\d*[.,]?\\d+|-([A-Za-z]|-[A-Za-z]+)|\"[^\"]*\"))*";
-        commandNameRegex = "^[!?]([a-zA-Z]+)";
+        commandIdentifierRegex = "^[!?]([a-zA-ZüÜöÖäÄß]+)( +([^-\"][^\\s\"]*|-?\\d*[.,]?\\d+|-([A-Za-züÜöÖäÄß]|-[A-Za-züÜöÖäÄß]+)|\"[^\"]*\"))*";
+        commandNameRegex = "^[!?]([a-zA-ZüÜöÖäÄß]+)";
         commandNameParser = Pattern.compile(commandNameRegex);
-        commandArgumentParser = Pattern.compile("( +([^-\"][^\\s\"]*|-?\\d*[.,]?\\d+|-([A-Za-z]|-[A-Za-z]+)|\"[^\"]*\"))");
+        commandArgumentParser = Pattern.compile("( +([^-\"][^\\s\"]*|-?\\d*[.,]?\\d+|-([A-Za-züÜöÖäÄß]|-[A-Za-züÜöÖäÄß]+)|\"[^\"]*\"))");
         /*                              *snorts cocaine* fuck yes
             A ! or ?, followed by the letters a-z case insensitive, followed by an arbitrary number of
             whitespace and either one of the following:

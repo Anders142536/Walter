@@ -5,6 +5,7 @@ import Walter.Parsers.StringOption;
 import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
@@ -33,12 +34,33 @@ public class pin extends Command {
     }
 
     @Override
-    public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
+    public void execute(String usedKeyword, MessageReceivedEvent event) {
         event.getChannel().retrieveMessageById(messageID.getValue()).queue(
                 success -> {
-                    //no response to user, wont be used that much and if it fails, we let it crash
-                    if (success.isPinned()) success.unpin().queue();
-                    else success.pin().queue();
+                    Member member = Helper.instance.getMember(event.getAuthor());
+                    if (success.isPinned()) success.unpin().queue(
+                            unpinSuccess -> {
+                                Helper.instance.respond(member, event.getChannel(),
+                                        "Die Nachricht wurde erfolgreich entfernt",
+                                        "The message was successfully unpinned");
+                            },
+                            unpinFailed -> {
+                                Helper.instance.respondError(event, new CommandExecutionException(new String[] {
+                                        "There was an error when unpinning the message:\n" + unpinFailed.getMessage(),
+                                        "Etwas ist beim Entfernen der Nachricht schief gelaufen:\n" + unpinFailed.getMessage()
+                                }));
+                            }
+                    );
+                    else success.pin().queue(
+                            //Success will be told to the user by discord anyways
+                            pinSuccess -> {},
+                            pinFailed -> {
+                                Helper.instance.respondError(event, new CommandExecutionException(new String[] {
+                                        "There was an error when pinning the message:\n" + pinFailed.getMessage(),
+                                        "Etwas ist beim Anpinnen der Nachricht schief gelaufen:\n" + pinFailed.getMessage()
+                                }));
+                            }
+                    );
                 },
                 error -> {
                     Helper.instance.respondError(event, new CommandExecutionException(new String[]{
