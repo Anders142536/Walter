@@ -1,0 +1,10 @@
+name: Commands Update
+New Features:
+  - title:
+    description:
+Optimizations:
+  - title: The "!pin" command now is more verbose.
+    description: There was no response so far when the command unpinned a message or when an error occured.
+Bug Fixes:
+  - title: Fixed issue of patchnotes being sent to the news channel in the wrong order if they exceeded the message length limit of 2000 characters
+    description: This causes them to be split into smaller messages, and those were send in a wrong order, due to me being an idiot and always creating a new WebhookClient to send the single messages. According to the author of the library im using for the Webhooks the way I use them now is the intended way and shoooouuuuld work.

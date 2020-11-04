@@ -142,7 +142,7 @@ public class Listener extends ListenerAdapter {
             if (channelID == BlackChannel.NEWS.ID) {
                 List<Attachment> attachments = event.getMessage().getAttachments();
 
-                BlackWebhook.SERVERNEWS.sendMessage(messageContent + "\n\n*Brought to you by:* " + author.getAsMention(), attachments);
+                BlackWebhook.SERVERNEWS.sendMessageWithAttachments(messageContent + "\n\n*Brought to you by:* " + author.getAsMention(), attachments);
                 event.getMessage().delete().queue();
             }
         } catch (ParseException e) {

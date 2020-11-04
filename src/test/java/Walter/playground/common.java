@@ -1,9 +1,8 @@
 package Walter.playground;
 
 import Walter.Language;
-import Walter.commands.Command;
+import Walter.commands.patch;
 import Walter.exceptions.CommandExecutionException;
-import Walter.exceptions.ReasonedException;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 
@@ -57,11 +56,108 @@ public class common {
         System.out.println("debug stopper");
     }
 
-//    @Test
-//    public void commonTest() {
-//        Package commands = Command.class.;
-//
-//
-//        System.out.println("stopper");
-//    }
+    @Test
+    public void commonTest() {
+        ArrayList<String> list = patch.splitMessageOnLinebreak("Lorem" + System.lineSeparator() +
+                "ipsum" + System.lineSeparator() +
+                "dolor\n" +
+                "sit\n" +
+                "amet,\n" +
+                "consetetur\n" +
+                "sadipscing\n" +
+                "elitr,\n" +
+                "sed\n" +
+                "diam\n" +
+                "nonumy\n" +
+                "eirmod\n" +
+                "tempor\n" +
+                "invidunt\n" +
+                "ut\n" +
+                "labore\n" +
+                "et\n" +
+                "dolore\n" +
+                "magna\n" +
+                "aliquyam\n" +
+                "erat,\n" +
+                "sed\n" +
+                "diam\n" +
+                "voluptua.\n" +
+                "At\n" +
+                "vero\n" +
+                "eos\n" +
+                "et\n" +
+                "accusam\n" +
+                "et\n" +
+                "justo\n" +
+                "duo\n" +
+                "dolores\n" +
+                "et\n" +
+                "ea\n" +
+                "rebum.\n" +
+                "Stet\n" +
+                "clita\n" +
+                "kasd\n" +
+                "gubergren,\n" +
+                "no\n" +
+                "sea\n" +
+                "takimata\n" +
+                "sanctus\n" +
+                "est\n" +
+                "Lorem\n" +
+                "ipsum\n" +
+                "dolor\n" +
+                "sit\n" +
+                "amet.\n" +
+                "Lorem\n" +
+                "ipsum\n" +
+                "dolor\n" +
+                "sit\n" +
+                "amet,\n" +
+                "consetetur\n" +
+                "sadipscing\n" +
+                "elitr,\n" +
+                "sed\n" +
+                "diam\n" +
+                "nonumy\n" +
+                "eirmod\n" +
+                "tempor\n" +
+                "invidunt\n" +
+                "ut\n" +
+                "labore\n" +
+                "et\n" +
+                "dolore\n" +
+                "magna\n" +
+                "aliquyam\n" +
+                "erat,\n" +
+                "sed\n" +
+                "diam\n" +
+                "voluptua.\n" +
+                "At\n" +
+                "vero\n" +
+                "eos\n" +
+                "et\n" +
+                "accusam\n" +
+                "et\n" +
+                "justo\n" +
+                "duo\n" +
+                "dolores\n" +
+                "et\n" +
+                "ea\n" +
+                "rebum.\n" +
+                "Stet\n" +
+                "clita\n" +
+                "kasd\n" +
+                "gubergren,\n" +
+                "no\n" +
+                "sea\n" +
+                "takimatasanctusest\n" +
+                "Lorem\n" +
+                "ipsum\n" +
+                "dolor\n" +
+                "sit\n" +
+                "amet.", 10);
+
+
+        System.out.println("stopper");
+    }
 }

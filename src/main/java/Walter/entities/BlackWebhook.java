@@ -12,28 +12,18 @@ public class BlackWebhook {
     public static BlackWebhook SERVERNEWS;
     public static BlackWebhook PATCHNOTES;
 
-    public final String url;
+    public final WebhookClient client;
 
     public BlackWebhook(String url) {
-        this.url = url;
+        this.client = WebhookClient.withUrl(url);
     }
 
-    public void sendMessage(String toSend, List<Attachment> attachments) throws InterruptedException, ExecutionException {
-        WebhookClient client = WebhookClient.withUrl(url);
+    public void sendMessageWithAttachments(String toSend, List<Attachment> attachments) throws InterruptedException, ExecutionException {
         WebhookMessageBuilder msg = new WebhookMessageBuilder();
         msg.setContent(toSend);
-        for (Attachment att :
-                attachments) {
+        for (Attachment att : attachments)
             msg.addFile(att.getFileName(), att.retrieveInputStream().get());
-        }
 
         client.send(msg.build());
-        client.close();
-    }
-
-    public void sendMessage(String toSend) {
-        WebhookClient client = WebhookClient.withUrl(url);
-        client.send(toSend);
-        client.close();
     }
 }

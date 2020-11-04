@@ -49,10 +49,10 @@ public class patch extends Command {
 
         if (here.isGiven()) {
             for (String msg: messages)
-                Helper.instance.respond(event.getChannel(), msg);
+                event.getChannel().sendMessage(msg).complete();
         } else {
             for (String msg: messages)
-                BlackWebhook.PATCHNOTES.sendMessage(msg);
+                BlackWebhook.PATCHNOTES.client.send(msg);
         }
     }
 
@@ -104,13 +104,14 @@ public class patch extends Command {
         return patchmsg.toString();
     }
 
-    private ArrayList<String> splitMessageOnLinebreak(String msg, int limit) {
+    public static ArrayList<String> splitMessageOnLinebreak(String msg, int limit) {
         ArrayList<String> submsgs = new ArrayList<>();
 
         if (msg.length() < limit) submsgs.add(msg);
         else {
             StringBuilder submsg = new StringBuilder();
             for(String line: msg.split(System.lineSeparator())) {
+
                 if (line.length() + submsg.length() > limit) {
                     submsgs.add(submsg.toString());
                     submsg.setLength(0); //clearing the builder
@@ -119,7 +120,6 @@ public class patch extends Command {
             }
             submsgs.add(submsg.toString());
         }
-
 
         return submsgs;
     }
