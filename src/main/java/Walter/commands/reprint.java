@@ -28,12 +28,14 @@ public class reprint extends Command {
                 "Clears and reprints the channel with the ID **ID** if there is a file called **ID**.channel on the " +
                         "raspberry I run on in the walter folder. To access the IDs of channels you need to enable " +
                         "the developer settings under USer Settings > Appearance > Developer Mode. Then you can " +
-                        "right click any channel to access its ID. You cannot protect Messages from deletion by pinning them.",
+                        "right click any channel to access its ID. You cannot protect Messages from deletion by pinning them. " +
+                        "If there is no **ID** given the channel this command was sent in is taken instead.",
                 "Leert und füllt den Kanal mit der ID **ID** wenn es eine Datei namens **ID**.channel auf dem Raspberry, " +
                         "auf dem ich laufe, im Ordner walter gibt. Um die ID von Kanälen auslesen zu können musst du " +
                         "die Developer Settings aktiveren unter User Settings > Appearance > Developer Mode. Dann " +
                         "kannst du mit einem Rechtsklick die ID von Kanälen auslesen. Nachrichten können nicht vor dem " +
-                        "löschen bewahrt werden indem sie gepinnt sind."
+                        "löschen bewahrt werden indem sie gepinnt sind. Wenn keine **ID** gegeben wird, wird der Kanal " +
+                        "genommen, in dem der Befehl gesendet wurde."
         });
         keywords = new String[][]{
                 {"reprint"}
@@ -63,7 +65,9 @@ public class reprint extends Command {
             String line;
 
             while ((line = br.readLine()) != null) {
+                System.out.println("line:\n>" + line + "<");
                 if (line.matches(fileNameRegex)) {
+                    System.out.println("matches regex");
                     sendAndClearBuilderBuffer(channel, builder);
 
                     //maybe just skip missing files?

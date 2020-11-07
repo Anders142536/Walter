@@ -183,13 +183,22 @@ public class Helper {
     }
 
     public static void clearChannelOfMessages(MessageChannel channel) {
-        MessageHistory history = channel.getHistory();
+        getChannelHistory(channel).forEach((msg) -> msg.delete().complete());
+    }
 
-        history.retrievePast(100).completeAfter(1, TimeUnit.SECONDS);
-        while (!history.isEmpty()) {
-            history.getRetrievedHistory().forEach((msg) -> msg.delete().complete());
+    public static List<Message> getChannelHistory(MessageChannel channel) {
+        MessageHistory history = channel.getHistory();
+        int lastSize;
+
+        do {
+            System.out.println("new enter in the loop, history length: " + history.size());
+            lastSize = history.size();
             history.retrievePast(100).completeAfter(1, TimeUnit.SECONDS);
-        }
+        } while (history.size() != lastSize);
+
+
+        System.out.println("final size: " + history.size());
+        return history.getRetrievedHistory();
     }
 
     public String getFormattedNowString() {

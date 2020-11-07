@@ -26,11 +26,11 @@ public class lockdown extends Command {
             Config.setIsLockdown(newState);
             event.getChannel().sendMessage("The Server is now " + (newState ? "" : "no longer ") + "in lockdown.").queue();
             if (newState)
-                BlackWebhook.SERVERNEWS.sendMessage("The server is now in lockdown. This means new users will no" +
+                BlackWebhook.SERVERNEWS.client.send("The server is now in lockdown. This means new users will no" +
                         " longer get the guest role, effectively locking them out of this server. If you have questions " +
                         "don't hesitate an admin.");
             else
-                BlackWebhook.SERVERNEWS.sendMessage("The server is no longer in lockdown.");
+                BlackWebhook.SERVERNEWS.client.send("The server is no longer in lockdown.");
         } catch (ReasonedException e) {
             throw new CommandExecutionException(e);
         }
