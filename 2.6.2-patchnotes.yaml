@@ -1,7 +1,7 @@
 name: Commands Update
 New Features:
-  - title:
-    description:
+  - title: The "!reprint" command is now back.
+    description: Channels can now be defined via a special file format. This command deletes the whole content of a channel and reprints everything as described in the channel file. This is handy for channels like the info channels or the foyer
 Optimizations:
   - title: The "!pin" command now is more verbose.
     description: There was no response so far when the command unpinned a message or when an error occured.

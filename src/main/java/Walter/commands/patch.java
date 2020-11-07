@@ -59,7 +59,7 @@ public class patch extends Command {
     public ArrayList<String> getPatchMessage(String version) throws CommandExecutionException {
         Map<String, Object> list = loadPatchFileToYaml(version);
         String msg = convertYamlToFormattedMessage(list, version);
-        return splitMessageOnLinebreak(msg, 1900);
+        return Helper.splitMessageOnLinebreak(msg, 1900);
     }
 
     private Map<String, Object> loadPatchFileToYaml(String version) throws CommandExecutionException {
@@ -104,23 +104,5 @@ public class patch extends Command {
         return patchmsg.toString();
     }
 
-    public static ArrayList<String> splitMessageOnLinebreak(String msg, int limit) {
-        ArrayList<String> submsgs = new ArrayList<>();
 
-        if (msg.length() < limit) submsgs.add(msg);
-        else {
-            StringBuilder submsg = new StringBuilder();
-            for(String line: msg.split(System.lineSeparator())) {
-
-                if (line.length() + submsg.length() > limit) {
-                    submsgs.add(submsg.toString());
-                    submsg.setLength(0); //clearing the builder
-                }
-                submsg.append(line).append("\n");
-            }
-            submsgs.add(submsg.toString());
-        }
-
-        return submsgs;
-    }
 }

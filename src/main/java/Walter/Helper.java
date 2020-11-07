@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -49,7 +50,7 @@ public class Helper {
         return getTextChannel(blackChannel.ID);
     }
 
-    TextChannel getTextChannel(long channelID) {
+    public TextChannel getTextChannel(long channelID) {
         return getGuild().getTextChannelById(channelID);
     }
 
@@ -162,7 +163,7 @@ public class Helper {
         e.printStackTrace();
     }
 
-    void deleteMessagesOlderThan(MessageChannel channel, int limit, int catchAmount) {
+    void deleteUnpinnedMessagesOlderThan(MessageChannel channel, int limit, int catchAmount) {
 
         //getting the message history in the given channel
         //unfortunately retrievePast() does not terminate .complete() if more messages are asked for than there are,
@@ -181,9 +182,39 @@ public class Helper {
         }
     }
 
+    public static void clearChannelOfMessages(MessageChannel channel) {
+        MessageHistory history = channel.getHistory();
+
+        history.retrievePast(100).completeAfter(1, TimeUnit.SECONDS);
+        while (!history.isEmpty()) {
+            history.getRetrievedHistory().forEach((msg) -> msg.delete().complete());
+            history.retrievePast(100).completeAfter(1, TimeUnit.SECONDS);
+        }
+    }
+
     public String getFormattedNowString() {
         Calendar now = Calendar.getInstance();
         return now.get(Calendar.YEAR) + "/" + (now.get(Calendar.MONTH) + 1) + "/" + now.get(Calendar.DAY_OF_MONTH) + " " + now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+    }
+
+    public static ArrayList<String> splitMessageOnLinebreak(String msg, int limit) {
+        ArrayList<String> submsgs = new ArrayList<>();
+
+        if (msg.length() < limit) submsgs.add(msg);
+        else {
+            StringBuilder submsg = new StringBuilder();
+            for(String line: msg.split(System.lineSeparator())) {
+
+                if (line.length() + submsg.length() > limit) {
+                    submsgs.add(submsg.toString());
+                    submsg.setLength(0); //clearing the builder
+                }
+                submsg.append(line).append("\n");
+            }
+            submsgs.add(submsg.toString());
+        }
+
+        return submsgs;
     }
 
     private String getStackTraceString(Exception e) {
