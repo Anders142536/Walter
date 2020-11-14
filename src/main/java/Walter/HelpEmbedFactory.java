@@ -3,6 +3,7 @@ package Walter;
 import Walter.Parsers.Flag;
 import Walter.Parsers.Option;
 import Walter.commands.Command;
+import Walter.entities.Language;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 

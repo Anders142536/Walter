@@ -106,24 +106,4 @@ public class Config {
             });
         }
     }
-
-
-    /*
-     * TODO: change this to use a settings class
-     *
-     * this was just a small idea of doing it generically. if possible this should be avoided
-     * as proper polymorphism is always better than this crap
-     *
-     * Method[] methods = Config.class.getMethods();
-     *         for (Method m: methods) {
-     *             if (m.getName().toLowerCase().equals("set" + toFind)) {
-     *                 System.out.println("found");
-     *                 try {
-     *                     m.invoke(Config.class, 1);
-     *                 } catch (Exception e) {
-     *                     ;
-     *                 }
-     *             }
-     *         }
-     */
 }

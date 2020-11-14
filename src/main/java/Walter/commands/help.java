@@ -2,7 +2,7 @@ package Walter.commands;
 
 import Walter.Parsers.StringOption;
 import Walter.Walter;
-import Walter.Language;
+import Walter.entities.Language;
 import Walter.Helper;
 import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;

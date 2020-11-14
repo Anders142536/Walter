@@ -3,12 +3,12 @@ package Walter;
 import Walter.entities.BlackCategory;
 import Walter.entities.BlackChannel;
 import Walter.entities.BlackRole;
+import Walter.entities.Language;
 import Walter.exceptions.CommandExecutionException;
 import Walter.exceptions.ReasonedException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;

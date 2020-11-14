@@ -1,7 +1,7 @@
 package Walter.commands;
 
 import Walter.Helper;
-import Walter.Language;
+import Walter.entities.Language;
 import Walter.Parsers.IntegerOption;
 import Walter.Walter;
 import Walter.entities.BlackRole;

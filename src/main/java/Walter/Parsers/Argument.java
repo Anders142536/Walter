@@ -1,6 +1,6 @@
 package Walter.Parsers;
 
-import Walter.Language;
+import Walter.entities.Language;
 
 public abstract class Argument {
     protected final String[] description;

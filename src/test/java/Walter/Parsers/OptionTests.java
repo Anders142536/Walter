@@ -1,6 +1,6 @@
 package Walter.Parsers;
 
-import Walter.Language;
+import Walter.entities.Language;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

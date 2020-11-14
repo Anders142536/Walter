@@ -1,6 +1,6 @@
 package Walter.Parsers;
 
-import Walter.Language;
+import Walter.entities.Language;
 import Walter.exceptions.ParseException;
 import org.jetbrains.annotations.NotNull;
 

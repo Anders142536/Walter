@@ -1,6 +1,6 @@
 package Walter.commands;
 
-import Walter.Language;
+import Walter.entities.Language;
 import Walter.Parsers.Flag;
 import Walter.Parsers.Option;
 import Walter.entities.BlackRole;

@@ -1,10 +1,7 @@
 package Walter;
 
 import Walter.Parsers.CommandParser;
-import Walter.entities.BlackChannel;
-import Walter.entities.BlackEmoji;
-import Walter.entities.BlackRole;
-import Walter.entities.BlackWebhook;
+import Walter.entities.*;
 import Walter.exceptions.CommandExecutionException;
 import Walter.exceptions.ParseException;
 import Walter.exceptions.ReasonedException;

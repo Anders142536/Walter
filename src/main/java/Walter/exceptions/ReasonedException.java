@@ -1,7 +1,7 @@
 package Walter.exceptions;
 
 
-import Walter.Language;
+import Walter.entities.Language;
 
 public class ReasonedException extends Exception {
     private final String[] reasons;

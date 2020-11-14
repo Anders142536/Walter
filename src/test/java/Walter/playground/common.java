@@ -1,7 +1,6 @@
 package Walter.playground;
 
-import Walter.Language;
-import Walter.commands.patch;
+import Walter.entities.Language;
 import Walter.exceptions.CommandExecutionException;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;

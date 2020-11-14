@@ -1,6 +1,5 @@
 package Walter.commands;
 
-import Walter.Collection;
 import Walter.Parsers.Flag;
 import Walter.Parsers.StringOption;
 import Walter.entities.BlackRole;
@@ -16,10 +15,8 @@ public class watching extends Command {
 
     public watching() {
         super(new String[] {
-                "This command changes what Walter is watching to **media source**"
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE,
+                "This command changes what Walter is watching to **media source**",
                 "Dieser Command ändert was Walter gerade schaut zu **Medienquelle**"
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE
         });
         keywords = new String[][]{
                 {"watching"},

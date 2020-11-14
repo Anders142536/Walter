@@ -1,6 +1,7 @@
-package Walter;
+package Walter.entities;
 
-import Walter.entities.BlackRole;
+import Walter.Helper;
+import Walter.RoleHandler;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 

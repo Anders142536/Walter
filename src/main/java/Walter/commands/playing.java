@@ -1,6 +1,5 @@
 package Walter.commands;
 
-import Walter.Collection;
 import Walter.Parsers.Flag;
 import Walter.Parsers.StringOption;
 import Walter.entities.BlackRole;
@@ -16,10 +15,8 @@ public class playing extends Command {
 
     public playing() {
         super(new String[] {
-                "This command changes the game Walter is playing to **TEXT**"
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH,
+                "This command changes the game Walter is playing to **TEXT**",
                 "Dieser Command ändert das Spiel, das Walter gerade spielt, zu **TEXT**"
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE
         });
         keywords = new String[][]{
                 {"playing"},

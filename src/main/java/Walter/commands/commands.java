@@ -3,6 +3,7 @@ package Walter.commands;
 import Walter.*;
 import Walter.Parsers.Flag;
 import Walter.entities.BlackRole;
+import Walter.entities.Language;
 import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;

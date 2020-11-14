@@ -4,6 +4,7 @@ package Walter;
 
 import Walter.Parsers.*;
 import Walter.commands.*;
+import Walter.entities.Language;
 import Walter.exceptions.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.*;

@@ -1,6 +1,5 @@
 package Walter.commands;
 
-import Walter.Collection;
 import Walter.Helper;
 import Walter.Parsers.StringOption;
 import Walter.RoleHandler;
@@ -18,11 +17,9 @@ public class member extends Command {
     public member() {
         super(new String[] {
                 "This command assigns the role *member* to the user with the name **NAME**. This also revokes the" +
-                        " *guest*-role if the targeted user has it" +
-                        Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH,
+                        " *guest*-role if the targeted user has it",
                 "Dieser Command gibt dem User mit dem Namen **NAME** die *Member*-Rolle. Dies nimmt außerdem die " +
-                        "*Guest*-Rolle falls der Ziel-User diese hat" +
-                        Collection.CAUTION_QUOTES_FOR_WHITESPACE
+                        "*Guest*-Rolle falls der Ziel-User diese hat"
         });
         keywords = new String[][]{
                 {"member"},

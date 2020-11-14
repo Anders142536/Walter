@@ -1,6 +1,5 @@
 package Walter.commands;
 
-import Walter.Collection;
 import Walter.Parsers.Flag;
 import Walter.Parsers.StringOption;
 import Walter.entities.BlackRole;
@@ -16,10 +15,8 @@ public class listening extends Command {
 
     public listening() {
         super(new String[] {
-                "This command changes what Walter is listening to to **TEXT**"
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE_ENGLISH,
+                "This command changes what Walter is listening to to **TEXT**",
                 "Dieser Command ändert was Walter gerade hört zu **TEXT**"
-                        + Collection.CAUTION_QUOTES_FOR_WHITESPACE
         });
         keywords = new String[][]{
                 {"listening"},
