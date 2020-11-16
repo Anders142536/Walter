@@ -1,15 +1,7 @@
 package Walter.Settings;
 
-import Walter.exceptions.ReasonedException;
-
+//parent class for all settings in case something shall be introduced they all share
+//maybe checks wether or not it is given? a required flag?
 public abstract class Setting {
-
-
-    public Setting() {
-
-    }
-
-    public abstract void setValue(String value) throws ReasonedException;
-
 
 }
