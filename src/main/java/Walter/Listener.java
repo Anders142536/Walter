@@ -176,7 +176,7 @@ public class Listener extends ListenerAdapter {
 
         try {
             CommandProcessor.instance = new CommandProcessor();
-            Config.startUp();
+            Config.initialize();
             System.out.println("Walter launched successfully");
         } catch (ReasonedException e) {
             Helper.instance.logException(e.getReason(Language.ENGLISH));

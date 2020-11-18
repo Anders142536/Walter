@@ -1,47 +1,57 @@
 package Walter;
 
+import Walter.Settings.IntegerSetting;
 import Walter.entities.BlackChannel;
 import Walter.entities.BlackWebhook;
 import Walter.exceptions.ReasonedException;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.ini4j.Ini;
+import org.yaml.snakeyaml.Yaml;
 
-import java.awt.desktop.UserSessionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
 public class Config {
-    private static Ini config = new Ini();
+    private static Yaml config = new Yaml();
 
     //General
-    private static int dropZoneLimit;
+    private static IntegerSetting dropZoneLimit;
 
     //Hidden
     private static long configMessageID;
     private static boolean isLockdown;
 
-    public static void startUp() throws IOException, ReasonedException {
-        File iniFile = new File(Walter.location + "/config.ini");
-        if (!iniFile.exists()) {
-            System.out.println("Config file not found in " + iniFile.getPath());
-            File templateFile = new File(Walter.location + "/configtemplate.ini");
-            templateFile.createNewFile();
-            config = new Ini(templateFile);
-            config.put("General", "dropZoneLimit", 50);
-            config.put("Hidden", "servernews", "URL");
-            config.put("Hidden", "patchnotes", "URL");
-            config.put("Hidden", "configMessageID", "ID");
-            config.put("Hidden", "isLockdown", "false");
-            config.store();
+    public static void initialize() throws IOException, ReasonedException {
+        initializeSettings();
+        File yamlFile = new File(Walter.location + "/config.yaml");
+        if (!yamlFile.exists())
+            createTemplateYaml(yamlFile);
 
-            System.out.println("Config template created in " + templateFile.getPath());
-            throw new ReasonedException();
-        }
-        config = new Ini(iniFile);
+        config = new Yaml(yamlFile);
 
         loadFromFile();
+    }
+
+    private static void initializeSettings() {
+
+    }
+
+    private static void createTemplateYaml(File iniFile) throws IOException, ReasonedException {
+        System.out.println("Config file not found in " + iniFile.getPath());
+        File templateFile = new File(Walter.location + "/configtemplate.yaml");
+        templateFile.createNewFile();
+        config = new Ini(templateFile);
+        config.put("General", "dropZoneLimit", 50);
+        config.put("Hidden", "servernews", "URL");
+        config.put("Hidden", "patchnotes", "URL");
+        config.put("Hidden", "configMessageID", "ID");
+        config.put("Hidden", "isLockdown", "false");
+        config.store();
+
+        System.out.println("Config template created in " + templateFile.getPath());
+        throw new ReasonedException();
     }
 
     public static void loadFromFile() {

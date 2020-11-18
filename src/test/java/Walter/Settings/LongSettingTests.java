@@ -7,39 +7,35 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class IntegerSettingTests {
-    private IntegerSetting t;
+public class LongSettingTests {
+    private LongSetting t;
     private Random random = new Random();
 
-    private void resetIntegerSetting() {
-        t = new IntegerSetting();
-    }
+    private void resetLongSetting() { t = new LongSetting(); }
 
-    private void resetIntegerSetting(int max, int min) {
-        t = new IntegerSetting(max, min);
-    }
+    private void resetLongSetting(long max, long min) { t = new LongSetting(max, min); }
 
     @Test
     public void correctParameterlessStartup() {
-        resetIntegerSetting();
+        resetLongSetting();
 
         assertThrows(AssertionError.class, () -> t.getValue());
     }
 
     @Test
     public void correctParameterizedStartup() {
-        resetIntegerSetting(5, 0);
+        resetLongSetting(6L, 2L);
 
         assertThrows(AssertionError.class, () -> t.getValue());
     }
 
     @Test
     public void setDefaultParameterless() {
-        resetIntegerSetting();
+        resetLongSetting();
 
         //fuzzy
         for (int i = 0; i < 1000; i++) {
-            final int temp = random.nextInt();
+            final long temp = random.nextLong();
             assertDoesNotThrow(() -> t.setDefault(temp));
             assertEquals(temp, t.getValue());
         }
@@ -47,81 +43,81 @@ public class IntegerSettingTests {
 
     @Test
     public void setDefaultParameterized() {
-        resetIntegerSetting(5, 0);
+        resetLongSetting(32L, 22L);
 
-        assertDoesNotThrow(() -> t.setDefault(2));
-        assertEquals(2, t.getValue());
+        assertDoesNotThrow(() -> t.setDefault(24L));
+        assertEquals(24L, t.getValue());
     }
 
     @Test
     public void setDefaultParameterizedWithNoGap() {
-        resetIntegerSetting(0, 0);
+        resetLongSetting(0L, 0L);
 
-        assertDoesNotThrow(() -> t.setDefault(0));
-        assertEquals(0, t.getValue());
+        assertDoesNotThrow(() -> t.setDefault(0L));
+        assertEquals(0L, t.getValue());
     }
 
     @Test
     public void setWrongParameters() {
-        assertThrows(AssertionError.class, () -> resetIntegerSetting(-5, 5));
+        assertThrows(AssertionError.class, () -> resetLongSetting(-32L, 23L));
         assertNull(t);
     }
 
     @Test
     public void setMinLimitDefaultParameterless() {
-        resetIntegerSetting();
+        resetLongSetting();
 
-        assertDoesNotThrow(() -> t.setDefault(Integer.MIN_VALUE));
-        assertEquals(Integer.MIN_VALUE, t.getValue());
+        assertDoesNotThrow(() -> t.setDefault(Long.MIN_VALUE));
+        assertEquals(Long.MIN_VALUE, t.getValue());
     }
 
     @Test
     public void setMaxLimitDefaultParameterless() {
-        resetIntegerSetting();
+        resetLongSetting();
 
-        assertDoesNotThrow(() -> t.setDefault(Integer.MAX_VALUE));
-        assertEquals(Integer.MAX_VALUE, t.getValue());
+        assertDoesNotThrow(() -> t.setDefault(Long.MAX_VALUE));
+        assertEquals(Long.MAX_VALUE, t.getValue());
     }
 
     @Test
     public void setMinLimitDefaultParameterized() {
-        resetIntegerSetting(5, -5);
+        resetLongSetting(5L, -5L);
 
-        assertDoesNotThrow(() -> t.setDefault(-5));
-        assertEquals(-5, t.getValue());
+        assertDoesNotThrow(() -> t.setDefault(-5L));
+        assertEquals(-5L, t.getValue());
     }
 
     @Test
     public void setMaxLimitDefaultParameterized() {
-        resetIntegerSetting(5, -5);
+        resetLongSetting(5L, -5L);
 
-        assertDoesNotThrow(() -> t.setDefault(5));
-        assertEquals(5, t.getValue());
+        assertDoesNotThrow(() -> t.setDefault(5L));
+        assertEquals(5L, t.getValue());
     }
 
     @Test
     public void setTooLowDefault() {
-        resetIntegerSetting(5, -5);
+        resetLongSetting(5L, -5L);
 
-        assertThrows(ReasonedException.class, () -> t.setDefault(-6));
+        assertThrows(ReasonedException.class, () -> t.setDefault(-6L));
         assertThrows(AssertionError.class, () -> t.getValue());
     }
 
     @Test
     public void setTooHighDefault() {
-        resetIntegerSetting(5, -5);
+        resetLongSetting(5L, -5L);
 
-        assertThrows(ReasonedException.class, () -> t.setDefault(6));
+        assertThrows(ReasonedException.class, () -> t.setDefault(6L));
         assertThrows(AssertionError.class, () -> t.getValue());
     }
 
     @Test
     public void setValueParameterless() {
-        resetIntegerSetting();
+        resetLongSetting();
 
         //fuzzy
         for (int i = 0; i < 1000; i++) {
-            int temp = random.nextInt();
+            long temp = random.nextLong();
             assertDoesNotThrow(() -> t.setValue(temp + ""));
             assertEquals(temp, t.getValue());
         }
@@ -129,7 +125,7 @@ public class IntegerSettingTests {
 
     @Test
     public void setValueParameterized() {
-        resetIntegerSetting(5, -5);
+        resetLongSetting(5L, -5L);
 
         assertDoesNotThrow(() -> t.setValue("1"));
         assertEquals(1, t.getValue());
@@ -137,39 +133,39 @@ public class IntegerSettingTests {
 
     @Test
     public void setMinLimitValueParameterless() {
-        resetIntegerSetting();
+        resetLongSetting();
 
-        assertDoesNotThrow(() -> t.setValue(Integer.MIN_VALUE + ""));
-        assertEquals(Integer.MIN_VALUE, t.getValue());
+        assertDoesNotThrow(() -> t.setValue(Long.MIN_VALUE + ""));
+        assertEquals(Long.MIN_VALUE, t.getValue());
     }
 
     @Test
     public void setMaxLimitValueParameterless() {
-        resetIntegerSetting();
+        resetLongSetting();
 
-        assertDoesNotThrow(() -> t.setValue(Integer.MAX_VALUE + ""));
-        assertEquals(Integer.MAX_VALUE, t.getValue());
+        assertDoesNotThrow(() -> t.setValue(Long.MAX_VALUE + ""));
+        assertEquals(Long.MAX_VALUE, t.getValue());
     }
 
     @Test
     public void setMinLimitValueParameterized() {
-        resetIntegerSetting(501, -3);
+        resetLongSetting(23L, -27);
 
-        assertDoesNotThrow(() -> t.setValue("-3"));
-        assertEquals(-3, t.getValue());
+        assertDoesNotThrow(() -> t.setValue("-27"));
+        assertEquals(-3L, t.getValue());
     }
 
     @Test
     public void setMaxLimitValueParameterized() {
-        resetIntegerSetting(3, -239);
+        resetLongSetting(732L, -23);
 
-        assertDoesNotThrow(() -> t.setValue("3"));
-        assertEquals(3, t.getValue());
+        assertDoesNotThrow(() -> t.setValue("732"));
+        assertEquals(732L, t.getValue());
     }
 
     @Test
     public void setTooLowValue() {
-        resetIntegerSetting(234, 1);
+        resetLongSetting(234L, 3L);
 
         assertThrows(ReasonedException.class, () -> t.setValue("0"));
         assertThrows(AssertionError.class, () -> t.getValue());
@@ -177,20 +173,20 @@ public class IntegerSettingTests {
 
     @Test
     public void setTooHighValue() {
-        resetIntegerSetting(-1, -54);
+        resetLongSetting(-832L, -92347L);
 
-        assertThrows(ReasonedException.class, () -> t.setValue("83"));
+        assertThrows(ReasonedException.class, () -> t.setValue("7843"));
         assertThrows(AssertionError.class, () -> t.getValue());
     }
 
     @Test
     public void getValueIfValueAndDefaultAreGiven() {
-        resetIntegerSetting();
+        resetLongSetting();
 
         //fuzzy
         for (int i = 0; i < 1000; i++) {
-            final int temp = random.nextInt();
-            assertDoesNotThrow(() -> t.setDefault(random.nextInt()));
+            final long temp = random.nextLong();
+            assertDoesNotThrow(() -> t.setDefault(random.nextLong()));
             assertDoesNotThrow(() -> t.setValue(temp + ""));
             assertEquals(temp, t.getValue());
         }
