@@ -3,19 +3,24 @@ package Walter.exceptions;
 
 import Walter.entities.Language;
 
+import javax.annotation.Nonnull;
+
 public class ReasonedException extends Exception {
     private final String[] reasons;
 
     public ReasonedException() {
-        this(null);
-    }
-
-    public ReasonedException(String[] reasons) {
-        if (reasons == null) reasons = new String[] {
+        this(new String[] {
                 "No reason given",
                 "Kein Grund gegeben"
-        };
+        });
+    }
+
+    public ReasonedException(@Nonnull String[] reasons) {
         this.reasons = reasons;
+    }
+
+    public ReasonedException(@Nonnull String reason) {
+        this.reasons = new String[] { reason };
     }
 
     public String getReason(Language lang) {

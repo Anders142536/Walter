@@ -1,57 +1,67 @@
 package Walter;
 
-import Walter.Settings.IntegerSetting;
+import Walter.Settings.*;
 import Walter.entities.BlackChannel;
 import Walter.entities.BlackWebhook;
 import Walter.exceptions.ReasonedException;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
-import org.ini4j.Ini;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Config {
     private static Yaml config = new Yaml();
 
     //General
-    private static IntegerSetting dropZoneLimit;
+    public static IntegerSetting dropZoneLimit;
 
     //Hidden
-    private static long configMessageID;
-    private static boolean isLockdown;
+    public static LongSetting configMessageID;
+    public static BoolSetting isLockdown;
 
     public static void initialize() throws IOException, ReasonedException {
         initializeSettings();
         File yamlFile = new File(Walter.location + "/config.yaml");
         if (!yamlFile.exists())
-            createTemplateYaml(yamlFile);
-
-        config = new Yaml(yamlFile);
-
-        loadFromFile();
+            createTemplateSettingsYaml(yamlFile);
+        else
+            loadFromFile();
     }
 
-    private static void initializeSettings() {
-
+    private static void initializeSettings() throws ReasonedException {
+        dropZoneLimit = new IntegerSetting(100, 0);
+        dropZoneLimit.setDefault(50);
+        configMessageID = new LongSetting();
+        isLockdown = new BoolSetting();
+        isLockdown.setDefault(false);
     }
 
-    private static void createTemplateYaml(File iniFile) throws IOException, ReasonedException {
+    private static void createTemplateSettingsYaml(File iniFile) throws IOException, ReasonedException {
         System.out.println("Config file not found in " + iniFile.getPath());
+        Map<String, Object> template = new HashMap<>();
+        //TODO: find a way to separate hidden and non-hidden settings in file
+        template.put("dropZoneLimit", 50); //TODO: give settings a getDefault and test it
+        template.put("servernews", "URL");
+        template.put("patchnotes", "URL");
+        template.put("configMessageID", "ID");
+        template.put("isLockdown", false);
+
         File templateFile = new File(Walter.location + "/configtemplate.yaml");
         templateFile.createNewFile();
-        config = new Ini(templateFile);
-        config.put("General", "dropZoneLimit", 50);
-        config.put("Hidden", "servernews", "URL");
-        config.put("Hidden", "patchnotes", "URL");
-        config.put("Hidden", "configMessageID", "ID");
-        config.put("Hidden", "isLockdown", "false");
-        config.store();
+        try (FileWriter writer = new FileWriter(templateFile)) {
+            config = new Yaml();
+            config.dump(template, writer);
+        } catch (YAMLException e) {
+            throw new ReasonedException("There was an issue writing the template config:\n" + e.getMessage());
+        }
 
-        System.out.println("Config template created in " + templateFile.getPath());
-        throw new ReasonedException();
+        throw new ReasonedException("Config template created in " + templateFile.getPath());
     }
 
     public static void loadFromFile() {

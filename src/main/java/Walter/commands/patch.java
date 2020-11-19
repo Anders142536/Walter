@@ -64,23 +64,17 @@ public class patch extends Command {
 
     private Map<String, Object> loadPatchFileToYaml(String version) throws CommandExecutionException {
         String filename = Walter.location + "/patchnotes/"+ version + "-patchnotes.yaml";
-        try {
-            File file = new File(filename);
-            FileInputStream reader = new FileInputStream(file);
-            byte[] filedata = new byte[(int) file.length()];
-            reader.read(filedata);
-            reader.close();
-
-            return notes.load(new String(filedata, "UTF-8"));
+        try (FileInputStream reader = new FileInputStream(new File(filename))){
+            return notes.load(reader);
         } catch (FileNotFoundException e) {
             throw new CommandExecutionException(new String[] {
                     "The file " + filename + " was not found",
-                    "Die datei " + filename + " wurde nicht gefunden"
+                    "Die Datei " + filename + " wurde nicht gefunden"
             });
         } catch (IOException e) {
             throw new CommandExecutionException(new String[] {
                     "Something went wrong on reading the file " + filename,
-                    "Etwas ist beim lesen der Date " + filename + " schief gelaufen"
+                    "Etwas ist beim lesen der Datei " + filename + " schief gelaufen"
             });
         }
     }
