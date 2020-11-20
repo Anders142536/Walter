@@ -16,7 +16,7 @@ public class StringSettingTests {
 
     @Test
     public void correctStartup() {
-        assertThrows(AssertionError.class, () -> t.getValue());
+        assertEquals("Undefined", t.getValue());
     }
 
     @Test

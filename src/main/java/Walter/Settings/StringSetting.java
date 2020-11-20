@@ -13,7 +13,6 @@ public class StringSetting extends Setting {
 
     @Nonnull
     public String getValue() {
-        assert(value != null);
-        return value;
+        return (value == null ? "Undefined" : value);
     }
 }

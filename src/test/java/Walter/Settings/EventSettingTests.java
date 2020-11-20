@@ -10,11 +10,11 @@ public class EventSettingTests {
 
     @BeforeEach
     public void resetEventSetting() {
-        t = new EventSetting("Testevent");
+        t = new EventSetting();
     }
 
-    @Test
-    public void correctStartup() {
-        assertEquals("Testevent", t.getName());
-    }
+//    @Test
+//    public void correctStartup() {
+//        assertEquals("Testevent", t.getName());
+//    }
 }

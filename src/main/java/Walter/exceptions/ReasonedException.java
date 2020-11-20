@@ -28,6 +28,10 @@ public class ReasonedException extends Exception {
         return reasons[lang.index];
     }
 
+    public String getReason() {
+        return getReason(Language.ENGLISH);
+    }
+
     public String[] getReasons() {
         return reasons;
     }

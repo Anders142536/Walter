@@ -152,7 +152,7 @@ public class LongSettingTests {
         resetLongSetting(23L, -27);
 
         assertDoesNotThrow(() -> t.setValue("-27"));
-        assertEquals(-3L, t.getValue());
+        assertEquals(-27L, t.getValue());
     }
 
     @Test

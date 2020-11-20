@@ -11,14 +11,14 @@ public class LongSetting extends Setting {
     final long lowerLimit;
 
     public LongSetting() {
-        upperLimit = Long.MAX_VALUE;
-        lowerLimit = Long.MIN_VALUE;
+        this(Long.MAX_VALUE, Long.MIN_VALUE);
     }
 
     public LongSetting(long upperLimit, long lowerLimit) {
-        assert(upperLimit > lowerLimit);
+        assert(upperLimit >= lowerLimit);
         this.upperLimit = upperLimit;
         this.lowerLimit = lowerLimit;
+        defaultValue = lowerLimit;
     }
 
     public void setDefault(long defaultValue) throws ReasonedException {
@@ -39,7 +39,6 @@ public class LongSetting extends Setting {
     }
 
     public long getValue() {
-        assert(value != null || defaultValue != null);
         return (value == null ? defaultValue : value);
     }
 }

@@ -28,7 +28,7 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         TextChannel general = Helper.instance.getTextChannel(BlackChannel.GENERAL);
-        if (Config.getIsLockdown()) {
+        if (Config.isLockdown.getValue()) {
             Helper.instance.logInfo("User " + event.getUser().getAsMention() + " joined us during lockdown " +
                     "and might still need permissions");
         } else {
