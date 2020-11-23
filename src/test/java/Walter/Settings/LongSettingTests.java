@@ -19,14 +19,14 @@ public class LongSettingTests {
     public void correctParameterlessStartup() {
         resetLongSetting();
 
-        assertThrows(AssertionError.class, () -> t.getValue());
+        assertEquals(Long.MIN_VALUE, t.getValue());
     }
 
     @Test
     public void correctParameterizedStartup() {
         resetLongSetting(6L, 2L);
 
-        assertThrows(AssertionError.class, () -> t.getValue());
+        assertEquals(2L, t.getValue());
     }
 
     @Test
@@ -100,7 +100,7 @@ public class LongSettingTests {
         resetLongSetting(5L, -5L);
 
         assertThrows(ReasonedException.class, () -> t.setDefault(-6L));
-        assertThrows(AssertionError.class, () -> t.getValue());
+        assertEquals(-5L, t.getValue());
     }
 
     @Test
@@ -108,7 +108,7 @@ public class LongSettingTests {
         resetLongSetting(5L, -5L);
 
         assertThrows(ReasonedException.class, () -> t.setDefault(6L));
-        assertThrows(AssertionError.class, () -> t.getValue());
+        assertEquals(-5, t.getValue());
     }
 
     @Test
@@ -168,7 +168,7 @@ public class LongSettingTests {
         resetLongSetting(234L, 3L);
 
         assertThrows(ReasonedException.class, () -> t.setValue("0"));
-        assertThrows(AssertionError.class, () -> t.getValue());
+        assertEquals(3L, t.getValue());
     }
 
     @Test
@@ -176,7 +176,7 @@ public class LongSettingTests {
         resetLongSetting(-832L, -92347L);
 
         assertThrows(ReasonedException.class, () -> t.setValue("7843"));
-        assertThrows(AssertionError.class, () -> t.getValue());
+        assertEquals(-92347L, t.getValue());
     }
 
     @Test

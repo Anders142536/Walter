@@ -8,10 +8,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EventSettingTests {
     private EventSetting t;
 
-    @BeforeEach
-    public void resetEventSetting() {
-        t = new EventSetting();
-    }
+//    @BeforeEach
+//    public void resetEventSetting() {
+//        t = new EventSetting();
+//    }
 
 //    @Test
 //    public void correctStartup() {

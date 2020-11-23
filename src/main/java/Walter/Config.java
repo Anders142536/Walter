@@ -6,6 +6,8 @@ import Walter.entities.BlackWebhook;
 import Walter.exceptions.ReasonedException;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.jetbrains.annotations.NotNull;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
 
@@ -40,17 +42,31 @@ public class Config {
 
     private static void initializeSettings() throws ReasonedException {
         dropZoneLimit = new IntegerSetting(100, 30);
+        dropZoneLimit.setName("dropZoneLimit");
         dropZoneLimit.setDefault(50);
+
+        //events are dynamically loaded in .loadFromFile()
         eventSettingList = new ArrayList<>();
 
         configMessageID = new LongSetting();
+        configMessageID.setName("configMessageID");
+
         isLockdown = new BoolSetting(); //Default is false
+        isLockdown.setName("isLockdown");
+
         servernews = new StringSetting();
+        servernews.setName("servernews");
+
         patchnotes = new StringSetting();
+        patchnotes.setName("patchnotes");
     }
 
     private static void createTemplateSettingsYaml() throws IOException, ReasonedException {
         System.out.println("Config.yaml file not found in folder");
+
+        //if the list of events is empty we add one that can be printed to make it easier to add one in the file
+        if (eventSettingList.isEmpty()) eventSettingList.add(new SeasonSetting());
+
         writeToFile(Walter.location + "/configtemplate.yaml");
         throw new ReasonedException("Config template created in folder called configtemplate.yaml");
     }
@@ -59,18 +75,20 @@ public class Config {
         Map<String, Object> template = new HashMap<>();
 
         //TODO: find a way to separate hidden and non-hidden settings in file
-        template.put("dropZoneLimit", dropZoneLimit.getValue());
-        template.put("events", eventSettingList);
+        template.put(dropZoneLimit.getName(), dropZoneLimit.getValue());
+        template.put("EVENTS", eventSettingList);
 
-        template.put("servernews", servernews.getValue());
-        template.put("patchnotes", patchnotes.getValue());
-        template.put("configMessageID", configMessageID.getValue());
-        template.put("isLockdown", isLockdown.getValue());
+        template.put(servernews.getName(), servernews.getValue());
+        template.put(patchnotes.getName(), patchnotes.getValue());
+        template.put(configMessageID.getName(), configMessageID.getValue());
+        template.put(isLockdown.getName(), isLockdown.getValue());
 
         File templateFile = new File(filePath);
         templateFile.createNewFile();
         try (FileWriter writer = new FileWriter(templateFile)) {
-            config = new Yaml();
+            DumperOptions dumpOptions = new DumperOptions();
+            dumpOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+            config = new Yaml(dumpOptions);
             config.dump(template, writer);
         } catch (YAMLException e) {
             throw new ReasonedException("There was an issue writing the template config:\n" + e.getMessage());
@@ -81,16 +99,15 @@ public class Config {
         Map<String, Object> yaml = loadYamlFileToMap();
 
         //General
-        dropZoneLimit.setValue(String.valueOf(yaml.get("dropZoneLimit")));
+        dropZoneLimit.setValue(String.valueOf(yaml.get(dropZoneLimit.getName())));
         //TODO: load events
 
         //Hidden
-        configMessageID.setValue(String.valueOf(yaml.get("configMessageID")));
-        isLockdown.setValue(String.valueOf(yaml.get("isLockdown")));
+        configMessageID.setValue(String.valueOf(yaml.get(configMessageID.getName())));
+        isLockdown.setValue(String.valueOf(yaml.get(isLockdown.getName())));
 
-
-        BlackWebhook.SERVERNEWS = new BlackWebhook(String.valueOf(yaml.get("servernotes")));
-        BlackWebhook.PATCHNOTES = new BlackWebhook(String.valueOf(yaml.get("patchnotes")));
+        BlackWebhook.SERVERNEWS = new BlackWebhook(String.valueOf(yaml.get(servernews.getName())));
+        BlackWebhook.PATCHNOTES = new BlackWebhook(String.valueOf(yaml.get(patchnotes.getName())));
 
         writeToConfigChannel();
     }
@@ -106,16 +123,12 @@ public class Config {
     }
 
     private static void writeToConfigChannel() {
-        StringBuilder toWrite = new StringBuilder("```ini\n");
-
-        //list all non-hidden settings like this
-        toWrite.append(String.format("%-20s = %s\n", "dropzoneLimit", dropZoneLimit.getValue()));
-
-        toWrite.append("```");
+        String configText = buildConfigText();
         TextChannel configChannel = BlackChannel.CONFIG.getInstance();
         Message configMessage = configChannel.retrieveMessageById(configMessageID.getValue()).complete();
-        if (configMessage != null) configMessage.editMessage(toWrite.toString()).queue();
-        else configChannel.sendMessage(toWrite.toString()).queue(
+        if (configMessage != null) configMessage.editMessage(configText).queue();
+        else configChannel.sendMessage(configText).queue(
+                //if the config message was not found we send a new one, saving the newly sent config message in the setting
                 newMsg -> {
                     try {
                         configMessageID.setValue(newMsg.getId());
@@ -127,5 +140,19 @@ public class Config {
                     }
                 }
         );
+    }
+
+    @NotNull
+    private static String buildConfigText() {
+        StringBuilder toWrite = new StringBuilder("```ini\n");
+
+        //list all non-hidden settings like this
+        toWrite.append(String.format("%-20s = %s\n", dropZoneLimit.getName(), dropZoneLimit.getValue()));
+        toWrite.append("\nEvents:\n");
+        for (EventSetting sett: eventSettingList) {
+            toWrite.append(String.format("%s\n", sett.toString()));
+        }
+        toWrite.append("```");
+        return toWrite.toString();
     }
 }

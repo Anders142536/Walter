@@ -3,8 +3,8 @@ New Features:
   - title:
     description:
 Optimizations:
-  - title:
-    description:
+  - title: Complete rework of how settings work
+    description: Before some settings were nothing more than mere variables that got a value via some ini file, all cramped up in one, very chaotic class. Now it is written in a very easily maintainable and expandable structure that allows for default values, limits etc., all nicely lined up in a separate package.
 Bug Fixes:
-  - title:
-    description:
+  - title: People that leave are now announced both with their name and their mention in the admin channel
+    description: When someone is mentioned you are not friends with and share no server with the mention is shown as just some formatted numbers after a relogin, which is useless.

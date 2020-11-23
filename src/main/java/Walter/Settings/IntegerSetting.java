@@ -3,12 +3,11 @@ package Walter.Settings;
 import Walter.exceptions.ReasonedException;
 
 public class IntegerSetting extends Setting {
-    Integer value;
+    private Integer value;
 
-    Integer defaultValue;
-
-    final int upperLimit;
-    final int lowerLimit;
+    private Integer defaultValue;
+    private final int upperLimit;
+    private final int lowerLimit;
 
     public IntegerSetting() {
         upperLimit = Integer.MAX_VALUE;

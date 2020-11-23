@@ -47,7 +47,7 @@ public class Listener extends ListenerAdapter {
 
         String leftUserMention = event.getUser().getAsMention();
 
-        admin.sendMessage(leftUserMention + " hat unseren Server verlassen.").queue();
+        admin.sendMessage(event.getUser().getName() + " (" + leftUserMention + ") hat unseren Server verlassen.").queue();
     }
 
     //when someone is given the member or guest role walter sends them a private message with some basic information

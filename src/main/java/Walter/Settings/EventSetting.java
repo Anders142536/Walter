@@ -4,13 +4,15 @@ import javax.annotation.Nonnull;
 import java.util.Date;
 
 //TODO: make this abstract, make all events extend this class
-public class EventSetting extends Setting {
-    //Datetime start
-    public String name;
-    public Date start;
-    public Date end;
+public abstract class EventSetting extends Setting {
+    Date startDate;
 
-    public EventSetting() {
-
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
+
+    public Date getStartDate() { return startDate; }
+
+
+    public abstract String toString();
 }

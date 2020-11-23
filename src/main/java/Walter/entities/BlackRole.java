@@ -3,6 +3,9 @@ package Walter.entities;
 import Walter.RoleHandler;
 import net.dv8tion.jda.api.entities.Role;
 
+import javax.annotation.Nonnull;
+import java.awt.*;
+
 public enum BlackRole {
     ADMIN       (254264388209475584L),
     BOT         (0L),
@@ -26,4 +29,8 @@ public enum BlackRole {
     public String getName() { return getInstance().getName(); }
 
     public String getAsMention() { return getInstance().getAsMention(); }
+
+    public void setColor(@Nonnull Color color) {
+        getInstance().getManager().setColor(color);
+    }
 }

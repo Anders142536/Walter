@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class common {
 
-    @Test
+    //@Test
     public void yamlParseTests() {
         Map<String, Object> map;
         try {
@@ -46,7 +46,7 @@ public class common {
 
     }
 
-    @Test
+    //@Test
     public void ExceptionTests() {
         CommandExecutionException e = new CommandExecutionException(new String[] { "a", "b"});
 
@@ -55,7 +55,7 @@ public class common {
         System.out.println("debug stopper");
     }
 
-    @Test
+    //@Test
     public void commonTest() {
     }
 }
