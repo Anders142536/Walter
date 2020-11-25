@@ -7,20 +7,12 @@ import javax.annotation.Nonnull;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Date;
 
 public class SeasonSetting extends EventSetting {
-    private Date endDate;
     private String serverLogoFile;
     private String walterLogoFile;
     private Color memberColor;
 
-
-    public void setEndDate(@Nonnull Date endDate) throws ReasonedException {
-        if (startDate == null || startDate.after(endDate))
-            throw new ReasonedException("Enddate must not be before startdate");
-        this.endDate = endDate;
-    }
 
     public void setServerLogoFile(@Nonnull String filename) throws FileNotFoundException {
         if (fileExists(filename)) serverLogoFile = filename;
@@ -45,15 +37,11 @@ public class SeasonSetting extends EventSetting {
         return toTest.exists();
     }
 
-    public boolean hasEndDate() { return endDate != null; }
-
     public boolean hasServerLogoFile() { return serverLogoFile != null; }
 
     public boolean hasWalterLogoFile() { return walterLogoFile != null; }
 
     public boolean hasMemberColor() { return memberColor != null; }
-
-    public Date getEndDate() { return endDate; }
 
     public String getServerLogoFile() { return serverLogoFile; }
 
@@ -62,6 +50,10 @@ public class SeasonSetting extends EventSetting {
     public Color getMemberColor() { return memberColor; }
 
     public String toString() {
-        return "";
+        return    "name:         " + getName() +
+                "\nstart date:   " + (hasStartDate() ? startDate : "DEFAULT") +
+                "\nmember color: " + (hasMemberColor() ? memberColor : "DEFAULT") +
+                "\nserver logo:  " + (hasServerLogoFile() ? serverLogoFile : "DEFAULT") +
+                "\nwalter logo:  " + (hasWalterLogoFile() ? walterLogoFile : "DEFAULT");
     }
 }
