@@ -1,59 +1,24 @@
 package Walter.Settings;
 
-import Walter.Walter;
-import Walter.exceptions.ReasonedException;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
 
 public class SeasonSetting extends EventSetting {
-    private String serverLogoFile;
-    private String walterLogoFile;
-    private Color memberColor;
+    public final FileSetting serverLogoFile;
+    public final FileSetting walterLogoFile;
+    public final ColorSetting memberColor;
 
+    public SeasonSetting() {
+        String directory = "/events/";
+        serverLogoFile = new FileSetting(directory);
+        walterLogoFile = new FileSetting(directory);
+        memberColor = new ColorSetting();
 
-    public void setServerLogoFile(@Nonnull String filename) throws FileNotFoundException {
-        if (fileExists(filename)) serverLogoFile = filename;
-        else throw new FileNotFoundException("The given server logo file was not found in the events folder");
     }
-
-    public void setWalterLogoFile(@Nonnull String filename) throws FileNotFoundException {
-        if (fileExists(filename)) walterLogoFile = filename;
-        else throw new FileNotFoundException("The given walter logo file was not found in the events folder");
-    }
-
-    public void setMemberColor(@Nonnull String color) throws ReasonedException {
-        try {
-            memberColor = Color.decode(color);
-        } catch (NumberFormatException e) {
-            throw new ReasonedException("Could not read a color from given color " + color);
-        }
-    }
-
-    private boolean fileExists(String filename) {
-        File toTest = new File(Walter.location + "/events/" + filename);
-        return toTest.exists();
-    }
-
-    public boolean hasServerLogoFile() { return serverLogoFile != null; }
-
-    public boolean hasWalterLogoFile() { return walterLogoFile != null; }
-
-    public boolean hasMemberColor() { return memberColor != null; }
-
-    public String getServerLogoFile() { return serverLogoFile; }
-
-    public String getWalterLogoFile() { return walterLogoFile; }
-
-    public Color getMemberColor() { return memberColor; }
 
     public String toString() {
         return    "name:         " + getName() +
-                "\nstart date:   " + (hasStartDate() ? startDate : "DEFAULT") +
-                "\nmember color: " + (hasMemberColor() ? memberColor : "DEFAULT") +
-                "\nserver logo:  " + (hasServerLogoFile() ? serverLogoFile : "DEFAULT") +
-                "\nwalter logo:  " + (hasWalterLogoFile() ? walterLogoFile : "DEFAULT");
+                "\nstart date:   " + (hasStartDate() ? startDate : "Undefined") +
+                "\nmember color: " + (memberColor.hasValue() ? memberColor.getValueString() : "DEFAULT") +
+                "\nserver logo:  " + (serverLogoFile.hasValue() ? serverLogoFile.getValueString() : "DEFAULT") +
+                "\nwalter logo:  " + (walterLogoFile.hasValue() ? walterLogoFile.getValueString() : "DEFAULT");
     }
 }

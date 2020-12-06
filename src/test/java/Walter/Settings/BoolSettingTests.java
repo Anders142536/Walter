@@ -1,5 +1,6 @@
 package Walter.Settings;
 
+import Walter.exceptions.ReasonedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,9 @@ public class BoolSettingTests {
 
     @Test
     public void correctStartup() {
-        assertFalse(t.getValue());
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
     }
 
     @Test
@@ -28,23 +31,34 @@ public class BoolSettingTests {
         for (int i = 0; i < 1000; i++) {
             final boolean temp = random.nextBoolean();
             assertDoesNotThrow(() -> t.setValue(temp));
+            assertTrue(t.hasValue());
             assertEquals(temp, t.getValue());
+            assertEquals(String.valueOf(temp), t.getValueString());
         }
     }
 
     @Test
-    public void setValueString() {
-        t.setValue("true");
+    public void setValueTrueString() {
+        assertDoesNotThrow(() -> t.setValue("true"));
+        assertTrue(t.hasValue());
         assertTrue(t.getValue());
+        assertEquals("true", t.getValueString());
+    }
 
-        t.setValue("false");
+    @Test
+    public void setValueFalseString() {
+        assertDoesNotThrow(() -> t.setValue("false"));
+        assertTrue(t.hasValue());
         assertFalse(t.getValue());
+        assertEquals("false", t.getValueString());
     }
 
     @Test
     public void setInvalidStringValue() {
-        assertThrows(AssertionError.class, () -> t.setValue("true "));
-        assertFalse(t.getValue());
+        assertThrows(ReasonedException.class, () -> t.setValue("true "));
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
     }
 
 }

@@ -19,14 +19,18 @@ public class LongSettingTests {
     public void correctParameterlessStartup() {
         resetLongSetting();
 
-        assertEquals(Long.MIN_VALUE, t.getValue());
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
     }
 
     @Test
     public void correctParameterizedStartup() {
         resetLongSetting(6L, 2L);
 
-        assertEquals(2L, t.getValue());
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
     }
 
     @Test
@@ -37,7 +41,9 @@ public class LongSettingTests {
         for (int i = 0; i < 1000; i++) {
             final long temp = random.nextLong();
             assertDoesNotThrow(() -> t.setDefault(temp));
+            assertFalse(t.hasValue());
             assertEquals(temp, t.getValue());
+            assertEquals(String.valueOf(temp), t.getValueString());
         }
     }
 
@@ -46,7 +52,9 @@ public class LongSettingTests {
         resetLongSetting(32L, 22L);
 
         assertDoesNotThrow(() -> t.setDefault(24L));
+        assertFalse(t.hasValue());
         assertEquals(24L, t.getValue());
+        assertEquals("24", t.getValueString());
     }
 
     @Test
@@ -54,7 +62,9 @@ public class LongSettingTests {
         resetLongSetting(0L, 0L);
 
         assertDoesNotThrow(() -> t.setDefault(0L));
+        assertFalse(t.hasValue());
         assertEquals(0L, t.getValue());
+        assertEquals("0", t.getValueString());
     }
 
     @Test
@@ -68,7 +78,9 @@ public class LongSettingTests {
         resetLongSetting();
 
         assertDoesNotThrow(() -> t.setDefault(Long.MIN_VALUE));
+        assertFalse(t.hasValue());
         assertEquals(Long.MIN_VALUE, t.getValue());
+        assertEquals(String.valueOf(Long.MIN_VALUE), t.getValueString());
     }
 
     @Test
@@ -76,7 +88,9 @@ public class LongSettingTests {
         resetLongSetting();
 
         assertDoesNotThrow(() -> t.setDefault(Long.MAX_VALUE));
+        assertFalse(t.hasValue());
         assertEquals(Long.MAX_VALUE, t.getValue());
+        assertEquals(String.valueOf(Long.MAX_VALUE), t.getValueString());
     }
 
     @Test
@@ -84,7 +98,9 @@ public class LongSettingTests {
         resetLongSetting(5L, -5L);
 
         assertDoesNotThrow(() -> t.setDefault(-5L));
+        assertFalse(t.hasValue());
         assertEquals(-5L, t.getValue());
+        assertEquals("-5", t.getValueString());
     }
 
     @Test
@@ -92,7 +108,9 @@ public class LongSettingTests {
         resetLongSetting(5L, -5L);
 
         assertDoesNotThrow(() -> t.setDefault(5L));
+        assertFalse(t.hasValue());
         assertEquals(5L, t.getValue());
+        assertEquals("5", t.getValueString());
     }
 
     @Test
@@ -100,7 +118,9 @@ public class LongSettingTests {
         resetLongSetting(5L, -5L);
 
         assertThrows(ReasonedException.class, () -> t.setDefault(-6L));
-        assertEquals(-5L, t.getValue());
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
     }
 
     @Test
@@ -108,7 +128,9 @@ public class LongSettingTests {
         resetLongSetting(5L, -5L);
 
         assertThrows(ReasonedException.class, () -> t.setDefault(6L));
-        assertEquals(-5, t.getValue());
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
     }
 
     @Test
@@ -118,8 +140,10 @@ public class LongSettingTests {
         //fuzzy
         for (int i = 0; i < 1000; i++) {
             long temp = random.nextLong();
-            assertDoesNotThrow(() -> t.setValue(temp + ""));
+            assertDoesNotThrow(() -> t.setValue(String.valueOf(temp)));
+            assertTrue(t.hasValue());
             assertEquals(temp, t.getValue());
+            assertEquals(String.valueOf(temp), t.getValueString());
         }
     }
 
@@ -128,23 +152,29 @@ public class LongSettingTests {
         resetLongSetting(5L, -5L);
 
         assertDoesNotThrow(() -> t.setValue("1"));
+        assertTrue(t.hasValue());
         assertEquals(1, t.getValue());
+        assertEquals("1", t.getValueString());
     }
 
     @Test
     public void setMinLimitValueParameterless() {
         resetLongSetting();
 
-        assertDoesNotThrow(() -> t.setValue(Long.MIN_VALUE + ""));
+        assertDoesNotThrow(() -> t.setValue(String.valueOf(Long.MIN_VALUE)));
+        assertTrue(t.hasValue());
         assertEquals(Long.MIN_VALUE, t.getValue());
+        assertEquals(String.valueOf(Long.MIN_VALUE), t.getValueString());
     }
 
     @Test
     public void setMaxLimitValueParameterless() {
         resetLongSetting();
 
-        assertDoesNotThrow(() -> t.setValue(Long.MAX_VALUE + ""));
+        assertDoesNotThrow(() -> t.setValue(String.valueOf(Long.MAX_VALUE)));
+        assertTrue(t.hasValue());
         assertEquals(Long.MAX_VALUE, t.getValue());
+        assertEquals(String.valueOf(Long.MAX_VALUE), t.getValueString());
     }
 
     @Test
@@ -152,7 +182,9 @@ public class LongSettingTests {
         resetLongSetting(23L, -27);
 
         assertDoesNotThrow(() -> t.setValue("-27"));
+        assertTrue(t.hasValue());
         assertEquals(-27L, t.getValue());
+        assertEquals("-27", t.getValueString());
     }
 
     @Test
@@ -160,7 +192,9 @@ public class LongSettingTests {
         resetLongSetting(732L, -23);
 
         assertDoesNotThrow(() -> t.setValue("732"));
+        assertTrue(t.hasValue());
         assertEquals(732L, t.getValue());
+        assertEquals("732", t.getValueString());
     }
 
     @Test
@@ -168,7 +202,9 @@ public class LongSettingTests {
         resetLongSetting(234L, 3L);
 
         assertThrows(ReasonedException.class, () -> t.setValue("0"));
-        assertEquals(3L, t.getValue());
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
     }
 
     @Test
@@ -176,7 +212,9 @@ public class LongSettingTests {
         resetLongSetting(-832L, -92347L);
 
         assertThrows(ReasonedException.class, () -> t.setValue("7843"));
-        assertEquals(-92347L, t.getValue());
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
     }
 
     @Test
@@ -187,8 +225,10 @@ public class LongSettingTests {
         for (int i = 0; i < 1000; i++) {
             final long temp = random.nextLong();
             assertDoesNotThrow(() -> t.setDefault(random.nextLong()));
-            assertDoesNotThrow(() -> t.setValue(temp + ""));
+            assertDoesNotThrow(() -> t.setValue(String.valueOf(temp)));
+            assertTrue(t.hasValue());
             assertEquals(temp, t.getValue());
+            assertEquals(String.valueOf(temp), t.getValueString());
         }
     }
 }

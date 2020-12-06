@@ -147,7 +147,7 @@ public class Config {
         StringBuilder toWrite = new StringBuilder("```ini\n");
 
         //list all non-hidden settings like this
-        toWrite.append(String.format("%-20s = %s\n", dropZoneLimit.getName(), dropZoneLimit.getValue()));
+        toWrite.append(String.format("%-20s = %s\n", dropZoneLimit.getName(), dropZoneLimit.getValueString()));
         toWrite.append("\nEvents:\n");
         for (EventSetting sett: eventSettingList) {
             toWrite.append(String.format("%s\n", sett.toString()));

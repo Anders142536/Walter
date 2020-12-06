@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EventSettingTests {
     private EventSetting t;
 
+    //TODO this
 //    @BeforeEach
 //    public void resetEventSetting() {
 //        t = new EventSetting();

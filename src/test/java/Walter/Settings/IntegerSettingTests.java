@@ -23,14 +23,18 @@ public class IntegerSettingTests {
     public void correctParameterlessStartup() {
         resetIntegerSetting();
 
-        assertThrows(AssertionError.class, () -> t.getValue());
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
     }
 
     @Test
     public void correctParameterizedStartup() {
         resetIntegerSetting(5, 0);
 
-        assertThrows(AssertionError.class, () -> t.getValue());
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
     }
 
     @Test
@@ -41,7 +45,9 @@ public class IntegerSettingTests {
         for (int i = 0; i < 1000; i++) {
             final int temp = random.nextInt();
             assertDoesNotThrow(() -> t.setDefault(temp));
+            assertFalse(t.hasValue());
             assertEquals(temp, t.getValue());
+            assertEquals(String.valueOf(temp), t.getValueString());
         }
     }
 
@@ -50,7 +56,9 @@ public class IntegerSettingTests {
         resetIntegerSetting(5, 0);
 
         assertDoesNotThrow(() -> t.setDefault(2));
+        assertFalse(t.hasValue());
         assertEquals(2, t.getValue());
+        assertEquals("2", t.getValueString());
     }
 
     @Test
@@ -58,7 +66,9 @@ public class IntegerSettingTests {
         resetIntegerSetting(0, 0);
 
         assertDoesNotThrow(() -> t.setDefault(0));
+        assertFalse(t.hasValue());
         assertEquals(0, t.getValue());
+        assertEquals("0", t.getValueString());
     }
 
     @Test
@@ -72,7 +82,9 @@ public class IntegerSettingTests {
         resetIntegerSetting();
 
         assertDoesNotThrow(() -> t.setDefault(Integer.MIN_VALUE));
+        assertFalse(t.hasValue());
         assertEquals(Integer.MIN_VALUE, t.getValue());
+        assertEquals(String.valueOf(Integer.MIN_VALUE), t.getValueString());
     }
 
     @Test
@@ -80,7 +92,9 @@ public class IntegerSettingTests {
         resetIntegerSetting();
 
         assertDoesNotThrow(() -> t.setDefault(Integer.MAX_VALUE));
+        assertFalse(t.hasValue());
         assertEquals(Integer.MAX_VALUE, t.getValue());
+        assertEquals(String.valueOf(Integer.MAX_VALUE), t.getValueString());
     }
 
     @Test
@@ -88,7 +102,9 @@ public class IntegerSettingTests {
         resetIntegerSetting(5, -5);
 
         assertDoesNotThrow(() -> t.setDefault(-5));
+        assertFalse(t.hasValue());
         assertEquals(-5, t.getValue());
+        assertEquals("-5", t.getValueString());
     }
 
     @Test
@@ -96,7 +112,9 @@ public class IntegerSettingTests {
         resetIntegerSetting(5, -5);
 
         assertDoesNotThrow(() -> t.setDefault(5));
+        assertFalse(t.hasValue());
         assertEquals(5, t.getValue());
+        assertEquals("5", t.getValueString());
     }
 
     @Test
@@ -104,7 +122,9 @@ public class IntegerSettingTests {
         resetIntegerSetting(5, -5);
 
         assertThrows(ReasonedException.class, () -> t.setDefault(-6));
-        assertThrows(AssertionError.class, () -> t.getValue());
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
     }
 
     @Test
@@ -112,7 +132,9 @@ public class IntegerSettingTests {
         resetIntegerSetting(5, -5);
 
         assertThrows(ReasonedException.class, () -> t.setDefault(6));
-        assertThrows(AssertionError.class, () -> t.getValue());
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
     }
 
     @Test
@@ -122,8 +144,10 @@ public class IntegerSettingTests {
         //fuzzy
         for (int i = 0; i < 1000; i++) {
             int temp = random.nextInt();
-            assertDoesNotThrow(() -> t.setValue(temp + ""));
+            assertDoesNotThrow(() -> t.setValue(String.valueOf(temp)));
+            assertTrue(t.hasValue());
             assertEquals(temp, t.getValue());
+            assertEquals(String.valueOf(temp), t.getValueString());
         }
     }
 
@@ -132,23 +156,29 @@ public class IntegerSettingTests {
         resetIntegerSetting(5, -5);
 
         assertDoesNotThrow(() -> t.setValue("1"));
+        assertTrue(t.hasValue());
         assertEquals(1, t.getValue());
+        assertEquals("1", t.getValueString());
     }
 
     @Test
     public void setMinLimitValueParameterless() {
         resetIntegerSetting();
 
-        assertDoesNotThrow(() -> t.setValue(Integer.MIN_VALUE + ""));
+        assertDoesNotThrow(() -> t.setValue(String.valueOf(Integer.MIN_VALUE)));
+        assertTrue(t.hasValue());
         assertEquals(Integer.MIN_VALUE, t.getValue());
+        assertEquals(String.valueOf(Integer.MIN_VALUE), t.getValueString());
     }
 
     @Test
     public void setMaxLimitValueParameterless() {
         resetIntegerSetting();
 
-        assertDoesNotThrow(() -> t.setValue(Integer.MAX_VALUE + ""));
+        assertDoesNotThrow(() -> t.setValue(String.valueOf(Integer.MAX_VALUE)));
+        assertTrue(t.hasValue());
         assertEquals(Integer.MAX_VALUE, t.getValue());
+        assertEquals(String.valueOf(Integer.MAX_VALUE), t.getValueString());
     }
 
     @Test
@@ -156,7 +186,9 @@ public class IntegerSettingTests {
         resetIntegerSetting(501, -3);
 
         assertDoesNotThrow(() -> t.setValue("-3"));
+        assertTrue(t.hasValue());
         assertEquals(-3, t.getValue());
+        assertEquals("-3", t.getValueString());
     }
 
     @Test
@@ -164,7 +196,9 @@ public class IntegerSettingTests {
         resetIntegerSetting(3, -239);
 
         assertDoesNotThrow(() -> t.setValue("3"));
+        assertTrue(t.hasValue());
         assertEquals(3, t.getValue());
+        assertEquals("3", t.getValueString());
     }
 
     @Test
@@ -172,7 +206,9 @@ public class IntegerSettingTests {
         resetIntegerSetting(234, 1);
 
         assertThrows(ReasonedException.class, () -> t.setValue("0"));
-        assertThrows(AssertionError.class, () -> t.getValue());
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
     }
 
     @Test
@@ -180,7 +216,9 @@ public class IntegerSettingTests {
         resetIntegerSetting(-1, -54);
 
         assertThrows(ReasonedException.class, () -> t.setValue("83"));
-        assertThrows(AssertionError.class, () -> t.getValue());
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
     }
 
     @Test
@@ -191,8 +229,10 @@ public class IntegerSettingTests {
         for (int i = 0; i < 1000; i++) {
             final int temp = random.nextInt();
             assertDoesNotThrow(() -> t.setDefault(random.nextInt()));
-            assertDoesNotThrow(() -> t.setValue(temp + ""));
+            assertDoesNotThrow(() -> t.setValue(String.valueOf(temp)));
+            assertTrue(t.hasValue());
             assertEquals(temp, t.getValue());
+            assertEquals(String.valueOf(temp), t.getValueString());
         }
     }
 }

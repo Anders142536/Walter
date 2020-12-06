@@ -1,5 +1,7 @@
 package Walter.Settings;
 
+import Walter.exceptions.ReasonedException;
+
 import javax.annotation.Nonnull;
 
 //parent class for all settings in case something shall be introduced they all share
@@ -11,5 +13,11 @@ public abstract class Setting {
         this.name = name;
     }
 
+    public abstract void setValue(String value) throws ReasonedException;
+
+    public abstract boolean hasValue();
+
     public String getName() { return (name == null ? "Unnamed" : name); }
+
+    public abstract String getValueString();
 }

@@ -16,13 +16,17 @@ public class StringSettingTests {
 
     @Test
     public void correctStartup() {
-        assertEquals("Undefined", t.getValue());
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
     }
 
     @Test
     public void getValue() {
         t.setValue("teststring");
 
+        assertTrue(t.hasValue());
         assertEquals("teststring", t.getValue());
+        assertEquals("teststring", t.getValueString());
     }
 }

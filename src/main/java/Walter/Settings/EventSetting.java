@@ -1,10 +1,16 @@
 package Walter.Settings;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Date;
 
-//TODO: make this abstract, make all events extend this class
-public abstract class EventSetting extends Setting {
+public abstract class EventSetting {
     Date startDate;
+    private String name;
+
+    public void setName(@Nonnull String name) {
+        this.name = name;
+    }
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
@@ -12,6 +18,9 @@ public abstract class EventSetting extends Setting {
 
     public boolean hasStartDate() { return startDate != null; }
 
+    public String getName() { return (name == null ? "Unnamed" : name); }
+
+    @Nullable
     public Date getStartDate() { return startDate; }
 
 

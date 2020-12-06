@@ -2,6 +2,8 @@ package Walter.Settings;
 
 import Walter.exceptions.ReasonedException;
 
+import javax.annotation.Nullable;
+
 public class IntegerSetting extends Setting {
     private Integer value;
 
@@ -37,8 +39,19 @@ public class IntegerSetting extends Setting {
         });
     }
 
-    public int getValue() {
-        assert(value != null || defaultValue != null);
-        return (value == null ? defaultValue : value);
+    @Override
+    public boolean hasValue() {
+        return value != null;
+    }
+
+    @Nullable
+    public Integer getValue() {
+        return (hasValue() ? value : defaultValue);
+    }
+
+    @Override
+    public String getValueString() {
+        Integer toReturn = getValue();
+        return (toReturn == null ? "Undefined" : String.valueOf(toReturn));
     }
 }

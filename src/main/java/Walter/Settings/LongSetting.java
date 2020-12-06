@@ -2,6 +2,9 @@ package Walter.Settings;
 
 import Walter.exceptions.ReasonedException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class LongSetting extends Setting {
     Long value;
 
@@ -18,7 +21,6 @@ public class LongSetting extends Setting {
         assert(upperLimit >= lowerLimit);
         this.upperLimit = upperLimit;
         this.lowerLimit = lowerLimit;
-        defaultValue = lowerLimit;
     }
 
     public void setDefault(long defaultValue) throws ReasonedException {
@@ -29,6 +31,7 @@ public class LongSetting extends Setting {
         });
     }
 
+    @Override
     public void setValue(String value) throws ReasonedException {
         long parsedValue = Long.parseLong(value);
         if (parsedValue >= lowerLimit && parsedValue <= upperLimit) this.value = parsedValue;
@@ -38,7 +41,19 @@ public class LongSetting extends Setting {
         });
     }
 
-    public long getValue() {
-        return (value == null ? defaultValue : value);
+    @Override
+    public boolean hasValue() {
+        return value != null;
+    }
+
+    @Nullable
+    public Long getValue() {
+        return (hasValue() ? value : defaultValue);
+    }
+
+    @Override @Nonnull
+    public String getValueString() {
+        Long toReturn = getValue();
+        return (toReturn == null ? "Undefined" : String.valueOf(toReturn));
     }
 }
