@@ -28,9 +28,9 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         TextChannel general = Helper.instance.getTextChannel(BlackChannel.GENERAL);
-        if (Config.isLockdown.getValue()) {
-            Helper.instance.logInfo("User " + event.getUser().getAsMention() + " joined us during lockdown " +
-                    "and might still need permissions");
+        if (Config.isLockdown.hasValue() && Config.isLockdown.getValue()) {
+            Helper.instance.logInfo("User " + event.getUser().getAsMention() + " (" + event.getUser().getName() + ")" +
+                    " joined us during lockdown and might still need permissions");
         } else {
             RoleHandler.assignRole(event.getMember(), BlackRole.GUEST);
 
@@ -40,14 +40,11 @@ public class Listener extends ListenerAdapter {
     }
 
     //leaving members will be announced in the admin channel
-    //furthermore they will receive a polite farewell by walter with a link to join the server in case they want to come back
+    //TODO: furthermore they will receive a polite farewell by walter with a link to join the server in case they want to come back
     @Override
     public void onGuildMemberRemove(GuildMemberRemoveEvent event) {
-        TextChannel admin = Helper.instance.getTextChannel(BlackChannel.ADMIN);
-
         String leftUserMention = event.getUser().getAsMention();
-
-        admin.sendMessage(event.getUser().getName() + " (" + leftUserMention + ") hat unseren Server verlassen.").queue();
+        BlackChannel.ADMIN.getInstance().sendMessage(event.getUser().getName() + " (" + leftUserMention + ") hat unseren Server verlassen.").queue();
     }
 
     //when someone is given the member or guest role walter sends them a private message with some basic information
@@ -106,7 +103,6 @@ public class Listener extends ListenerAdapter {
         }
     }
 
-    //TODO: write comment about what exactly is done here
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         User author = event.getAuthor();

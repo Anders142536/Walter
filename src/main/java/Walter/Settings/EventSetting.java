@@ -18,11 +18,13 @@ public abstract class EventSetting {
 
     public boolean hasStartDate() { return startDate != null; }
 
-    public String getName() { return (name == null ? "Unnamed" : name); }
+    public String getName() { return (name == null || name.isBlank() ? "Unnamed" : name); }
+
+    @Nonnull
+    public String getStartDate() { return (hasStartDate() ? startDate.toString() : "Undefined"); }
 
     @Nullable
-    public Date getStartDate() { return startDate; }
-
+    public Date getStartDateValue() { return startDate; }
 
     public abstract String toString();
 }

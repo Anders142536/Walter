@@ -3,7 +3,6 @@ package Walter.Settings;
 import Walter.exceptions.ReasonedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestTemplate;
 
 import java.awt.*;
 
@@ -53,6 +52,16 @@ public class ColorSettingTests {
     @Test
     public void setInvalidValueNotHex() {
         assertThrows(ReasonedException.class, () -> t.setValue("#0G00aa"));
+
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
+    }
+
+    @Test
+    public void resetSettingNull() {
+        assertDoesNotThrow(() -> t.setValue("#002211"));
+        assertDoesNotThrow(() -> t.setValue(null));
 
         assertFalse(t.hasValue());
         assertNull(t.getValue());

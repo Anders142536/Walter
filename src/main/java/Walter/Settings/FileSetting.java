@@ -6,7 +6,6 @@ import Walter.exceptions.ReasonedException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
-import java.io.FileNotFoundException;
 
 public class FileSetting extends Setting {
     private String fileName;
@@ -16,9 +15,15 @@ public class FileSetting extends Setting {
         this.directoryPath = Walter.location + directoryPath;
     }
 
+    /**
+     * Sets the filename value of the setting. Passing NULL will effectively
+     * reset the setting to being undefined.
+     * @param fileName
+     * @throws ReasonedException if file is not found
+     */
     @Override
-    public void setValue(@Nonnull String fileName) throws ReasonedException {
-        if (!fileName.isBlank() && fileExists(fileName)) this.fileName = fileName;
+    public void setValue(String fileName) throws ReasonedException {
+        if (fileName == null || fileName.equals("Undefined") || !fileName.isBlank() && fileExists(fileName)) this.fileName = fileName;
         //TODO: make this return a list of available files
         else throw new ReasonedException("File not found under path: " + directoryPath + fileName);
     }

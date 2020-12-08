@@ -13,7 +13,13 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ConfigTests {
+public class ConfigTests extends WalterTest{
+
+    //@Test
+    public void initialize() {
+        //requires deletion of Config.yaml file if it exists
+        assertThrows(ReasonedException.class, () -> Config.initialize());
+    }
 
     //@Test
     public void writeToFileTest() {
@@ -30,7 +36,7 @@ public class ConfigTests {
         template.put("isLockdown", false);
         template.put("events", events);
 
-        File templateFile = new File("/home/anders/git/walter/misc/test.yaml");
+        File templateFile = new File(Walter.location + "/config.yaml");
         try (FileWriter writer = new FileWriter(templateFile)) {
             templateFile.createNewFile();
             DumperOptions options = new DumperOptions();
@@ -43,10 +49,10 @@ public class ConfigTests {
         }
     }
 
-    //@Test
+    @Test
     public void loadFromFile() throws ReasonedException {
         Map<String, Object> map;
-        try (FileInputStream reader = new FileInputStream(new File("/home/anders/git/walter/misc/test.yaml"))){
+        try (FileInputStream reader = new FileInputStream(new File(Walter.location + "/configtemplate.yaml"))){
             Yaml yaml = new Yaml();
             map = yaml.load(reader);
         } catch (FileNotFoundException e) {

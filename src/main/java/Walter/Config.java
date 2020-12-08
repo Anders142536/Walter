@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Config {
-    private static File yamlFile;
     private static Yaml config = new Yaml();
 
     //General
@@ -33,11 +32,11 @@ public class Config {
 
     public static void initialize() throws IOException, ReasonedException {
         initializeSettings();
-        yamlFile = new File(Walter.location + "/config.yaml");
+        File yamlFile = new File(Walter.location + "/config.yaml");
         if (!yamlFile.exists())
             createTemplateSettingsYaml();
         else
-            loadFromFile();
+            loadFromFile(yamlFile);
     }
 
     private static void initializeSettings() throws ReasonedException {
@@ -51,7 +50,7 @@ public class Config {
         configMessageID = new LongSetting();
         configMessageID.setName("configMessageID");
 
-        isLockdown = new BoolSetting(); //Default is false
+        isLockdown = new BoolSetting();
         isLockdown.setName("isLockdown");
 
         servernews = new StringSetting();
@@ -68,6 +67,8 @@ public class Config {
         if (eventSettingList.isEmpty()) eventSettingList.add(new SeasonSetting());
 
         writeToFile(Walter.location + "/configtemplate.yaml");
+
+        //this cancels the startup process
         throw new ReasonedException("Config template created in folder called configtemplate.yaml");
     }
 
@@ -75,13 +76,13 @@ public class Config {
         Map<String, Object> template = new HashMap<>();
 
         //TODO: find a way to separate hidden and non-hidden settings in file
-        template.put(dropZoneLimit.getName(), dropZoneLimit.getValue());
+        template.put(dropZoneLimit.getName(), dropZoneLimit.getValueString());
         template.put("EVENTS", eventSettingList);
 
-        template.put(servernews.getName(), servernews.getValue());
-        template.put(patchnotes.getName(), patchnotes.getValue());
-        template.put(configMessageID.getName(), configMessageID.getValue());
-        template.put(isLockdown.getName(), isLockdown.getValue());
+        template.put(servernews.getName(), servernews.getValueString());
+        template.put(patchnotes.getName(), patchnotes.getValueString());
+        template.put(configMessageID.getName(), configMessageID.getValueString());
+        template.put(isLockdown.getName(), isLockdown.getValueString());
 
         File templateFile = new File(filePath);
         templateFile.createNewFile();
@@ -95,24 +96,25 @@ public class Config {
         }
     }
 
-    public static void loadFromFile() throws ReasonedException {
-        Map<String, Object> yaml = loadYamlFileToMap();
+    public static void loadFromFile(File yamlFile) throws ReasonedException {
+        Map<String, Object> yaml = loadYamlFileToMap(yamlFile);
 
         //General
-        dropZoneLimit.setValue(String.valueOf(yaml.get(dropZoneLimit.getName())));
+        dropZoneLimit.setValue(String.valueOf(yaml.getOrDefault(dropZoneLimit.getName(), 50)));
         //TODO: load events
 
+        //TODO: expand tests to also test for "Undefined" tags
         //Hidden
-        configMessageID.setValue(String.valueOf(yaml.get(configMessageID.getName())));
-        isLockdown.setValue(String.valueOf(yaml.get(isLockdown.getName())));
+        configMessageID.setValue(String.valueOf(yaml.getOrDefault(configMessageID.getName(), "Undefined")));
+        isLockdown.setValue(String.valueOf(yaml.getOrDefault(isLockdown.getName(), false)));
 
-        BlackWebhook.SERVERNEWS = new BlackWebhook(String.valueOf(yaml.get(servernews.getName())));
-        BlackWebhook.PATCHNOTES = new BlackWebhook(String.valueOf(yaml.get(patchnotes.getName())));
+        BlackWebhook.SERVERNEWS = new BlackWebhook(String.valueOf(yaml.getOrDefault(servernews.getName(), "Undefined")));
+        BlackWebhook.PATCHNOTES = new BlackWebhook(String.valueOf(yaml.getOrDefault(patchnotes.getName(), "Undefined")));
 
         writeToConfigChannel();
     }
 
-    private static Map<String, Object> loadYamlFileToMap() throws ReasonedException {
+    private static Map<String, Object> loadYamlFileToMap(File yamlFile) throws ReasonedException {
         try (FileInputStream reader = new FileInputStream(yamlFile)){
             return config.load(reader);
         } catch (FileNotFoundException e) {

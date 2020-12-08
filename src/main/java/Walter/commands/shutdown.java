@@ -19,7 +19,6 @@ public class shutdown extends Command {
 
     @Override
     public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
-        //TODO: add in CommandHandler.createListOfCommands()
         if (event.getAuthor().getIdLong() == 151010441043116032L) { // if Anders
             event.getJDA().shutdown();
         } else {

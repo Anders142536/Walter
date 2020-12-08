@@ -40,4 +40,14 @@ public class FileSettingTests extends WalterTest {
         assertNull(t.getValue());
         assertEquals("Undefined", t.getValueString());
     }
+
+    @Test
+    public void resetBySettingNullFilename() {
+        assertDoesNotThrow(() -> t.setValue("server.png"));
+        assertDoesNotThrow(() -> t.setValue(null));
+
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
+    }
 }

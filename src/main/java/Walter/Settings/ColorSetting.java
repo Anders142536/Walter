@@ -9,8 +9,18 @@ import java.awt.Color;
 public class ColorSetting extends Setting {
     Color value;
 
+    /**
+     * Sets the color value of the setting. Passing NULL will effectively
+     * reset the setting to being undefined.
+     * @param value
+     * @throws ReasonedException if color is neither null, nor parseable
+     */
     @Override
-    public void setValue(@Nonnull String value) throws ReasonedException {
+    public void setValue(String value) throws ReasonedException {
+        if (value == null || value.equals("Undefined")) {
+            this.value = null;
+            return;
+        }
                         //# followed by 6 hexadecimal digits 0-9 and a-f, both upper and lowercase
         if (!value.matches("^#[0-9a-fA-F]{6}$"))
             throw new ReasonedException("The color value has to be given in hexadecimal format with " +

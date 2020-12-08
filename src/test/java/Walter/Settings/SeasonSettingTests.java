@@ -2,7 +2,6 @@ package Walter.Settings;
 
 import Walter.Walter;
 import Walter.WalterTest;
-import Walter.exceptions.ReasonedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,12 +19,16 @@ public class SeasonSettingTests extends WalterTest {
 
     @Test
     public void correctStartup() {
-        assertFalse(t.memberColor.hasValue());
-        assertFalse(t.serverLogoFile.hasValue());
-        assertFalse(t.walterLogoFile.hasValue());
-        assertNull(t.serverLogoFile.getValue());
-        assertNull(t.walterLogoFile.getValue());
-        assertNull(t.memberColor.getValue());
+        assertFalse(t.hasMemberColor());
+        assertFalse(t.hasServerLogoFile());
+        assertFalse(t.hasWalterLogoFile());
+        assertNull(t.getServerLogoFileValue());
+        assertNull(t.getWalterLogoFileValue());
+        assertNull(t.getMemberColorValue());
+        assertEquals("Undefined", t.getServerLogoFile());
+        assertEquals("Undefined", t.getWalterLogoFile());
+        assertEquals("Undefined", t.getMemberColor());
+
         assertEquals("name:         Unnamed\n" +
                 "start date:   Undefined\n" +
                 "member color: DEFAULT\n" +
@@ -35,13 +38,13 @@ public class SeasonSettingTests extends WalterTest {
 
     @Test
     public void allCorrectlyGiven() {
-        assertDoesNotThrow(() -> t.serverLogoFile.setValue("server.png"));
-        assertDoesNotThrow(() -> t.walterLogoFile.setValue("walter.png"));
-        assertDoesNotThrow(() -> t.memberColor.setValue("#0DEAD0"));
+        assertDoesNotThrow(() -> t.setServerLogoFile("server.png"));
+        assertDoesNotThrow(() -> t.setWalterLogoFile("walter.png"));
+        assertDoesNotThrow(() -> t.setMemberColor("#0DEAD0"));
 
-        assertTrue(t.serverLogoFile.hasValue());
-        assertTrue(t.walterLogoFile.hasValue());
-        assertTrue(t.memberColor.hasValue());
+        assertTrue(t.hasServerLogoFile());
+        assertTrue(t.hasWalterLogoFile());
+        assertTrue(t.hasMemberColor());
 
         assertEquals("name:         Unnamed\n" +
                 "start date:   Undefined\n" +
