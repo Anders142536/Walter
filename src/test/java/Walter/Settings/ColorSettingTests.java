@@ -32,6 +32,15 @@ public class ColorSettingTests {
     }
 
     @Test
+    public void setValueUndefined() {
+        assertDoesNotThrow(() -> t.setValue("Undefined"));
+
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
+    }
+
+    @Test
     public void setInvalidValueAlphaChannel() {
         assertThrows(ReasonedException.class, () -> t.setValue("#0000aaff"));
 

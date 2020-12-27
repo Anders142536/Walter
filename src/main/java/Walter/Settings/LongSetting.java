@@ -25,17 +25,27 @@ public class LongSetting extends Setting {
 
     public void setDefault(long defaultValue) throws ReasonedException {
         if (defaultValue >= lowerLimit && defaultValue <= upperLimit) this.defaultValue = defaultValue;
-        else throw new ReasonedException(new String[] {
-                "The value has to be within the limits of " +  lowerLimit + " and " + upperLimit,
-                "Der Wert muss zwischen " + lowerLimit + " und " + upperLimit + " liegen"
-        });
+        else throwLimitsException();
     }
 
     @Override
     public void setValue(String value) throws ReasonedException {
-        long parsedValue = Long.parseLong(value);
-        if (parsedValue >= lowerLimit && parsedValue <= upperLimit) this.value = parsedValue;
-        else throw new ReasonedException(new String[] {
+        if (value.equals("Undefined")) {
+            this.value = null;
+            return;
+        }
+
+        try {
+            long parsedValue = Long.parseLong(value);
+            if (parsedValue >= lowerLimit && parsedValue <= upperLimit) this.value = parsedValue;
+            else throwLimitsException();
+        } catch (NumberFormatException e) {
+            throwLimitsException();
+        }
+    }
+
+    private void throwLimitsException() throws ReasonedException {
+        throw new ReasonedException(new String[]{
                 "The value has to be within the limits of " + lowerLimit + " and " + upperLimit,
                 "Der Wert muss zwischen " + lowerLimit + " und " + upperLimit + " liegen"
         });

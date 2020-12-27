@@ -1,6 +1,7 @@
 package Walter.Parsers;
 
 import Walter.exceptions.ParseException;
+import Walter.exceptions.ReasonedException;
 
 import javax.annotation.Nonnull;
 
@@ -45,18 +46,25 @@ public class IntegerOption extends Option {
             throw new ParseException(new String[] {
                     "Argument " + argument + " is not a natural number.",
                     "Argument " + argument + " ist keine natürliche Zahl."});
-        int temp = Integer.parseInt(argument);
-        if (temp < lowerLimit)
+        try {
+            int temp = Integer.parseInt(argument);
+            if (temp < lowerLimit)
+                throw new ParseException(new String[]{
+                        "Integer " + temp + " is too small! The limit is " + lowerLimit,
+                        "Natürliche Zahl " + temp + " ist zu klein! Das limit ist " + lowerLimit
+                });
+            if (temp > upperLimit)
+                throw new ParseException(new String[]{
+                        "Integer " + temp + " is too big! The limit is " + upperLimit,
+                        "Natürliche Zahl " + temp + " ist zu groß! Das limit ist " + upperLimit
+                });
+            this.value = temp;
+        } catch (NumberFormatException e) {
             throw new ParseException(new String[] {
-                    "Integer " + temp + " is too small! The limit is " + lowerLimit,
-                    "Natürliche Zahl " + temp + " ist zu klein! Das limit ist " + lowerLimit
+                    "The value has to be within the limits of " + lowerLimit + " and " + upperLimit,
+                    "Der Wert muss zwischen " + lowerLimit + " und " + upperLimit + " liegen"
             });
-        if (temp > upperLimit)
-            throw new ParseException(new String[] {
-                    "Integer " + temp + " is too big! The limit is " + upperLimit,
-                    "Natürliche Zahl " + temp + " ist zu groß! Das limit ist " + upperLimit
-            });
-        this.value = temp;
+        }
     }
 
     public boolean hasValue() { return value != null; }

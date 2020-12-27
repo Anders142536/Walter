@@ -24,16 +24,27 @@ public class IntegerSetting extends Setting {
 
     public void setDefault(int defaultValue) throws ReasonedException {
         if (defaultValue >= lowerLimit && defaultValue <= upperLimit) this.defaultValue = defaultValue;
-        else throw new ReasonedException(new String[] {
-                "The value has to be within the limits of " + lowerLimit + " and " + upperLimit,
-                "Der Wert muss zwischen " + lowerLimit + " und " + upperLimit + " liegen"
-        });
+        else throwLimitsException();
     }
 
     public void setValue(String value) throws ReasonedException {
-        int parsedValue = Integer.parseInt(value);
-        if (parsedValue >= lowerLimit && parsedValue <= upperLimit) this.value = parsedValue;
-        else throw new ReasonedException(new String[] {
+        if (value.equals("Undefined")) {
+            this.value = null;
+            return;
+        }
+
+        try {
+            int parsedValue = Integer.parseInt(value);
+            if (parsedValue >= lowerLimit && parsedValue <= upperLimit) this.value = parsedValue;
+            else throwLimitsException();
+        } catch (NumberFormatException e) {
+            throwLimitsException();
+        }
+
+    }
+
+    private void throwLimitsException() throws ReasonedException {
+        throw new ReasonedException(new String[] {
                 "The value has to be within the limits of " + lowerLimit + " and " + upperLimit,
                 "Der Wert muss zwischen " + lowerLimit + " und " + upperLimit + " liegen"
         });

@@ -61,7 +61,6 @@ public class ConfigTests extends WalterTest{
             throw new ReasonedException("Something went wrong on reading the config file");
         }
 
-        System.out.println("test");
     }
 
 }

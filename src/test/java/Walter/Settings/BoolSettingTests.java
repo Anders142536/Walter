@@ -40,6 +40,7 @@ public class BoolSettingTests {
     @Test
     public void setValueTrueString() {
         assertDoesNotThrow(() -> t.setValue("true"));
+
         assertTrue(t.hasValue());
         assertTrue(t.getValue());
         assertEquals("true", t.getValueString());
@@ -48,14 +49,25 @@ public class BoolSettingTests {
     @Test
     public void setValueFalseString() {
         assertDoesNotThrow(() -> t.setValue("false"));
+
         assertTrue(t.hasValue());
         assertFalse(t.getValue());
         assertEquals("false", t.getValueString());
     }
 
     @Test
+    public void setValueUndefined() {
+        assertDoesNotThrow(() -> t.setValue("Undefined"));
+
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
+    }
+
+    @Test
     public void setInvalidStringValue() {
         assertThrows(ReasonedException.class, () -> t.setValue("true "));
+
         assertFalse(t.hasValue());
         assertNull(t.getValue());
         assertEquals("Undefined", t.getValueString());

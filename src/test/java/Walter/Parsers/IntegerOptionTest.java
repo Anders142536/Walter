@@ -49,7 +49,7 @@ public class IntegerOptionTest {
     }
 
     @Test
-    public void setTooHighValue() {
+    public void setValueHigherThanLimit() {
         assertThrows(ParseException.class, () -> t.setValue("6"));
 
         assertFalse(t.hasValue());
@@ -57,7 +57,7 @@ public class IntegerOptionTest {
     }
 
     @Test
-    public void setTooLowValue() {
+    public void setValueLowerThanLimit() {
         assertThrows(ParseException.class, () -> t.setValue("-6"));
 
         assertFalse(t.hasValue());
@@ -78,6 +78,22 @@ public class IntegerOptionTest {
 
         assertTrue(t.hasValue());
         assertEquals(-5, t.getValue());
+    }
+
+    @Test
+    public void setValueHigherThanIntMaxValue() {
+        assertThrows(ParseException.class, () -> t.setValue(Integer.MAX_VALUE + "0"));
+
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+    }
+
+    @Test
+    public void setValueLowerThanIntMaxValue() {
+        assertThrows(ParseException.class, () -> t.setValue(Integer.MIN_VALUE + "0"));
+
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
     }
 
     @Test

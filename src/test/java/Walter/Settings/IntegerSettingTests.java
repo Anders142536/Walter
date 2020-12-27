@@ -38,6 +38,17 @@ public class IntegerSettingTests {
     }
 
     @Test
+    public void setValueUndefined() {
+        resetIntegerSetting();
+
+        assertDoesNotThrow(() -> t.setValue("Undefined"));
+
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
+    }
+
+    @Test
     public void setDefaultParameterless() {
         resetIntegerSetting();
 
@@ -202,7 +213,7 @@ public class IntegerSettingTests {
     }
 
     @Test
-    public void setTooLowValue() {
+    public void setValueLowerThanLimit() {
         resetIntegerSetting(234, 1);
 
         assertThrows(ReasonedException.class, () -> t.setValue("0"));
@@ -212,10 +223,30 @@ public class IntegerSettingTests {
     }
 
     @Test
-    public void setTooHighValue() {
+    public void setValueHigherThanLimit() {
         resetIntegerSetting(-1, -54);
 
         assertThrows(ReasonedException.class, () -> t.setValue("83"));
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
+    }
+
+    @Test
+    public void setValueLowerThanIntMinValue() {
+        resetIntegerSetting();
+                                                            //10 times the lower limit
+        assertThrows(ReasonedException.class, () -> t.setValue(Integer.MIN_VALUE + "0"));
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
+    }
+
+    @Test
+    public void setValueHigherThanIntMaxValue() {
+        resetIntegerSetting();
+
+        assertThrows(ReasonedException.class, () -> t.setValue(Integer.MAX_VALUE + "0"));
         assertFalse(t.hasValue());
         assertNull(t.getValue());
         assertEquals("Undefined", t.getValueString());

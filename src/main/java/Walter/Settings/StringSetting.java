@@ -8,7 +8,8 @@ public class StringSetting extends Setting {
 
     @Override
     public void setValue(@Nonnull String value) {
-        this.value = value;
+        if (value.equals("Undefined")) this.value = null;
+        else this.value = value;
     }
 
     @Override

@@ -34,6 +34,17 @@ public class LongSettingTests {
     }
 
     @Test
+    public void setValueUndefined() {
+        resetLongSetting();
+
+        assertDoesNotThrow(() -> t.setValue("Undefined"));
+
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
+    }
+
+    @Test
     public void setDefaultParameterless() {
         resetLongSetting();
 
@@ -198,7 +209,7 @@ public class LongSettingTests {
     }
 
     @Test
-    public void setTooLowValue() {
+    public void setValueLowerThanLimit() {
         resetLongSetting(234L, 3L);
 
         assertThrows(ReasonedException.class, () -> t.setValue("0"));
@@ -208,10 +219,32 @@ public class LongSettingTests {
     }
 
     @Test
-    public void setTooHighValue() {
+    public void setValueHigherThanLimit() {
         resetLongSetting(-832L, -92347L);
 
         assertThrows(ReasonedException.class, () -> t.setValue("7843"));
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
+    }
+
+    @Test
+    public void setValueLowerThanLongLimit() {
+        resetLongSetting();
+
+        assertThrows(ReasonedException.class, () -> t.setValue(Long.MIN_VALUE + "0"));
+
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
+    }
+
+    @Test
+    public void setValueHigherThanLongLimit() {
+        resetLongSetting();
+
+        assertThrows(ReasonedException.class, () -> t.setValue(Long.MAX_VALUE + "0"));
+
         assertFalse(t.hasValue());
         assertNull(t.getValue());
         assertEquals("Undefined", t.getValueString());

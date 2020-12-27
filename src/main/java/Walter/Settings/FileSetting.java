@@ -23,7 +23,12 @@ public class FileSetting extends Setting {
      */
     @Override
     public void setValue(String fileName) throws ReasonedException {
-        if (fileName == null || fileName.equals("Undefined") || !fileName.isBlank() && fileExists(fileName)) this.fileName = fileName;
+        if (fileName == null || fileName.equals("Undefined")) {
+            this.fileName = null;
+            return;
+        }
+
+        if (!fileName.isBlank() && fileExists(fileName)) this.fileName = fileName;
         //TODO: make this return a list of available files
         else throw new ReasonedException("File not found under path: " + directoryPath + fileName);
     }

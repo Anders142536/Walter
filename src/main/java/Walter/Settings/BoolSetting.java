@@ -15,7 +15,8 @@ public class BoolSetting extends Setting {
     public void setValue(boolean value) { this.value = value; }
 
     public void setValue(@Nonnull String value) throws ReasonedException {
-        if (value.equals("true") || value.equals("false")) this.value = Boolean.parseBoolean(value);
+        if (value.equals("Undefined")) this.value = null;
+        else if (value.equals("true") || value.equals("false")) this.value = Boolean.parseBoolean(value);
         else throw new ReasonedException("Value must be either \"true\" or \"false\"");
     }
 

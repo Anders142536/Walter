@@ -22,7 +22,16 @@ public class StringSettingTests {
     }
 
     @Test
-    public void getValue() {
+    public void setValueUndefined() {
+        t.setValue("Undefined");
+
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
+    }
+
+    @Test
+    public void setValue() {
         t.setValue("teststring");
 
         assertTrue(t.hasValue());

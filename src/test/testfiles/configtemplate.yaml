@@ -1,0 +1,11 @@
+servernews: Undefined
+configMessageID: Undefined
+patchnotes: Undefined
+EVENTS:
+- !!Walter.Settings.SeasonSetting
+  memberColor: Undefined
+  name: Unnamed
+  serverLogoFile: Undefined
+  walterLogoFile: Undefined
+isLockdown: Undefined
+dropZoneLimit: '50'
