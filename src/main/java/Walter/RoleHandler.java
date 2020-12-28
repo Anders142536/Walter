@@ -8,11 +8,11 @@ import net.dv8tion.jda.api.entities.User;
 public class RoleHandler {
 
     public static void assignRole(Member member, BlackRole blackRoleToAssign) {
-        Helper.instance.getGuild().addRoleToMember(member, blackRoleToAssign.getInstance()).queue();
+        Helper.getGuild().addRoleToMember(member, blackRoleToAssign.getInstance()).queue();
     }
 
     public static void removeRole(Member member, BlackRole blackRoleToRemove) {
-        Helper.instance.getGuild().removeRoleFromMember(member, blackRoleToRemove.getInstance()).queue();
+        Helper.getGuild().removeRoleFromMember(member, blackRoleToRemove.getInstance()).queue();
     }
 
     public static boolean hasRole(Member member, BlackRole blackRoleToCheck) {
@@ -20,13 +20,13 @@ public class RoleHandler {
     }
 
     public static boolean hasRole(User user, BlackRole blackRoleToCheck) {
-        Member member = Helper.instance.getMember(user);
+        Member member = Helper.getMember(user);
         if (member == null) return false;
         return hasRole(member, blackRoleToCheck);
     }
 
     public static Role getRole(long roleID) {
-        return Helper.instance.getGuild().getRoleById(roleID);
+        return Helper.getGuild().getRoleById(roleID);
     }
 
     public static boolean hasMinimumRequiredRole(Member member, BlackRole blackRoleToCheck) {

@@ -46,13 +46,13 @@ public class editmsg extends Command {
                                 event.getMessage().delete().queue();
                             },
                             editError -> {
-                                Helper.instance.respondException(event, new CommandExecutionException(new String[]{
+                                Helper.respondException(event, new CommandExecutionException(new String[]{
                                     "Something went wrong on editing the message:\n" + editError.getMessage()
                             }));}
                     );
                 },
                 error -> {
-                    Helper.instance.respondException(event, new CommandExecutionException(new String[]{
+                    Helper.respondException(event, new CommandExecutionException(new String[]{
                             "Couldn't get the given message:\n" + error.getMessage()
                     }));}
         );

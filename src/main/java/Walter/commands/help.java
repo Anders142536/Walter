@@ -48,7 +48,7 @@ public class help extends Command {
             "List of Help pages", "Liste der Hilfeseiten"
         };
         if (pageListHeaders.length < Language.values().length)
-            Helper.instance.logError("Walter.commands.help::help()\n" +
+            Helper.logError("Walter.commands.help::help()\n" +
                     "headers list is shorter than number of languages");
 
         loadPages();

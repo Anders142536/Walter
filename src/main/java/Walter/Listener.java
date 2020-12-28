@@ -27,9 +27,9 @@ public class Listener extends ListenerAdapter {
     //new members are announced in the general channel, tagging the admins
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        TextChannel general = Helper.instance.getTextChannel(BlackChannel.GENERAL);
+        TextChannel general = Helper.getTextChannel(BlackChannel.GENERAL);
         if (Config.isLockdown.hasValue() && Config.isLockdown.getValue()) {
-            Helper.instance.logInfo("User " + event.getUser().getAsMention() + " (" + event.getUser().getName() + ")" +
+            Helper.logInfo("User " + event.getUser().getAsMention() + " (" + event.getUser().getName() + ")" +
                     " joined us during lockdown and might still need permissions");
         } else {
             RoleHandler.assignRole(event.getMember(), BlackRole.GUEST);
@@ -62,7 +62,7 @@ public class Listener extends ListenerAdapter {
 
         //if the channel joined is the cinema channel
         if (IDvoiceJoined == BlackChannel.CINEMA.ID) {
-            VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceJoined);
+            VoiceChannel channel = Helper.getVoiceChannel(IDvoiceJoined);
             if (channel.getMembers().size() == 1) {
                 //gets the current time and truncates it to only show hours and minutes
                 LocalTime currentTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
@@ -77,11 +77,11 @@ public class Listener extends ListenerAdapter {
         long IDvoiceLeft = event.getChannelLeft().getIdLong();
         long IDvoiceJoined = event.getChannelJoined().getIdLong();
         if (IDvoiceLeft == BlackChannel.CINEMA.ID) {
-            VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceLeft);
+            VoiceChannel channel = Helper.getVoiceChannel(IDvoiceLeft);
             if (channel.getMembers().size() == 0)
                 channel.getManager().setName(BlackEmoji.POPCORN.identifier + " Cinema").complete();
         } else if (IDvoiceJoined == BlackChannel.CINEMA.ID) {
-            VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceJoined);
+            VoiceChannel channel = Helper.getVoiceChannel(IDvoiceJoined);
             if (channel.getMembers().size() == 1) {
                 //gets the current time and truncates it to only show hours and minutes
                 LocalTime currentTime = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
@@ -97,7 +97,7 @@ public class Listener extends ListenerAdapter {
 
         //if the channel joined is the cinema channel
         if (IDvoiceLeft == BlackChannel.CINEMA.ID) {
-            VoiceChannel channel = Helper.instance.getVoiceChannel(IDvoiceLeft);
+            VoiceChannel channel = Helper.getVoiceChannel(IDvoiceLeft);
             if (channel.getMembers().size() == 0)
                 channel.getManager().setName(BlackEmoji.POPCORN.identifier + " Cinema").complete();
         }
@@ -113,10 +113,10 @@ public class Listener extends ListenerAdapter {
 
         //check if member of server
         if (member == null) {
-            member = Helper.instance.getMember(author);
+            member = Helper.getMember(author);
             if (member == null) {
-                Helper.instance.respond(channel, "I am utterly sorry, but my services are strictly limited to members of our server.");
-                Helper.instance.logInfo("Unknown User " + author.getAsMention() +
+                Helper.respond(channel, "I am utterly sorry, but my services are strictly limited to members of our server.");
+                Helper.logInfo("Unknown User " + author.getAsMention() +
                         " (" + author.getId() + ") tried to contact me using the following message:\n" + messageContent);
                 return;
             }
@@ -130,7 +130,7 @@ public class Listener extends ListenerAdapter {
             else if (channelID == BlackChannel.DROPZONE.ID && !messageContent.matches("[$%].*")) //$ and % are prefixes that should be ignoredcd
                 mentionVoiceChat(member, channel);
 
-            if (channelID == BlackChannel.DROPZONE.ID) Helper.instance.deleteUnpinnedMessagesOlderThan(channel, 50, 10);
+            if (channelID == BlackChannel.DROPZONE.ID) Helper.deleteUnpinnedMessagesOlderThan(channel, 50, 10);
 
             if (channelID == BlackChannel.NEWS.ID) {
                 List<Attachment> attachments = event.getMessage().getAttachments();
@@ -139,13 +139,13 @@ public class Listener extends ListenerAdapter {
                 event.getMessage().delete().queue();
             }
         } catch (ParseException e) {
-            Helper.instance.respond(member, channel,
+            Helper.respond(member, channel,
                     "Es tut mir Leid, doch etwas ist beim Verstehen deines Befehls schief gelaufen.\n" + e.getReason(Language.GERMAN) + "\n" + BlackRole.ADMIN.getAsMention(),
                     "I am utterly sorry, but something went wrong trying to understand your command.\n" + e.getReason(Language.ENGLISH) + "\n" + BlackRole.ADMIN.getAsMention());
         } catch (CommandExecutionException e) {
-            Helper.instance.respondError(event, e);
+            Helper.respondError(event, e);
         } catch (Exception e) {
-            Helper.instance.respondException(event, e);
+            Helper.respondException(event, e);
         }
     }
 
@@ -168,14 +168,14 @@ public class Listener extends ListenerAdapter {
     public void onReady(ReadyEvent event) {
         System.out.println("onReady triggered, JDA object launched without exception.");
         jda = event.getJDA();
-        Helper.instance = new Helper(jda);
+        Helper.setJda(jda);
 
         try {
             CommandProcessor.instance = new CommandProcessor();
             Config.initialize();
             System.out.println("Walter launched successfully");
         } catch (ReasonedException e) {
-            Helper.instance.logException(e.getReason(Language.ENGLISH));
+            Helper.logException(e.getReason(Language.ENGLISH));
             jda.shutdown();
         } catch (Exception e) {
             System.out.println("> ERROR An exception was thrown!" +

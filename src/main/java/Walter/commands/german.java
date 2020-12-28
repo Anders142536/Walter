@@ -31,11 +31,11 @@ public class german extends Command {
 
         if (RoleHandler.hasRole(author, BlackRole.ENGLISH)) {
             RoleHandler.removeRole(author, BlackRole.ENGLISH);
-            Helper.instance.respond(author, channel,
+            Helper.respond(author, channel,
                     "Ich kommuniziere nun mit dir in Deutsch.",
                     "I will now communicate with you in german.");
         } else
-            Helper.instance.respond(author, channel,
+            Helper.respond(author, channel,
                     "Ich kommuniziere bereits mit dir in Deutsch.",
                     "I already communicate with you in german.");
     }

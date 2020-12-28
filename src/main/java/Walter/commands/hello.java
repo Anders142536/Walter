@@ -22,7 +22,7 @@ public class hello extends Command {
 
     @Override
     public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
-        String memberName = Helper.instance.getMember(event.getAuthor()).getEffectiveName();
+        String memberName = Helper.getMember(event.getAuthor()).getEffectiveName();
         event.getChannel().sendMessage(capitalize(usedKeyword) + ", Master " + memberName + "!").queue();
     }
 

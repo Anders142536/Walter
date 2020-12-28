@@ -100,7 +100,7 @@ public class reprint extends Command {
                     channelID.getValue() + " ist keine valide Kanal ID"
             });
         }
-        MessageChannel channel = Helper.instance.getTextChannel(id);
+        MessageChannel channel = Helper.getTextChannel(id);
         if (channel == null) throw new CommandExecutionException(new String[]{
                 "No channel found with given id " + id,
                 "Kein Kanal gefunden mit der gegebenen ID " + id

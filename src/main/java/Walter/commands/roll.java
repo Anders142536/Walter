@@ -48,7 +48,7 @@ public class roll extends Command {
                 " Zufallszahl(en) zwischen 1 und "
         };
         if (headers.length < Language.values().length)
-            Helper.instance.logError("Walter.commands.roll::roll\n" +
+            Helper.logError("Walter.commands.roll::roll\n" +
                     "headers list is shorter than number of languages");
     }
 

@@ -37,15 +37,15 @@ public class pin extends Command {
     public void execute(String usedKeyword, MessageReceivedEvent event) {
         event.getChannel().retrieveMessageById(messageID.getValue()).queue(
                 success -> {
-                    Member member = Helper.instance.getMember(event.getAuthor());
+                    Member member = Helper.getMember(event.getAuthor());
                     if (success.isPinned()) success.unpin().queue(
                             unpinSuccess -> {
-                                Helper.instance.respond(member, event.getChannel(),
+                                Helper.respond(member, event.getChannel(),
                                         "Die Nachricht wurde erfolgreich entfernt",
                                         "The message was successfully unpinned");
                             },
                             unpinFailed -> {
-                                Helper.instance.respondError(event, new CommandExecutionException(new String[] {
+                                Helper.respondError(event, new CommandExecutionException(new String[] {
                                         "There was an error when unpinning the message:\n" + unpinFailed.getMessage(),
                                         "Etwas ist beim Entfernen der Nachricht schief gelaufen:\n" + unpinFailed.getMessage()
                                 }));
@@ -55,7 +55,7 @@ public class pin extends Command {
                             //Success will be told to the user by discord anyways
                             pinSuccess -> {},
                             pinFailed -> {
-                                Helper.instance.respondError(event, new CommandExecutionException(new String[] {
+                                Helper.respondError(event, new CommandExecutionException(new String[] {
                                         "There was an error when pinning the message:\n" + pinFailed.getMessage(),
                                         "Etwas ist beim Anpinnen der Nachricht schief gelaufen:\n" + pinFailed.getMessage()
                                 }));
@@ -63,7 +63,7 @@ public class pin extends Command {
                     );
                 },
                 error -> {
-                    Helper.instance.respondError(event, new CommandExecutionException(new String[]{
+                    Helper.respondError(event, new CommandExecutionException(new String[]{
                             "Couldn't get the given message. It has to be in the same " +
                                     "channel as your " + usedKeyword + " command!",
                             "Konnte die gegebene Nachricht nicht finden. Sie muss im selben Kanal sein wie " +

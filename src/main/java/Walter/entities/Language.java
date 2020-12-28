@@ -14,7 +14,7 @@ public enum Language {
     Language(int index) { this.index = index; }
 
     public static Language getLanguage(User user) {
-        Member member = Helper.instance.getMember(user);
+        Member member = Helper.getMember(user);
         if (member == null) return Language.ENGLISH;
         return getLanguage(member);
     }

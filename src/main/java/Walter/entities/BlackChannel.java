@@ -17,6 +17,6 @@ public enum BlackChannel {
     BlackChannel(long ID) { this.ID = ID; }
 
     public TextChannel getInstance() {
-        return Helper.instance.getTextChannel(this);
+        return Helper.getTextChannel(this);
     }
 }

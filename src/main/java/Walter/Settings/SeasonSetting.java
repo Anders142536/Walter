@@ -1,11 +1,17 @@
 package Walter.Settings;
 
 
+import Walter.Helper;
+import Walter.entities.BlackRole;
 import Walter.exceptions.ReasonedException;
+import net.dv8tion.jda.api.entities.Icon;
+import net.dv8tion.jda.api.managers.GuildManager;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
 
 public class SeasonSetting extends EventSetting {
     /** These could just be public, as all setter, getter and has methods below are just wrappers, but
@@ -52,6 +58,42 @@ public class SeasonSetting extends EventSetting {
 
     @Nullable
     public Color getMemberColorValue() { return memberColor.getValue(); }
+
+    @Override
+    public void run() {
+        if (hasServerLogoFile()) changeToDefinedServerLogo();
+        if (hasWalterLogoFile()) changeToDefinedWalterLogo();
+        if (hasMemberColor()) changeToDefinedMemberColor();
+    }
+
+    private void changeToDefinedServerLogo() {
+        assert serverLogoFile.getValue() != null;
+        try {
+            File serverLogoFile = new File(this.serverLogoFile.getValue());
+            Icon serverLogo = Icon.from(serverLogoFile);
+            Helper.getGuildManager().setIcon(serverLogo).queue();
+        } catch (IOException e) {
+            Helper.logError("There was an exception when trying to change to the serverlogo defined " +
+                    "in the " + name + " event:\n" + e.getMessage());
+        }
+    }
+
+    private void changeToDefinedWalterLogo() {
+        assert walterLogoFile.getValue() != null;
+        try {
+            File walterLogoFile = new File(this.walterLogoFile.getValue());
+            Icon walterLogo = Icon.from(walterLogoFile);
+            Helper.getWalterAccountManager().setAvatar(walterLogo).queue();
+        } catch (IOException e) {
+            Helper.logError("There was an exception when trying to change to the walterlogo defined " +
+                    "in the " + name + " event:\n" + e.getMessage());
+        }
+    }
+
+    private void changeToDefinedMemberColor() {
+        assert memberColor.getValue() != null;
+        BlackRole.MEMBER.setColor(memberColor.getValue());
+    }
 
     public String toString() {
         return    "name:         " + getName() +

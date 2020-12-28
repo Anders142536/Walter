@@ -33,6 +33,7 @@ public class CommandParserTests {
         assertTrue(CommandParser.isCommand("!test"));
         assertTrue(CommandParser.isCommand("?test"));
         assertTrue(CommandParser.isCommand("!test   "));
+        //TODO: investigate why this fails on windows
         assertTrue(CommandParser.isCommand("!testßüäöÖÄÜ"));
 
         //normal text argument

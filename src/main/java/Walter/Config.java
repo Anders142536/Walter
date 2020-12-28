@@ -136,9 +136,9 @@ public class Config {
                         configMessageID.setValue(newMsg.getId());
                         writeToFile(Walter.location + "/config.yaml");
                     } catch (ReasonedException e) {
-                        Helper.instance.logException("Something went wrong when trying to refresh the configMessageID\n" + e.getReason());
+                        Helper.logException("Something went wrong when trying to refresh the configMessageID\n" + e.getReason());
                     } catch (IOException e) {
-                        Helper.instance.logException("Something went wrong when trying to write config to file");
+                        Helper.logException("Something went wrong when trying to write config to file");
                     }
                 }
         );

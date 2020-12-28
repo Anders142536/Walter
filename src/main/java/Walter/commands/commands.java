@@ -89,7 +89,7 @@ public class commands extends Command {
                     "Erklärung eines Commands rufe ihn bitte mit einem ? anstelle eines ! auf."
                 };
         if (headers.length < Language.values().length)
-            Helper.instance.logError("Walter.commands.commands::getHeaderStrings\n" +
+            Helper.logError("Walter.commands.commands::getHeaderStrings\n" +
                     "headers list is shorter than number of languages");
         return headers;
     }
@@ -105,7 +105,7 @@ public class commands extends Command {
 
     @Override
     public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
-        Member author = Helper.instance.getMember(event.getAuthor());
+        Member author = Helper.getMember(event.getAuthor());
         MessageChannel channel = event.getChannel();
         int languageIndex = Language.getLanguage(author).index;
 

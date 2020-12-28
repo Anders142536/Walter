@@ -46,7 +46,7 @@ public class getmsg extends Command {
                                 metaInfo.setTitle("Metainfo");
                                 metaInfo.addField("Id", success.getId(), false);
                                 String authorName = success.getAuthor().getName();
-                                String memberName = Helper.instance.getMember(success.getAuthor()).getEffectiveName();
+                                String memberName = Helper.getMember(success.getAuthor()).getEffectiveName();
                                 metaInfo.addField("Author", success.getAuthor().getId() + "   " + success.getAuthor().getAsMention() +
                                         (authorName.equals(memberName) ? "" : " (" + memberName + ")"), false);
                                 mes.editMessage(metaInfo.build()).queue();
@@ -56,7 +56,7 @@ public class getmsg extends Command {
                     );
                 },
                 error -> {
-                    Helper.instance.respondError(event, new CommandExecutionException(new String[]{
+                    Helper.respondError(event, new CommandExecutionException(new String[]{
                             "Couldn't get the given message. It has to be in the same channel as your " + commandName + " command!",
                             "Konnte die gegebene Nachricht nicht finden. Sie muss im selben Kanal sein wie dein " + commandName + " Befehl!"
                     }));}

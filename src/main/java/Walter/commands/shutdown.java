@@ -22,7 +22,7 @@ public class shutdown extends Command {
         if (event.getAuthor().getIdLong() == 151010441043116032L) { // if Anders
             event.getJDA().shutdown();
         } else {
-            Helper.instance.respond(event.getMember(), event.getChannel(),
+            Helper.respond(event.getMember(), event.getChannel(),
                     "Es tut mir Leid, doch dieser Command steht nur Anders zu Verfügung",
                     "I am utterly sorry, but this command is only meant for Anders");
         }

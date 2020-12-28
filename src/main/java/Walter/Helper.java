@@ -10,6 +10,9 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.managers.AccountManager;
+import net.dv8tion.jda.api.managers.GuildManager;
+import net.dv8tion.jda.api.managers.Presence;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,55 +21,58 @@ import java.util.concurrent.TimeUnit;
 
 //bundles certain functionalities that are needed all over the place
 public class Helper {
+    private static JDA jda;
 
-    public static Helper instance;
-    private final JDA jda;
+    public static void setJda(JDA jdaToSet) { jda = jdaToSet; }
 
     final private static long GUILD_ID = 254263827237961729L;
-
-
-    public Helper(JDA jda) {
-        this.jda = jda;
-    }
 
     /* ************* *
      *  JDA Getters  *
      * ************* */
 
     //this is not stored as instances are invalidated after a certain period of time
-    Guild getGuild() {
+    static Guild getGuild() {
         return jda.getGuildById(GUILD_ID);
     }
 
-    net.dv8tion.jda.api.entities.Category getCategory(BlackCategory blackCategory) {
+    public static GuildManager getGuildManager() {
+        return getGuild().getManager();
+    }
+
+    public static AccountManager getWalterAccountManager() {
+        return jda.getSelfUser().getManager();
+    }
+
+    static net.dv8tion.jda.api.entities.Category getCategory(BlackCategory blackCategory) {
         return getCategory(blackCategory.ID);
     }
 
-    net.dv8tion.jda.api.entities.Category getCategory(long categoryID) {
+    static net.dv8tion.jda.api.entities.Category getCategory(long categoryID) {
         return getGuild().getCategoryById(categoryID);
     }
 
-    public TextChannel getTextChannel(BlackChannel blackChannel) {
+    public static TextChannel getTextChannel(BlackChannel blackChannel) {
         return getTextChannel(blackChannel.ID);
     }
 
-    public TextChannel getTextChannel(long channelID) {
+    public static TextChannel getTextChannel(long channelID) {
         return getGuild().getTextChannelById(channelID);
     }
 
-    VoiceChannel getVoiceChannel(BlackChannel blackChannel) {
+    static VoiceChannel getVoiceChannel(BlackChannel blackChannel) {
         return getVoiceChannel(blackChannel.ID);
     }
 
-    VoiceChannel getVoiceChannel(long channelID) {
+    static VoiceChannel getVoiceChannel(long channelID) {
         return getGuild().getVoiceChannelById(channelID);
     }
 
-    public Member getMember(User user) {
+    public static Member getMember(User user) {
         return getGuild().retrieveMember(user).complete();
     }
 
-    public List<Member> getMembersByName(String name) {
+    public static List<Member> getMembersByName(String name) {
         return getGuild().getMembersByEffectiveName(name, true);
     }
 
@@ -75,7 +81,7 @@ public class Helper {
      *  Other Helpmethods  *
      * ******************* */
 
-    public void logCommand(Member author, MessageChannel channel, String commandMessageRaw) {
+    public static void logCommand(Member author, MessageChannel channel, String commandMessageRaw) {
         String messageToSend =
                 "`AUTHOR: ` " + author.getEffectiveName() + " (" + author.getId() + ")\n" +
                 "`CHANNEL:` " + channel.getName() + " (" + channel.getId() + ")\n" +
@@ -90,7 +96,7 @@ public class Helper {
         getTextChannel(BlackChannel.LOG).sendMessage(builder.build()).queue();
     }
 
-    public void logError(String logMessage) {
+    public static void logError(String logMessage) {
         System.out.println("ERROR :   " + logMessage);
 
         EmbedBuilder builder = new EmbedBuilder();
@@ -101,7 +107,7 @@ public class Helper {
         getTextChannel(BlackChannel.LOG).sendMessage(builder.build()).queue();
     }
 
-    public void logException(String logMessage) {
+    public static void logException(String logMessage) {
         System.out.println("AN UNHANDLED EXCEPTION OCCURED\n" + logMessage);
 
         EmbedBuilder builder = new EmbedBuilder();
@@ -112,7 +118,7 @@ public class Helper {
         getTextChannel(BlackChannel.LOG).sendMessage(builder.build()).queue();
     }
 
-    public void logInfo(String logMessage) {
+    public static void logInfo(String logMessage) {
         System.out.println("INFO:    " + logMessage);
 
         EmbedBuilder builder = new EmbedBuilder();
@@ -123,18 +129,18 @@ public class Helper {
         getTextChannel(BlackChannel.LOG).sendMessage(builder.build()).queue();
     }
 
-    public void respond(Member member, MessageChannel channel, String german, String english) {
+    public static void respond(Member member, MessageChannel channel, String german, String english) {
         if (RoleHandler.hasRole(member, BlackRole.ENGLISH))
             channel.sendMessage(english).queue();
         else
             channel.sendMessage(german).queue();
     }
 
-    public void respond(MessageChannel channel, String text) {
+    public static void respond(MessageChannel channel, String text) {
         channel.sendMessage(text).queue();
     }
 
-    public void respondError(MessageReceivedEvent event, CommandExecutionException e) {
+    public static void respondError(MessageReceivedEvent event, CommandExecutionException e) {
         respond(getMember(event.getAuthor()), event.getChannel(),
                 "Es tut mir Leid, doch etwas ist beim Ausführen deines Befehls schief gelaufen:\n" +
                         e.getReason(Language.GERMAN) + "\n" + BlackRole.ADMIN.getAsMention(),
@@ -145,10 +151,10 @@ public class Helper {
                         "\nauthor:         " + event.getAuthor().getName() + " <@!" + event.getAuthor().getId() + ">" +
                         "\nmessageContent: " + event.getMessage().getContentRaw() +
                         "\nError Reason:   " + e.getReason(Language.ENGLISH) + "```";
-        Helper.instance.logError(errorlogMessage);
+        Helper.logError(errorlogMessage);
     }
 
-    public void respondException(MessageReceivedEvent event, Exception e) {
+    public static void respondException(MessageReceivedEvent event, Exception e) {
         String corePrint = "timestamp:      " + getFormattedNowString() +
                 "\nchannel:        " + event.getChannel().getName() +
                 "\nauthor:         " + event.getAuthor().getName() + " <@!" + event.getAuthor().getId() + ">" +
@@ -163,7 +169,7 @@ public class Helper {
         e.printStackTrace();
     }
 
-    void deleteUnpinnedMessagesOlderThan(MessageChannel channel, int limit, int catchAmount) {
+    static void deleteUnpinnedMessagesOlderThan(MessageChannel channel, int limit, int catchAmount) {
 
         //getting the message history in the given channel
         //unfortunately retrievePast() does not terminate .complete() if more messages are asked for than there are,
@@ -201,7 +207,7 @@ public class Helper {
         return history.getRetrievedHistory();
     }
 
-    public String getFormattedNowString() {
+    public static String getFormattedNowString() {
         Calendar now = Calendar.getInstance();
         return now.get(Calendar.YEAR) + "/" + (now.get(Calendar.MONTH) + 1) + "/" + now.get(Calendar.DAY_OF_MONTH) + " " + now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
     }
@@ -226,7 +232,7 @@ public class Helper {
         return submsgs;
     }
 
-    private String getStackTraceString(Exception e) {
+    private static String getStackTraceString(Exception e) {
         StringBuilder builder = new StringBuilder("\nSTACKTRACE:\n`" +
                 e.getClass().getSimpleName() + "`");
         StackTraceElement[] stacktrace = e.getStackTrace();

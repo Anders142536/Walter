@@ -2,17 +2,19 @@ package Walter.Settings;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
-public abstract class EventSetting {
-    Date startDate;
-    private String name;
+public abstract class EventSetting implements Runnable {
+    LocalDateTime startDate;
+    protected String name;
 
     public void setName(@Nonnull String name) {
         this.name = name;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
@@ -24,7 +26,14 @@ public abstract class EventSetting {
     public String getStartDate() { return (hasStartDate() ? startDate.toString() : "Undefined"); }
 
     @Nullable
-    public Date getStartDateValue() { return startDate; }
+    public LocalDateTime getStartDateValue() { return startDate; }
+
+    public long getDelayUntilStartDate() {
+        return LocalDate.now().until(startDate, ChronoUnit.MILLIS);
+    }
+
+    @Override
+    public abstract void run();
 
     public abstract String toString();
 }

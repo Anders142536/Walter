@@ -1,5 +1,7 @@
 package Walter.playground;
 
+import Walter.Parsers.CommandParser;
+import Walter.commands.Command;
 import Walter.entities.Language;
 import Walter.exceptions.CommandExecutionException;
 import org.junit.jupiter.api.Test;
@@ -57,5 +59,13 @@ public class common {
 
     //@Test
     public void commonTest() {
+        String testregex = "^[!?]([a-zA-ZüÜöÖäÄß]+)( +([^-\"][^\\s\"]*|-?\\d*[.,]?\\d+|-([A-Za-züÜöÖäÄß]|-[A-Za-züÜöÖäÄß]+)|\"[^\"]*\"))*";
+        String testInput = "!testßüäöÖÄÜ";
+
+        System.out.println(testInput.matches(testregex));
+        CommandParser t = new CommandParser();
+
+        System.out.println(CommandParser.isCommand(testInput));
+        System.out.println("done");
     }
 }

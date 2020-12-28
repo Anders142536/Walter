@@ -82,11 +82,11 @@ public class CommandProcessor {
      * or the display of a help page depending on the prefix
      */
     void process(MessageReceivedEvent event) throws ParseException, CommandExecutionException {
-        Member author = Helper.instance.getMember(event.getAuthor());
+        Member author = Helper.getMember(event.getAuthor());
         MessageChannel channel = event.getChannel();
         String messageContent = event.getMessage().getContentRaw();
 
-        Helper.instance.logCommand(author, channel, messageContent);
+        Helper.logCommand(author, channel, messageContent);
 
         parser.setStringToParse(messageContent);
         String commandName = parser.parseCommandName();

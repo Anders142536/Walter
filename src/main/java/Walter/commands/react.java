@@ -61,7 +61,7 @@ public class react extends Command {
                     else {
                         List<Emote> emotes = event.getMessage().getEmotes();
                         if (emotes.size() == 0)
-                            Helper.instance.respondError(event, new CommandExecutionException(new String[] {
+                            Helper.respondError(event, new CommandExecutionException(new String[] {
                                 "There were no Emojis given",
                                 "Es wurden keine Emojis gegeben"
                             }));
@@ -73,7 +73,7 @@ public class react extends Command {
                     }
                 },
                 error -> {
-                    Helper.instance.respondError(event, new CommandExecutionException(new String[]{
+                    Helper.respondError(event, new CommandExecutionException(new String[]{
                             "Couldn't get the given message. It has to be in the same channel as your " + usedKeyword + " command!",
                             "Konnte die gegebene Nachricht nicht finden. Sie muss im selben Kanal sein wie dein " + usedKeyword + " Befehl!"
                     }));}

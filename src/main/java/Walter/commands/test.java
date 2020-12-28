@@ -38,7 +38,7 @@ public class test extends Command {
         if (event.getAuthor().getIdLong() == 151010441043116032L) { // if Anders
 
         } else {
-            Helper.instance.respond(event.getMember(), event.getChannel(),
+            Helper.respond(event.getMember(), event.getChannel(),
                     "Es tut mir Leid, doch derzeit gibt es keine Tests.",
                     "I am utterly sorry, but there are no tests currently.");
         }

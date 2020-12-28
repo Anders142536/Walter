@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommandParser extends Parser {
-    static String commandIdentifierRegex;
+    static String commandIdentifierRegex = "^[!?]([a-zA-ZüÜöÖäÄß]+)( +([^-\"][^\\s\"]*|-?\\d*[.,]?\\d+|-([A-Za-züÜöÖäÄß]|-[A-Za-züÜöÖäÄß]+)|\"[^\"]*\"))*";
     static String commandNameRegex;
     static Pattern commandNameParser;
     static Matcher commandNameMatcher;
@@ -21,7 +21,7 @@ public class CommandParser extends Parser {
     private String commandName = null;
 
     public CommandParser() {
-        commandIdentifierRegex = "^[!?]([a-zA-ZüÜöÖäÄß]+)( +([^-\"][^\\s\"]*|-?\\d*[.,]?\\d+|-([A-Za-züÜöÖäÄß]|-[A-Za-züÜöÖäÄß]+)|\"[^\"]*\"))*";
+//        commandIdentifierRegex = "^[!?]([a-zA-ZüÜöÖäÄß]+)( +([^-\"][^\\s\"]*|-?\\d*[.,]?\\d+|-([A-Za-züÜöÖäÄß]|-[A-Za-züÜöÖäÄß]+)|\"[^\"]*\"))*";
         commandNameRegex = "^[!?]([a-zA-ZüÜöÖäÄß]+)";
         commandNameParser = Pattern.compile(commandNameRegex);
         commandArgumentParser = Pattern.compile("( +([^-\"][^\\s\"]*|-?\\d*[.,]?\\d+|-([A-Za-züÜöÖäÄß]|-[A-Za-züÜöÖäÄß]+)|\"[^\"]*\"))");

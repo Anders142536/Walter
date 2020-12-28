@@ -29,11 +29,11 @@ public class english extends Command {
 
         if (!RoleHandler.hasRole(author, BlackRole.ENGLISH)) {
             RoleHandler.assignRole(author, BlackRole.ENGLISH);
-            Helper.instance.respond(author, channel,
+            Helper.respond(author, channel,
                     "Ich kommuniziere nun mit dir in Englisch.",
                     "I will now communicate with you in english.");
         } else
-            Helper.instance.respond(author, channel,
+            Helper.respond(author, channel,
                     "Ich kommuniziere bereits mit dir in Englisch.",
                     "I already communicate with you in english.");
     }

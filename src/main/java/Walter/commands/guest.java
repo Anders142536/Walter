@@ -35,7 +35,7 @@ public class guest extends Command {
     @Override
     public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
         String memberToSearchFor = nick.getValue();
-        List<Member> foundMembers = Helper.instance.getMembersByName(memberToSearchFor);
+        List<Member> foundMembers = Helper.getMembersByName(memberToSearchFor);
 
         if (foundMembers.size() == 0)
             throw new CommandExecutionException(new String[] {
