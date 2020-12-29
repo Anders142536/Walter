@@ -9,6 +9,8 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +24,7 @@ public class ConfigTests extends WalterTest{
     }
 
     //@Test
-    public void writeToFileTest() {
+    public void writeToFileTestVerbose() {
         Map<String, Object> template = new HashMap<>();
         List<EventSetting> events = new ArrayList<>();
         EventSetting test1 = new SeasonSetting();
@@ -50,7 +52,18 @@ public class ConfigTests extends WalterTest{
     }
 
     @Test
-    public void loadFromFile() throws ReasonedException {
+    public void writeToFileTest() {
+        assertDoesNotThrow(Config::initialize);
+
+        assertDoesNotThrow(() -> Config.writeToFile(Walter.location + "/configtemplate.yaml"));
+
+//        LocalDateTime test = LocalDateTime.now();
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/y HH:mm:ss");
+//        System.out.println(">" + test.format(formatter) + "<");
+    }
+
+    @Test
+    public void loadFromFileVerbose() throws ReasonedException {
         Map<String, Object> map;
         try (FileInputStream reader = new FileInputStream(new File(Walter.location + "/configtemplate.yaml"))){
             Yaml yaml = new Yaml();
@@ -60,6 +73,14 @@ public class ConfigTests extends WalterTest{
         } catch (IOException e) {
             throw new ReasonedException("Something went wrong on reading the config file");
         }
+
+        System.out.println("debug stop");
+    }
+
+    @Test
+    public void loadFromFile() {
+        assertDoesNotThrow(Config::initialize);
+
 
     }
 

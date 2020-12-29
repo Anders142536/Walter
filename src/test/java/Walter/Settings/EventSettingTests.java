@@ -1,5 +1,6 @@
 package Walter.Settings;
 
+import Walter.Config;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -56,7 +57,7 @@ public class EventSettingTests {
     @Test
     public void setStartDate() {
         LocalDateTime startDate = LocalDateTime.now();
-        t.setStartDate(startDate);
+        t.setStartDate(startDate.format(Config.dateFormat));
 
         assertTrue(t.hasStartDate());
         assertEquals(startDate, t.getStartDateValue());

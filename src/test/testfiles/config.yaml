@@ -1,11 +1,14 @@
-servernews: Undefined
+defaultWalterLogo: Undefined
 configMessageID: Undefined
+servernews: Undefined
 patchnotes: Undefined
 EVENTS:
 - !!Walter.Settings.SeasonSetting
   memberColor: Undefined
-  name: Unnamed
+  name: TemplateSetting
   serverLogoFile: Undefined
-  walterLogoFile: Undefined
+  startDate: 29/12/2020 16:23:12
+defaultServerLogo: Undefined
+defaultMemberColor: Undefined
 isLockdown: Undefined
 dropZoneLimit: '50'

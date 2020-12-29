@@ -1,36 +1,36 @@
 package Walter.Settings;
 
+import Walter.Config;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 public abstract class EventSetting implements Runnable {
     LocalDateTime startDate;
-    protected String name;
+    String name;
 
     public void setName(@Nonnull String name) {
         this.name = name;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
+    //this is required in order for snakeyaml to be able to load
+    public void setStartDate(@Nonnull String value) {
+        startDate = LocalDateTime.parse(value, Config.dateFormat);
     }
+
+    public void setStartDate(LocalDateTime value) { this.startDate = value; }
 
     public boolean hasStartDate() { return startDate != null; }
 
+    @Nonnull
     public String getName() { return (name == null || name.isBlank() ? "Unnamed" : name); }
 
-    @Nonnull
-    public String getStartDate() { return (hasStartDate() ? startDate.toString() : "Undefined"); }
+    @Nonnull    //has to return Object as otherwise snakeyaml wont find the getter for some stupid reason
+    public Object getStartDate() { return (hasStartDate() ? startDate.format(Config.dateFormat) : "Undefined"); }
 
     @Nullable
     public LocalDateTime getStartDateValue() { return startDate; }
-
-    public long getDelayUntilStartDate() {
-        return LocalDate.now().until(startDate, ChronoUnit.MILLIS);
-    }
 
     @Override
     public abstract void run();

@@ -33,4 +33,8 @@ public enum BlackRole {
     public void setColor(@Nonnull Color color) {
         getInstance().getManager().setColor(color).queue();
     }
+
+    public Color getColor() {
+        return getInstance().getColor();
+    }
 }
