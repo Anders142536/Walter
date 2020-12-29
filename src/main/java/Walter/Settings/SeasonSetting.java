@@ -1,11 +1,12 @@
 package Walter.Settings;
 
 
+import Walter.Config;
+import Walter.EventScheduler;
 import Walter.Helper;
 import Walter.entities.BlackRole;
 import Walter.exceptions.ReasonedException;
 import net.dv8tion.jda.api.entities.Icon;
-import net.dv8tion.jda.api.managers.GuildManager;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -61,15 +62,25 @@ public class SeasonSetting extends EventSetting {
 
     @Override
     public void run() {
-        if (hasServerLogoFile()) changeToDefinedServerLogo();
-        if (hasWalterLogoFile()) changeToDefinedWalterLogo();
-        if (hasMemberColor()) changeToDefinedMemberColor();
+        changeServerLogo();
+        changeWalterLogo();
+        changeMemberColor();
+        EventScheduler.instance.executionNotify(this);
     }
 
-    private void changeToDefinedServerLogo() {
-        assert serverLogoFile.getValue() != null;
+    private void changeServerLogo() {
         try {
-            File serverLogoFile = new File(this.serverLogoFile.getValue());
+            File serverLogoFile;
+            if (hasServerLogoFile())
+                serverLogoFile = new File(this.serverLogoFile.getValue());
+            else if (Config.defaultServerLogoFile.hasValue())
+                serverLogoFile = new File(Config.defaultServerLogoFile.getValue());
+            else {
+                Helper.logError("There was neither a serverlogofile defined in the event " +
+                        name + " nor in the defaults. No changes were made");
+                return;
+            }
+
             Icon serverLogo = Icon.from(serverLogoFile);
             Helper.getGuildManager().setIcon(serverLogo).queue();
         } catch (IOException e) {
@@ -78,10 +89,19 @@ public class SeasonSetting extends EventSetting {
         }
     }
 
-    private void changeToDefinedWalterLogo() {
-        assert walterLogoFile.getValue() != null;
+    private void changeWalterLogo() {
         try {
-            File walterLogoFile = new File(this.walterLogoFile.getValue());
+            File walterLogoFile;
+            if (hasWalterLogoFile())
+                walterLogoFile = new File(this.walterLogoFile.getValue());
+            else if (Config.defaultWalterLogoFile.hasValue())
+                walterLogoFile = new File(Config.defaultWalterLogoFile.getValue());
+            else {
+                Helper.logError("There was neither a walterlogofile defined in the event " +
+                        name + " nor in the defaults. No changes were made");
+                return;
+            }
+
             Icon walterLogo = Icon.from(walterLogoFile);
             Helper.getWalterAccountManager().setAvatar(walterLogo).queue();
         } catch (IOException e) {
@@ -90,9 +110,20 @@ public class SeasonSetting extends EventSetting {
         }
     }
 
-    private void changeToDefinedMemberColor() {
-        assert memberColor.getValue() != null;
-        BlackRole.MEMBER.setColor(memberColor.getValue());
+    private void changeMemberColor() {
+        Color toSet;
+        if (hasMemberColor())
+            toSet = memberColor.getValue();
+        else if (Config.defaultMemberColor.hasValue())
+            toSet = Config.defaultMemberColor.getValue();
+        else {
+            Helper.logError("There was neither a memberColor defined in the event " +
+                    name + " nor in the defaults. No changes were made");
+            return;
+        }
+
+        if (!BlackRole.MEMBER.getColor().equals(toSet))
+            BlackRole.MEMBER.setColor(toSet);
     }
 
     public String toString() {
