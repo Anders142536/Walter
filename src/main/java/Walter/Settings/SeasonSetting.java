@@ -62,10 +62,10 @@ public class SeasonSetting extends EventSetting {
 
     @Override
     public void run() {
+        EventScheduler.instance.executionNotify(this);
         changeServerLogo();
         changeWalterLogo();
         changeMemberColor();
-        EventScheduler.instance.executionNotify(this);
     }
 
     private void changeServerLogo() {

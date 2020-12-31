@@ -51,11 +51,11 @@ public class ConfigTests extends WalterTest{
         }
     }
 
-    @Test
+//    @Test
     public void writeToFileTest() {
-        assertDoesNotThrow(Config::initialize);
+//        assertDoesNotThrow(Config::initialize);
 
-        assertDoesNotThrow(() -> Config.writeToFile(Walter.location + "/configtemplate.yaml"));
+//        assertDoesNotThrow(() -> Config.writeToFile(Walter.location + "/configtemplate.yaml"));
 
 //        LocalDateTime test = LocalDateTime.now();
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/y HH:mm:ss");

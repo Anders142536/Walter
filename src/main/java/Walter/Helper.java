@@ -1,5 +1,6 @@
 package Walter;
 
+import Walter.Settings.EventSetting;
 import Walter.entities.BlackCategory;
 import Walter.entities.BlackChannel;
 import Walter.entities.BlackRole;
@@ -240,5 +241,12 @@ public class Helper {
             builder.append("\n").append(stacktrace[i]);
         }
         return builder.toString();
+    }
+
+    public static void sortListByDate(List<EventSetting> list) {
+        list.sort((x, y) -> {
+            if (x.getStartDateValue().equals(y.getStartDateValue())) return 0;
+            return (x.getStartDateValue().isBefore(y.getStartDateValue()) ? -1 : 1);
+        });
     }
 }

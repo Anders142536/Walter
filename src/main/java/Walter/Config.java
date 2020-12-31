@@ -28,8 +28,6 @@ public class Config {
     public static ColorSetting defaultMemberColor;
     public static IntegerSetting dropZoneLimit;
 
-    public static List<EventSetting> eventSettingList;
-
     //Every Setting defined here should be initialized in initializeHiddenSettings()
     private static List<Setting> hidden;
     public static LongSetting configMessageID;
@@ -40,6 +38,14 @@ public class Config {
     public static void initialize() throws IOException, ReasonedException {
         EventScheduler.instance = new EventScheduler();
         initializeSettings();
+        load();
+    }
+
+    public static void save() {
+        //TODO this
+    }
+
+    public static void load() throws IOException, ReasonedException{
         File yamlFile = new File(Walter.location + "/config.yaml");
         if (!yamlFile.exists())
             createTemplateSettingsYaml();
@@ -97,12 +103,11 @@ public class Config {
         System.out.println("Config.yaml file not found in folder");
 
         //if the list of events is empty we add one that can be printed to make it easier to add one in the file
-        if (eventSettingList == null) eventSettingList = new ArrayList<>();
-        if (eventSettingList.isEmpty()) {
+        if (EventScheduler.instance.hasEvents()) {
             SeasonSetting template = new SeasonSetting();
             template.setName("TemplateSetting");
             template.setStartDate(LocalDateTime.now());
-            eventSettingList.add(template);
+            EventScheduler.instance.addEvent(template);
         }
 
         writeToFile(Walter.location + "/configtemplate.yaml");
@@ -111,16 +116,17 @@ public class Config {
         throw new ReasonedException("Config template created in folder called configtemplate.yaml");
     }
 
-    public static void writeToFile(String filePath) throws IOException, ReasonedException {
+    private static void writeToFile(String filePath) throws IOException, ReasonedException {
         Map<String, Object> template = new HashMap<>();
 
         //TODO: find a way to separate hidden and non-hidden settings in file
         general.forEach((x) -> template.put(x.getName(), x.getValueString()));
         hidden.forEach((x) -> template.put(x.getName(), x.getValueString()));
 
-        template.put("lastEventExecution", EventScheduler.instance.getLastEventExecution().format(dateFormat));
+        LocalDateTime lastEventExecution = EventScheduler.instance.getLastEventExecution();
+        template.put("lastEventExecution", (lastEventExecution == null ? "Undefined" : lastEventExecution.format(dateFormat)));
 
-        template.put("EVENTS", eventSettingList);
+        template.put("EVENTS", EventScheduler.instance.getEventSettingList());
 
         File templateFile = new File(filePath);
         templateFile.createNewFile();
@@ -134,21 +140,29 @@ public class Config {
         }
     }
 
-    public static void loadFromFile(File yamlFile) throws ReasonedException {
+    private static void loadFromFile(File yamlFile) throws ReasonedException {
         Map<String, Object> yaml = loadYamlFileToMap(yamlFile);
 
         //General
-        for (Setting setting: general)
+        for (Setting setting: general) {
+            if (!yaml.containsKey(setting.getName())) throw new ReasonedException(
+                    "The config file does not contain a \"" + setting.getName() + "\" setting!");
             setting.setValue(String.valueOf(yaml.get(setting.getName())));
+        }
 
-        EventScheduler.instance.setLastEventExecution(LocalDateTime.parse(String.valueOf(yaml.get("lastEventExecution"))));
+        if (!yaml.containsKey("lastEventExecution")) throw new ReasonedException(
+                "The config file does not contain a \"lastEventExecution\" setting!");
+        String lastEventExecution = String.valueOf(yaml.get("lastEventExecution"));
+        EventScheduler.instance.setLastEventExecution(lastEventExecution.equals("Undefined") ? null : LocalDateTime.parse(lastEventExecution));
 
-        eventSettingList = (List<EventSetting>)yaml.get("EVENTS");
-        EventScheduler.instance.resetAndScheduleEvents(eventSettingList);
+        EventScheduler.instance.resetAndScheduleEvents((List<EventSetting>)yaml.get("EVENTS"));
 
         //Hidden
-        for (Setting setting: hidden)
+        for (Setting setting: hidden) {
+            if (!yaml.containsKey(setting.getName())) throw new ReasonedException(
+                    "The config file does not contiain a \"" + setting.getName() + "\" setting!");
             setting.setValue(String.valueOf(yaml.get(setting.getName())));
+        }
 
         BlackWebhook.SERVERNEWS = new BlackWebhook(servernews.getValue());
         BlackWebhook.PATCHNOTES = new BlackWebhook(patchnotes.getValue());
@@ -171,6 +185,8 @@ public class Config {
             Helper.logException("There is no config message ID defined!");
             return;
         }
+        //TODO: make this delete the channel and reprint the message, spread over several messages in
+        //TODO: case the message is over 2k lines long
         TextChannel configChannel = BlackChannel.CONFIG.getInstance();
         Message configMessage = configChannel.retrieveMessageById(configMessageID.getValue()).complete();
         String configText = buildConfigText();
@@ -197,7 +213,8 @@ public class Config {
 
         general.forEach((x) -> toWrite.append(String.format("%-" + maxSettingNameLength + "s = %s\n", x.getName(), x.getValueString())));
         toWrite.append("\nEvents:\n");
-        for (EventSetting sett: eventSettingList) {
+
+        for (EventSetting sett: EventScheduler.instance.getEventSettingList()) {
             toWrite.append(String.format("%s\n", sett.toString()));
         }
         toWrite.append("```");
@@ -213,4 +230,5 @@ public class Config {
         }
         return maxLength + 1;
     }
+
 }
