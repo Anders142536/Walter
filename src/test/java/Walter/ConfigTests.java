@@ -9,8 +9,6 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
 
 import java.io.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,7 +60,7 @@ public class ConfigTests extends WalterTest{
 //        System.out.println(">" + test.format(formatter) + "<");
     }
 
-    @Test
+    //@Test
     public void loadFromFileVerbose() throws ReasonedException {
         Map<String, Object> map;
         try (FileInputStream reader = new FileInputStream(new File(Walter.location + "/configtemplate.yaml"))){
@@ -77,7 +75,7 @@ public class ConfigTests extends WalterTest{
         System.out.println("debug stop");
     }
 
-    @Test
+    //@Test
     public void loadFromFile() {
         assertDoesNotThrow(Config::initialize);
 

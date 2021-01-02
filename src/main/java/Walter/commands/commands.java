@@ -77,7 +77,7 @@ public class commands extends Command {
             builder.addField("Admin", adminCommandsStrings.get(lang.index).toString(), false);
             adminCommands.add(builder.build());
         }
-}
+    }
 
     private String[] getHeaderStrings() {
         String[] headers = {

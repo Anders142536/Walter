@@ -21,10 +21,12 @@ public abstract class EventSetting implements Runnable {
 
     public void setStartDate(LocalDateTime value) { this.startDate = value; }
 
+    public boolean hasName() { return !(name == null || name.isBlank()); }
+
     public boolean hasStartDate() { return startDate != null; }
 
     @Nonnull
-    public String getName() { return (name == null || name.isBlank() ? "Unnamed" : name); }
+    public String getName() { return (hasName() ? name : "Unnamed"); }
 
     @Nonnull    //has to return Object as otherwise snakeyaml wont find the getter for some stupid reason
     public Object getStartDate() { return (hasStartDate() ? startDate.format(Config.dateFormat) : "Undefined"); }

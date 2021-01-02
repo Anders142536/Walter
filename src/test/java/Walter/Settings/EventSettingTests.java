@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,6 +20,7 @@ public class EventSettingTests {
 
     @Test
     public void correctStartup() {
+        assertFalse(t.hasName());
         assertEquals("Unnamed", t.getName());
         assertFalse(t.hasStartDate());
         assertEquals("Undefined", t.getStartDate());
@@ -29,6 +31,7 @@ public class EventSettingTests {
     public void setValidName() {
         t.setName("Testname");
 
+        assertTrue(t.hasName());
         assertEquals("Testname", t.getName());
         assertFalse(t.hasStartDate());
         assertEquals("Undefined", t.getStartDate());
@@ -39,6 +42,7 @@ public class EventSettingTests {
     public void setEmptyName() {
         t.setName("");
 
+        assertFalse(t.hasName());
         assertEquals("Unnamed", t.getName());
         assertFalse(t.hasStartDate());
         assertEquals("Undefined", t.getStartDate());
@@ -48,6 +52,8 @@ public class EventSettingTests {
     @Test
     public void setLinebreakName() {
         t.setName("\n");
+
+        assertFalse(t.hasName());
         assertEquals("Unnamed", t.getName());
         assertFalse(t.hasStartDate());
         assertEquals("Undefined", t.getStartDate());
@@ -55,13 +61,14 @@ public class EventSettingTests {
     }
 
     @Test
-    public void setStartDate() {
-        LocalDateTime startDate = LocalDateTime.now();
+    public void setStartDateString() {
+        LocalDateTime startDate = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
         t.setStartDate(startDate.format(Config.dateFormat));
 
         assertTrue(t.hasStartDate());
         assertEquals(startDate, t.getStartDateValue());
-        assertEquals(startDate.toString(), t.getStartDate());
+        assertEquals(startDate.format(Config.dateFormat), t.getStartDate());
+        assertFalse(t.hasName());
         assertEquals("Unnamed", t.getName());
     }
 }

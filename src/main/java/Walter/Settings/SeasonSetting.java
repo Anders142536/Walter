@@ -128,7 +128,7 @@ public class SeasonSetting extends EventSetting {
 
     public String toString() {
         return    "name:         " + getName() +
-                "\nstart date:   " + (hasStartDate() ? startDate : "Undefined") +
+                "\nstart date:   " + (hasStartDate() ? getStartDate()  + " (" + EventScheduler.instance.getEventState(this) + ")" : "Undefined") +
                 "\nmember color: " + (memberColor.hasValue() ? memberColor.getValueString() : "DEFAULT") +
                 "\nserver logo:  " + (serverLogoFile.hasValue() ? serverLogoFile.getValueString() : "DEFAULT") +
                 "\nwalter logo:  " + (walterLogoFile.hasValue() ? walterLogoFile.getValueString() : "DEFAULT");

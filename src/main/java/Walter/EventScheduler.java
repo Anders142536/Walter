@@ -2,6 +2,7 @@ package Walter;
 
 import Walter.Settings.EventSetting;
 import Walter.Settings.SeasonSetting;
+import Walter.entities.Language;
 import Walter.exceptions.ReasonedException;
 import jdk.jfr.Event;
 
@@ -39,7 +40,7 @@ public class EventScheduler {
     @Nullable
     public LocalDateTime getLastEventExecution() { return lastEventExecution; }
 
-    public void flagEventSettingListAsUnsorted() {
+    private void flagEventSettingListAsUnsorted() {
         if (isEventSettingListSorted) isEventSettingListSorted = false;
     }
 
@@ -58,6 +59,12 @@ public class EventScheduler {
         return eventSettingList;
     }
 
+    public String getEventState(EventSetting event) {
+        if (eventSettingList.stream().noneMatch((x) -> x.getName().equals(event.getName()))) return "Unknown";
+        if (scheduledEvents.containsKey(event.getName())) return "Scheduled";
+        return "Done";
+    }
+
     public synchronized void executionNotify(EventSetting event) {
         lastEventExecution = event.getStartDateValue();
         scheduledEvents.remove(event.getName());
@@ -65,18 +72,32 @@ public class EventScheduler {
     }
 
     //for loading
-    public void resetAndScheduleEvents(@Nonnull Collection<EventSetting> events) throws ReasonedException {
+    public void reset() {
+        eventSettingList.clear();
+
         scheduledFutures.forEach((name, future) -> future.cancel(false));
         scheduledFutures.clear();
         scheduledEvents.clear();
+        lastEventExecution = null;
+    }
+
+    public void resetAndScheduleEvents(@Nonnull Collection<EventSetting> events) throws ReasonedException {
         eventSettingList.clear();
         eventSettingList.addAll(events);
+
+        reschedule();
+    }
+
+    private void reschedule() throws ReasonedException {
+        scheduledFutures.forEach((name, future) -> future.cancel(false));
+        scheduledFutures.clear();
+        scheduledEvents.clear();
         lastEventExecution = null;
 
         EventSetting currentSeason = null;
         LocalDateTime now = LocalDateTime.now();
 
-        for (EventSetting event: events) {
+        for (EventSetting event: eventSettingList) {
             if (!event.hasStartDate()) continue;
             if (event.getStartDateValue().isAfter(now)) scheduleEvent(event);
             else if (event instanceof SeasonSetting &&
@@ -84,12 +105,12 @@ public class EventScheduler {
                 currentSeason = event;
         }
 
-                                        //going back to defaults
-        scheduleEvent(currentSeason == null ? new SeasonSetting() : currentSeason);
+        if (currentSeason == null) goBackToDefaults();
+        else scheduleEvent(currentSeason);
     }
 
     private void scheduleEvent(@Nonnull EventSetting event) throws ReasonedException {
-        if (scheduledEvents.containsKey(event.getName())) throw new ReasonedException(new String[] {
+        if (event.hasName() && scheduledEvents.containsKey(event.getName())) throw new ReasonedException(new String[] {
                 "There is already an event defined called " + event.getName(),
                 "Es ist bereits ein Event namens " + event.getName() + " definiert"
         });
@@ -103,8 +124,16 @@ public class EventScheduler {
         });
 
         ScheduledFuture<?> future = scheduler.schedule(event, getDelayUntilStartDate(event), TimeUnit.MILLISECONDS);
-        scheduledEvents.put(event.getName(), event);
-        scheduledFutures.put(event.getName(), future);
+        if (event.hasName()) {
+            scheduledEvents.put(event.getName(), event);
+            scheduledFutures.put(event.getName(), future);
+        }
+    }
+
+    private void goBackToDefaults() throws ReasonedException {
+        SeasonSetting defaultEvent = new SeasonSetting();
+        defaultEvent.setStartDate(LocalDateTime.now());
+        scheduleEvent(defaultEvent);
     }
 
     private long getDelayUntilStartDate(@Nonnull EventSetting event) {
@@ -144,19 +173,20 @@ public class EventScheduler {
 
         //necessary, as the currently active event might have been deleted, in which case
         //the event before it has to be activated again
-        resetAndScheduleEvents(eventSettingList);
+        reschedule();
         flagEventSettingListAsUnsorted();
     }
 
     @Nonnull
-    public String getFormattedListOfScheduledEvents() {
+    public String getFormattedListOfEvents() {
 
-        StringBuilder builder = new StringBuilder();
-        for (EventSetting event: getEventSettingList()) {
-            //TODO
+        StringBuilder builder = new StringBuilder(
+                eventSettingList.size() + " defined, " + scheduledEvents.size() + " scheduled"
+        );
+        for (EventSetting event : getEventSettingList()) {
+            builder.append("\n").append(event.toString());
         }
 
-
-        return "";
+        return builder.toString();
     }
 }
