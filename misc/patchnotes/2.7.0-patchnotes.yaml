@@ -1,7 +1,7 @@
 name: Seasons Update
 New Features:
-  - title:
-    description:
+  - title: Added Season Events
+    description: Season Events can adjust the server logo, walters logo and the color of the member role, based on a timed schedule. Every event has a start date, but no end date, as seasons end when another season starts. This will allow for great server customization for seasonal events like halloween or simply some monthly changes of the look and feel of the server. Also, this is preparation for some other, time based automation done by Walter that will probably follow in the future updates (as listed on the trello board for walter, look at #walter)
 Optimizations:
   - title: Complete rework of how settings work
     description: Before some settings were nothing more than mere variables that got a value via some ini file, all cramped up in one, very chaotic class. Now it is written in a very easily maintainable and expandable structure that allows for default values, limits etc., all nicely lined up in a separate package. It is technically a whole settings framework. There is a help page for the settins to explain how to use them, or just ask Anders how to set them.

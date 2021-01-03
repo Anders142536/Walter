@@ -41,8 +41,9 @@ public class Config {
         load();
     }
 
-    public static void save() {
-        //TODO this
+    public static void save() throws IOException, ReasonedException {
+        writeToFile(Walter.location + "/config.yaml");
+        writeToConfigChannel();
     }
 
     public static void load() throws IOException, ReasonedException{
@@ -117,26 +118,26 @@ public class Config {
     }
 
     private static void writeToFile(String filePath) throws IOException, ReasonedException {
-        Map<String, Object> template = new HashMap<>();
+        Map<String, Object> output = new HashMap<>();
 
         //TODO: find a way to separate hidden and non-hidden settings in file
-        general.forEach((x) -> template.put(x.getName(), x.getValueString()));
-        hidden.forEach((x) -> template.put(x.getName(), x.getValueString()));
+        general.forEach((x) -> output.put(x.getName(), x.getValueString()));
+        hidden.forEach((x) -> output.put(x.getName(), x.getValueString()));
 
         LocalDateTime lastEventExecution = EventScheduler.instance.getLastEventExecution();
-        template.put("lastEventExecution", (lastEventExecution == null ? "Undefined" : lastEventExecution.format(dateFormat)));
+        output.put("lastEventExecution", (lastEventExecution == null ? "Undefined" : lastEventExecution.format(dateFormat)));
 
-        template.put("EVENTS", EventScheduler.instance.getEventSettingList());
+        output.put("EVENTS", EventScheduler.instance.getEventSettingList());
 
-        File templateFile = new File(filePath);
-        templateFile.createNewFile();
-        try (FileWriter writer = new FileWriter(templateFile)) {
+        File outputFile = new File(filePath);
+        outputFile.createNewFile();
+        try (FileWriter writer = new FileWriter(outputFile)) {
             DumperOptions dumpOptions = new DumperOptions();
             dumpOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
             config = new Yaml(dumpOptions);
-            config.dump(template, writer);
+            config.dump(output, writer);
         } catch (YAMLException e) {
-            throw new ReasonedException("There was an issue writing the template config:\n" + e.getMessage());
+            throw new ReasonedException("There was an issue writing the config file:\n" + e.getMessage());
         }
     }
 
@@ -209,9 +210,8 @@ public class Config {
     @NotNull
     private static String buildConfigText() {
         StringBuilder toWrite = new StringBuilder("```ini\n");
-        int maxSettingNameLength = getSettingNameLength();
 
-        general.forEach((x) -> toWrite.append(String.format("%-" + maxSettingNameLength + "s = %s\n", x.getName(), x.getValueString())));
+        general.forEach((x) -> toWrite.append(String.format("%-" + getSettingNameLength() + "s = %s\n", x.getName(), x.getValueString())));
         toWrite.append("\nEvents:\n");
 
         for (EventSetting sett: EventScheduler.instance.getEventSettingList()) {

@@ -28,8 +28,10 @@ public class SeasonSettingTests extends WalterTest {
         assertEquals("Undefined", t.getServerLogoFile());
         assertEquals("Undefined", t.getWalterLogoFile());
         assertEquals("Undefined", t.getMemberColor());
+        assertEquals("Season", t.getType());
 
-        assertEquals("name:         Unnamed\n" +
+        assertEquals("type:         Season\n" +
+                "name:         Unnamed\n" +
                 "start date:   Undefined\n" +
                 "member color: DEFAULT\n" +
                 "server logo:  DEFAULT\n" +
@@ -46,7 +48,8 @@ public class SeasonSettingTests extends WalterTest {
         assertTrue(t.hasWalterLogoFile());
         assertTrue(t.hasMemberColor());
 
-        assertEquals("name:         Unnamed\n" +
+        assertEquals("type:         Season\n" +
+                "name:         Unnamed\n" +
                 "start date:   Undefined\n" +
                 "member color: #0dead0\n" +
                 "server logo:  " + Walter.location + "/events/server.png\n" +

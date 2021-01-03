@@ -179,12 +179,23 @@ public class EventScheduler {
 
     @Nonnull
     public String getFormattedListOfEvents() {
-
         StringBuilder builder = new StringBuilder(
                 eventSettingList.size() + " defined, " + scheduledEvents.size() + " scheduled"
         );
         for (EventSetting event : getEventSettingList()) {
             builder.append("\n").append(event.toString());
+        }
+
+        return builder.toString();
+    }
+
+    @Nonnull
+    public String getShortFormattedListOfEvents() {
+        StringBuilder builder = new StringBuilder(
+                eventSettingList.size() + " defined, " + scheduledEvents.size() + " scheduled"
+        );
+        for (EventSetting event : getEventSettingList()) {
+            builder.append(String.format("", event.toString()));
         }
 
         return builder.toString();

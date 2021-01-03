@@ -77,6 +77,7 @@ public class EventSchedulerTests extends WalterTest {
 
         assertTrue(t.hasEvents());
         assertEquals("1 defined, 0 scheduled\n" +
+                "type:         Season\n" +
                 "name:         Unnamed\n" +
                 "start date:   Undefined\n" +
                 "member color: DEFAULT\n" +
@@ -91,6 +92,7 @@ public class EventSchedulerTests extends WalterTest {
 
         assertTrue(t.hasEvents());
         assertEquals("1 defined, 0 scheduled\n" +
+                "type:         Season\n" +
                 "name:         Unnamed\n" +
                 "start date:   Undefined\n" +
                 "member color: DEFAULT\n" +
@@ -105,6 +107,7 @@ public class EventSchedulerTests extends WalterTest {
 
         assertTrue(t.hasEvents());
         assertEquals("1 defined, 1 scheduled\n" +
+                "type:         Season\n" +
                 "name:         futureEvent\n" +
                 "start date:   " + futureEvent.getStartDate() + " (Scheduled)\n" +
                 "member color: DEFAULT\n" +
@@ -122,6 +125,7 @@ public class EventSchedulerTests extends WalterTest {
 
         assertTrue(t.hasEvents());
         assertEquals("1 defined, 0 scheduled\n" +
+                "type:         Season\n" +
                 "name:         pastEvent\n" +
                 "start date:   " + pastEvent.getStartDate() + " (Done)\n" +
                 "member color: DEFAULT\n" +
@@ -145,21 +149,25 @@ public class EventSchedulerTests extends WalterTest {
 
         assertTrue(t.hasEvents());
         assertEquals("4 defined, 2 scheduled\n" +
+                "type:         Season\n" +
                 "name:         past2Event\n" +
                 "start date:   " + past2Event.getStartDate() + " (Done)\n" +
                 "member color: DEFAULT\n" +
                 "server logo:  DEFAULT\n" +
                 "walter logo:  DEFAULT\n" +
+                "type:         Season\n" +
                 "name:         past1Event\n" +
                 "start date:   " + past1Event.getStartDate() + " (Done)\n" +
                 "member color: DEFAULT\n" +
                 "server logo:  DEFAULT\n" +
                 "walter logo:  DEFAULT\n" +
+                "type:         Season\n" +
                 "name:         future1Event\n" +
                 "start date:   " + future1Event.getStartDate() + " (Scheduled)\n" +
                 "member color: DEFAULT\n" +
                 "server logo:  DEFAULT\n" +
                 "walter logo:  DEFAULT\n" +
+                "type:         Season\n" +
                 "name:         future2Event\n" +
                 "start date:   " + future2Event.getStartDate() + " (Scheduled)\n" +
                 "member color: DEFAULT\n" +
@@ -173,12 +181,16 @@ public class EventSchedulerTests extends WalterTest {
         SeasonSetting past1Event = createEventOneDayPast("past1Event");
 
         assertDoesNotThrow(() -> t.addEvent(past1Event));
+
+        assertDoesNotThrow(() -> Thread.sleep(10));
+
         assertThrows(ReasonedException.class, () -> t.addEvent(past2Event));
 
         assertDoesNotThrow(() -> Thread.sleep(10));
 
         assertTrue(t.hasEvents());
         assertEquals("1 defined, 0 scheduled\n" +
+                "type:         Season\n" +
                 "name:         past1Event\n" +
                 "start date:   " + past1Event.getStartDate() + " (Done)\n" +
                 "member color: DEFAULT\n" +
@@ -212,6 +224,7 @@ public class EventSchedulerTests extends WalterTest {
 
         assertTrue(t.hasEvents());
         assertEquals("1 defined, 1 scheduled\n" +
+                "type:         Season\n" +
                 "name:         lkasdf\n" +
                 "start date:   " + futureEvent.getStartDate() + " (Scheduled)\n" +
                 "member color: DEFAULT\n" +
@@ -234,6 +247,7 @@ public class EventSchedulerTests extends WalterTest {
 
         assertTrue(t.hasEvents());
         assertEquals("1 defined, 1 scheduled\n" +
+                "type:         Season\n" +
                 "name:         futureEvent\n" +
                 "start date:   " + newFutureEvent.getStartDate() + " (Scheduled)\n" +
                 "member color: #000000\n" +
@@ -252,9 +266,36 @@ public class EventSchedulerTests extends WalterTest {
         assertDoesNotThrow(() -> t.editEvent(pastEvent));
 
         assertTrue(t.hasEvents());
+
+        assertDoesNotThrow(() -> Thread.sleep(10));
+
         assertEquals("1 defined, 0 scheduled\n" +
+                "type:         Season\n" +
                 "name:         editEvent\n" +
                 "start date:   " + pastEvent.getStartDate() + " (Done)\n" +
+                "member color: DEFAULT\n" +
+                "server logo:  DEFAULT\n" +
+                "walter logo:  DEFAULT", t.getFormattedListOfEvents());
+    }
+
+    @Test
+    public void editEventMoveToFuture() {
+        SeasonSetting pastEvent = createEventOneDayPast("editEvent");
+
+        assertDoesNotThrow(() -> t.addEvent(pastEvent));
+
+        SeasonSetting futureEvent = createEventOneDayFuture("editEvent");
+
+        assertDoesNotThrow(() -> t.editEvent(futureEvent));
+
+        assertTrue(t.hasEvents());
+
+        assertDoesNotThrow(() -> Thread.sleep(10));
+
+        assertEquals("1 defined, 1 scheduled\n" +
+                "type:         Season\n" +
+                "name:         editEvent\n" +
+                "start date:   " + futureEvent.getStartDate() + " (Scheduled)\n" +
                 "member color: DEFAULT\n" +
                 "server logo:  DEFAULT\n" +
                 "walter logo:  DEFAULT", t.getFormattedListOfEvents());
@@ -273,6 +314,7 @@ public class EventSchedulerTests extends WalterTest {
 
         assertTrue(t.hasEvents());
         assertEquals("1 defined, 0 scheduled\n" +
+                "type:         Season\n" +
                 "name:         unschedule\n" +
                 "start date:   " + unscheduled.getStartDate() + "\n" +
                 "member color: DEFAULT\n" +
@@ -302,11 +344,13 @@ public class EventSchedulerTests extends WalterTest {
 
         assertTrue(t.hasEvents());
         assertEquals("1 defined, 0 scheduled\n" +
+                "type:         Season\n" +
                 "name:         exists\n" +
                 "start date:   " + existingEvent.getStartDate() + " (Done)\n" +
                 "member color: DEFAULT\n" +
                 "server logo:  DEFAULT\n" +
                 "walter logo:  DEFAULT", t.getFormattedListOfEvents());
+
 
     }
 

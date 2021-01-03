@@ -127,10 +127,15 @@ public class SeasonSetting extends EventSetting {
     }
 
     public String toString() {
-        return    "name:         " + getName() +
+        return    "type:         " + getType() +
+                "\nname:         " + getName() +
                 "\nstart date:   " + (hasStartDate() ? getStartDate()  + " (" + EventScheduler.instance.getEventState(this) + ")" : "Undefined") +
                 "\nmember color: " + (memberColor.hasValue() ? memberColor.getValueString() : "DEFAULT") +
                 "\nserver logo:  " + (serverLogoFile.hasValue() ? serverLogoFile.getValueString() : "DEFAULT") +
                 "\nwalter logo:  " + (walterLogoFile.hasValue() ? walterLogoFile.getValueString() : "DEFAULT");
+    }
+
+    String getType() {
+        return "Season";
     }
 }

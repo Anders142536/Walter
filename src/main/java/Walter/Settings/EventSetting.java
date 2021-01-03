@@ -1,6 +1,7 @@
 package Walter.Settings;
 
 import Walter.Config;
+import Walter.EventScheduler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -38,4 +39,12 @@ public abstract class EventSetting implements Runnable {
     public abstract void run();
 
     public abstract String toString();
+
+    public String shortToString() {
+        return String.format("`| %-29s | %-10s |` %s",
+                (hasStartDate() ? getStartDate()  + " (" + EventScheduler.instance.getEventState(this) + ")" : "Undefined"),
+                getType(), getName());
+    }
+
+    abstract String getType();
 }

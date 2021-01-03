@@ -25,6 +25,7 @@ public class EventSettingTests {
         assertFalse(t.hasStartDate());
         assertEquals("Undefined", t.getStartDate());
         assertNull(t.getStartDateValue());
+        assertEquals("`| Undefined                     | Season     |` Unnamed", t.shortToString());
     }
 
     @Test
@@ -36,6 +37,7 @@ public class EventSettingTests {
         assertFalse(t.hasStartDate());
         assertEquals("Undefined", t.getStartDate());
         assertNull(t.getStartDateValue());
+        assertEquals("`| Undefined                     | Season     |` Testname", t.shortToString());
     }
 
     @Test
@@ -47,6 +49,7 @@ public class EventSettingTests {
         assertFalse(t.hasStartDate());
         assertEquals("Undefined", t.getStartDate());
         assertNull(t.getStartDateValue());
+        assertEquals("`| Undefined                     | Season     |` Unnamed", t.shortToString());
     }
 
     @Test
@@ -58,6 +61,7 @@ public class EventSettingTests {
         assertFalse(t.hasStartDate());
         assertEquals("Undefined", t.getStartDate());
         assertNull(t.getStartDateValue());
+        assertEquals("`| Undefined                     | Season     |` Unnamed", t.shortToString());
     }
 
     @Test
@@ -70,5 +74,6 @@ public class EventSettingTests {
         assertEquals(startDate.format(Config.dateFormat), t.getStartDate());
         assertFalse(t.hasName());
         assertEquals("Unnamed", t.getName());
+        assertEquals("`| " + t.getStartDate() + " (Unknown) | Season     |` Unnamed", t.shortToString());
     }
 }
