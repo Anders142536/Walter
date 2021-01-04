@@ -22,8 +22,8 @@ public abstract class Command {
 
     public Command(String[] description) {
         if (description == null) description = new String[]{
-                "This command does not have a help text",
-                "Dieser Command hat keinen eigenen Hilfe-Text"};
+                "This command does not have a description",
+                "Dieser Command hat keine eigene Beschreibung"};
         this.description = description;
     }
 

@@ -2,6 +2,7 @@ package Walter.Settings;
 
 import Walter.Config;
 import Walter.EventScheduler;
+import Walter.exceptions.ReasonedException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,6 +35,8 @@ public abstract class EventSetting implements Runnable {
 
     @Nullable
     public LocalDateTime getStartDateValue() { return startDate; }
+
+    //public abstract void merge(EventSetting event) throws ReasonedException;
 
     @Override
     public abstract void run();

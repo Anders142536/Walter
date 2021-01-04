@@ -15,10 +15,18 @@ import org.yaml.snakeyaml.error.YAMLException;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.*;
 
 public class Config {
-    public static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/y HH:mm:ss");
+    public static final DateTimeFormatter dateFormat = new DateTimeFormatterBuilder()
+            .appendPattern("dd/MM/yyyy[ HH:mm[:ss]]")
+            .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+            .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+            .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
+            .toFormatter();
+//    public static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/y HH:mm:ss");
 
     private static Yaml config = new Yaml();
 
