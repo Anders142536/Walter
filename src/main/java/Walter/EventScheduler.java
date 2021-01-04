@@ -141,6 +141,15 @@ public class EventScheduler {
     }
 
     // for usage by user
+    public EventSetting getEvent(@Nonnull String name) throws ReasonedException {
+        Optional<EventSetting> toDelete = eventSettingList.stream().filter((x) -> x.getName().equals(name)).findAny();
+        if (toDelete.isEmpty()) throw new ReasonedException(new String[] {
+                "There is no event defined called " + name,
+                "Es ist kein Event namens " + name + " definiert"
+        });
+        else return toDelete.get();
+    }
+
     public void addEvent(@Nonnull EventSetting event) throws ReasonedException {
         if (eventSettingList.stream().anyMatch((x) -> x.getName().equals(event.getName()))) throw new ReasonedException(new String[] {
                 "There is already an event defined called " + event.getName(),
@@ -158,12 +167,7 @@ public class EventScheduler {
     }
 
     public void deleteEvent(@Nonnull String name) throws ReasonedException {
-        Optional<EventSetting> toDelete = eventSettingList.stream().filter((x) -> x.getName().equals(name)).findAny();
-        if (toDelete.isEmpty()) throw new ReasonedException(new String[] {
-                "There is no event defined called " + name,
-                "Es ist kein Event namens " + name + " definiert"
-            });
-        else eventSettingList.remove(toDelete.get());
+        eventSettingList.remove(getEvent(name));
 
         if (scheduledEvents.values().stream().anyMatch((x) -> x.getName().equals(name))) {
             scheduledFutures.get(name).cancel(false);

@@ -10,3 +10,5 @@ Bug Fixes:
     description: When someone is mentioned you are not friends with and share no server with the mention is shown as just some formatted numbers after a relogin, which is useless.
   - title: Fixed issue with numbers given to commands causing an exception if higher or lower than certain, very high limits
     description: These arguments are handled internally as Integer-type values, which may range from -2 147 483 648 to 2 147 483 647. If the given number is higher or lower than these limits Java complains, and I have to catch this. Now that is done. Bug found by <@313756822735552522>
+Known Issues:
+  - title: The !react command is still broken

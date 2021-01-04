@@ -39,7 +39,7 @@ public class EventSchedulerTests extends WalterTest {
     }
 
     private SeasonSetting createEventOneDayPast(String name) {
-        LocalDateTime oneDayInPast = LocalDateTime.now().minusDays(2);
+        LocalDateTime oneDayInPast = LocalDateTime.now().minusDays(1);
         SeasonSetting past1Event = new SeasonSetting();
         past1Event.setName(name);
         past1Event.setStartDate(oneDayInPast);
@@ -251,8 +251,8 @@ public class EventSchedulerTests extends WalterTest {
                 "name:         futureEvent\n" +
                 "start date:   " + newFutureEvent.getStartDate() + " (Scheduled)\n" +
                 "member color: #000000\n" +
-                "server logo:  /home/anders/git/walter/src/test/testfiles/events/server.png\n" +
-                "walter logo:  /home/anders/git/walter/src/test/testfiles/events/walter.png", t.getFormattedListOfEvents());
+                "server logo:  " + Walter.location + "/events/server.png\n" +
+                "walter logo:  " + Walter.location + "/events/walter.png", t.getFormattedListOfEvents());
     }
 
     @Test
@@ -267,7 +267,7 @@ public class EventSchedulerTests extends WalterTest {
 
         assertTrue(t.hasEvents());
 
-        assertDoesNotThrow(() -> Thread.sleep(10));
+        assertDoesNotThrow(() -> Thread.sleep(100));
 
         assertEquals("1 defined, 0 scheduled\n" +
                 "type:         Season\n" +

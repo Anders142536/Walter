@@ -18,7 +18,7 @@ public class member extends Command {
         super(new String[] {
                 "This command assigns the role *member* to the user with the name **NAME**. This also revokes the" +
                         " *guest*-role if the targeted user has it",
-                "Dieser Command gibt dem User mit dem Namen **NAME** die *Member*-Rolle. Dies nimmt außerdem die " +
+                "Dieser Befehl gibt dem User mit dem Namen **NAME** die *Member*-Rolle. Dies nimmt außerdem die " +
                         "*Guest*-Rolle falls der Ziel-User diese hat"
         });
         keywords = new String[][]{

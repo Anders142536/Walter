@@ -3,6 +3,7 @@ package Walter;
 import Walter.Settings.*;
 import Walter.entities.BlackChannel;
 import Walter.entities.BlackWebhook;
+import Walter.exceptions.CommandExecutionException;
 import Walter.exceptions.ReasonedException;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -41,9 +42,13 @@ public class Config {
         load();
     }
 
-    public static void save() throws IOException, ReasonedException {
-        writeToFile(Walter.location + "/config.yaml");
-        writeToConfigChannel();
+    public static void save() throws ReasonedException {
+        try {
+            writeToFile(Walter.location + "/config.yaml");
+            writeToConfigChannel();
+        } catch (IOException e) {
+            throw new ReasonedException("Could not save configuration:\n" + e.getMessage());
+        }
     }
 
     public static void load() throws IOException, ReasonedException{

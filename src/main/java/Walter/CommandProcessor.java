@@ -47,8 +47,11 @@ public class CommandProcessor {
 //        commandList.add(new analyse());
         commandList.add(new commands());
         commandList.add(new config());
+        commandList.add(new delEvent());
+        commandList.add(new editEvent());
         commandList.add(new editmsg());
         commandList.add(new english());
+        commandList.add(new events());
 //        commandList.add(new file());
         commandList.add(new german());
         commandList.add(new getmsg());
@@ -59,6 +62,7 @@ public class CommandProcessor {
         commandList.add(new lockdown());
         commandList.add(new maintenance());
         commandList.add(new member());
+        commandList.add(new newEvent());
         commandList.add(new patch());
         commandList.add(new pin());
         commandList.add(new playing());

@@ -137,7 +137,21 @@ public class Helper {
             channel.sendMessage(german).queue();
     }
 
+    public static void respond(Member member, MessageChannel channel, String[] text) {
+        Language lang = Language.getLanguage(member);
+        if (text.length <= lang.index) respond(channel, text[0]);
+        else respond(channel, text[lang.index]);
+    }
+
+    public static void respond(User user, MessageChannel channel, String[] text) {
+        Language lang = Language.getLanguage(user);
+        if (text.length <= lang.index) respond(channel, text[0]);
+        else respond(channel, text[lang.index]);
+    }
+
+    //all responds shall end in this one
     public static void respond(MessageChannel channel, String text) {
+        //TODO: check if message is over 2k length and split if necessary
         channel.sendMessage(text).queue();
     }
 
