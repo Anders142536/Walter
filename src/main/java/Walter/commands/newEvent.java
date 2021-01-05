@@ -44,9 +44,10 @@ public class newEvent extends Command {
             setting.setName(eventname.getValue());
             EventScheduler.instance.addEvent(setting);
             Config.save();
+            String eventData = EventScheduler.instance.getEvent(eventname.getValue()).toString();
             Helper.respond(event.getAuthor(), event.getChannel(), new String[] {
-                    eventname.getValue() + " event successfully created",
-                    eventname.getValue() + " Event erfolgreich erstellt"
+                    String.format("%s event successfully created\n```%s```", eventname.getValue(), eventData),
+                    String.format("%s Event erfolgreich erstellt\n```%s```", eventname.getValue(),eventData)
             });
         } catch (ReasonedException e) {
             throw new CommandExecutionException(e);

@@ -60,18 +60,6 @@ public class SeasonSetting extends EventSetting {
     @Nullable
     public Color getMemberColorValue() { return memberColor.getValue(); }
 
-//    @Override
-//    public void merge(EventSetting event) throws ReasonedException {
-//        //TODO tests
-//        if (!(event instanceof SeasonSetting))
-//            throw new ReasonedException("Tried to merge SeasonSetting with non-SeasonSetting");
-//        SeasonSetting toMerge = (SeasonSetting) event;
-//        if (toMerge.hasStartDate()) this.setStartDate(toMerge.getStartDateValue());
-//        if (toMerge.hasServerLogoFile()) this.setServerLogoFile(toMerge.getServerLogoFileValue());
-//        if (toMerge.hasWalterLogoFile()) this.setWalterLogoFile(toMerge.getWalterLogoFileValue());
-//        if (toMerge.hasMemberColor()) this.setMemberColor(toMerge.getMemberColor());
-//    }
-
     @Override
     public void run() {
         EventScheduler.instance.executionNotify(this);

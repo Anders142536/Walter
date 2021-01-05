@@ -130,6 +130,11 @@ public class editEvent extends Command {
                 editedEvent.setMemberColor(isDefault(memberColorOption) ? null : memberColorOption.getValue());
             EventScheduler.instance.editEvent(editedEvent);
             Config.save();
+            String eventData = EventScheduler.instance.getEvent(eventname.getValue()).toString();
+            Helper.respond(event.getAuthor(), event.getChannel(), new String[] {
+                    String.format("%s event successfully edited\n```%s```", eventname.getValue(), eventData),
+                    String.format("%s Event wurde erfolgreich editiert\n```%s```", eventname.getValue(), eventData),
+            });
         } catch (ReasonedException e) {
             throw new CommandExecutionException(new String[] {
                     "The edit could not be done:\n" + e.getReason(Language.ENGLISH),
@@ -137,10 +142,6 @@ public class editEvent extends Command {
             });
         }
 
-        Helper.respond(event.getAuthor(), event.getChannel(), new String[] {
-                eventname.getValue() + " event was successfully edited",
-                eventname.getValue() + " Event wurde erfolgreich editiert"
-        });
     }
 
     private boolean isDefault(StringOption option) {

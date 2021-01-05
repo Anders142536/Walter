@@ -2,6 +2,12 @@ name: Seasons Update
 New Features:
   - title: Added Season Events
     description: Season Events can adjust the server logo, walters logo and the color of the member role, based on a timed schedule. Every event has a start date, but no end date, as seasons end when another season starts. This will allow for great server customization for seasonal events like halloween or simply some monthly changes of the look and feel of the server. Also, this is preparation for some other, time based automation done by Walter that will probably follow in the future updates (as listed on the trello board for walter, look at #walter)
+  - title: Added `!newEvent` command
+    description: This allows admins to add new events.
+  - title: Added `!delEvent` command
+    description: This allows admins to delete existing events.
+  - title: Added `!editEvent` commands
+    description: This allows admins to edit events and fill them with content. This command is rather complicated to use so make sure to have a look at the `?editEvent` page. `!help` pages regarding further documentation of flags and events will follow soon-ish
 Optimizations:
   - title: Complete rework of how settings work
     description: Before some settings were nothing more than mere variables that got a value via some ini file, all cramped up in one, very chaotic class. Now it is written in a very easily maintainable and expandable structure that allows for default values, limits etc., all nicely lined up in a separate package. It is technically a whole settings framework. There is a help page for the settins to explain how to use them, or just ask Anders how to set them.
@@ -12,3 +18,4 @@ Bug Fixes:
     description: These arguments are handled internally as Integer-type values, which may range from -2 147 483 648 to 2 147 483 647. If the given number is higher or lower than these limits Java complains, and I have to catch this. Now that is done. Bug found by <@313756822735552522>
 Known Issues:
   - title: The !react command is still broken
+  - title: Walter tags admins in case of errors in pms as well
