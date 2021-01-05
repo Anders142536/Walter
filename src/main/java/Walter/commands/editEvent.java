@@ -7,6 +7,7 @@ import Walter.Parsers.DateTimeOption;
 import Walter.Parsers.Flag;
 import Walter.Parsers.StringOption;
 import Walter.Settings.SeasonSetting;
+import Walter.entities.BlackChannel;
 import Walter.entities.Language;
 import Walter.exceptions.CommandExecutionException;
 import Walter.exceptions.ReasonedException;
@@ -130,11 +131,13 @@ public class editEvent extends Command {
                 editedEvent.setMemberColor(isDefault(memberColorOption) ? null : memberColorOption.getValue());
             EventScheduler.instance.editEvent(editedEvent);
             Config.save();
-            String eventData = EventScheduler.instance.getEvent(eventname.getValue()).toString();
-            Helper.respond(event.getAuthor(), event.getChannel(), new String[] {
-                    String.format("%s event successfully edited\n```%s```", eventname.getValue(), eventData),
-                    String.format("%s Event wurde erfolgreich editiert\n```%s```", eventname.getValue(), eventData),
-            });
+            if (BlackChannel.CONFIG.ID != event.getChannel().getIdLong()) {
+                String eventData = EventScheduler.instance.getEvent(eventname.getValue()).toString();
+                Helper.respond(event.getAuthor(), event.getChannel(), new String[]{
+                        String.format("%s event successfully edited\n```%s```", eventname.getValue(), eventData),
+                        String.format("%s Event wurde erfolgreich editiert\n```%s```", eventname.getValue(), eventData),
+                });
+            }
         } catch (ReasonedException e) {
             throw new CommandExecutionException(new String[] {
                     "The edit could not be done:\n" + e.getReason(Language.ENGLISH),

@@ -3,14 +3,13 @@ package Walter.commands;
 import Walter.Config;
 import Walter.EventScheduler;
 import Walter.Helper;
-import Walter.Parsers.Flag;
 import Walter.Parsers.StringOption;
 import Walter.Settings.SeasonSetting;
+import Walter.entities.BlackChannel;
 import Walter.exceptions.CommandExecutionException;
 import Walter.exceptions.ReasonedException;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class newEvent extends Command {
@@ -45,10 +44,12 @@ public class newEvent extends Command {
             EventScheduler.instance.addEvent(setting);
             Config.save();
             String eventData = EventScheduler.instance.getEvent(eventname.getValue()).toString();
-            Helper.respond(event.getAuthor(), event.getChannel(), new String[] {
-                    String.format("%s event successfully created\n```%s```", eventname.getValue(), eventData),
-                    String.format("%s Event erfolgreich erstellt\n```%s```", eventname.getValue(),eventData)
-            });
+            if (BlackChannel.CONFIG.ID != event.getChannel().getIdLong()) {
+                Helper.respond(event.getAuthor(), event.getChannel(), new String[]{
+                        String.format("%s event successfully created\n```%s```", eventname.getValue(), eventData),
+                        String.format("%s Event erfolgreich erstellt\n```%s```", eventname.getValue(), eventData)
+                });
+            }
         } catch (ReasonedException e) {
             throw new CommandExecutionException(e);
         }
