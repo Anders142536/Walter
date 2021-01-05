@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -39,8 +40,8 @@ public class editEvent extends Command {
                         "This changes the server logo for the duration of the halloween event to \"halloweenServerLogo.png\".\n\n" +
                         "`!editevent Halloween --serverlogo default`\n" +
                         "This clears the defined server logo for the halloween event. \"default\" always clears " +
-                        "a field and uses the default for the duration of the event. If the start date is cleared it is " +
-                        "simply taken off schedule, but not deleted.\n\n" +
+                        "a field and uses the default for the duration of the event. The start date is the only thing " +
+                        "that cannot be cleared.\n\n" +
                         "`!editevent Halloween --startdate 25/10/2021`\n" +
                         "This sets the start of halloween to 25th of October 2021, 00:00.\n\n" +
                         "`!editevent Halloween --startdate \"25/10/2021 13:37\"`\n" +
@@ -56,8 +57,8 @@ public class editEvent extends Command {
                         "Dies ändert das Serverlogo für die Dauer des Halloween-Events zu \"halloweenServerLogo.png\".\n\n" +
                         "`!editiereEvent Halloween --serverlogo default`\n" +
                         "Dies entfernt das für die Dauer des Halloween-Events definierte Serverlogo. \"default\" entfernt " +
-                        "immer definierte Werte und nutzt stattdessen den default für die Dauer des Events. Wenn das startdate " +
-                        "entfernt wird, wird es nur vom Eventplan genommen und nicht gelöscht.\n\n" +
+                        "immer definierte Werte und nutzt stattdessen den default für die Dauer des Events. Das Startdatum " +
+                        "ist das Einzige, das nicht entfernt werden kann.\n\n" +
                         "`!editiereEvent Halloween --startdate 25/10/2021`\n" +
                         "Dies setzt den Anfang des Halloween-Events auf den 25ten Oktober 2021, 00:00 Uhr.\n\n" +
                         "`!editiereEvent Halloween --startdate \"25/10/2021 13:37\"`\n" +
@@ -118,13 +119,15 @@ public class editEvent extends Command {
                     "Du hast keine Änderungen gemacht"
             });
 
-        SeasonSetting editedEvent = new SeasonSetting();
-        editedEvent.setName(eventname.getValue());
         try {
+            SeasonSetting editedEvent = (SeasonSetting)EventScheduler.instance.getEvent(eventname.getValue());
             if (startdate.isGiven()) editedEvent.setStartDate(startDateOption.getValue());
-            if (serverLogo.isGiven()) editedEvent.setServerLogoFile(serverLogoOption.getValue());
-            if (walterLogo.isGiven()) editedEvent.setWalterLogoFile(walterLogoOption.getValue());
-            if (memberColor.isGiven()) editedEvent.setMemberColor(memberColorOption.getValue());
+            if (serverLogo.isGiven())
+                editedEvent.setServerLogoFile(isDefault(serverLogoOption)? null : serverLogoOption.getValue());
+            if (walterLogo.isGiven())
+                editedEvent.setWalterLogoFile(isDefault(walterLogoOption) ? null : walterLogoOption.getValue());
+            if (memberColor.isGiven())
+                editedEvent.setMemberColor(isDefault(memberColorOption) ? null : memberColorOption.getValue());
             EventScheduler.instance.editEvent(editedEvent);
             Config.save();
         } catch (ReasonedException e) {
@@ -138,5 +141,9 @@ public class editEvent extends Command {
                 eventname.getValue() + " event was successfully edited",
                 eventname.getValue() + " Event wurde erfolgreich editiert"
         });
+    }
+
+    private boolean isDefault(StringOption option) {
+        return option.getValue().trim().equalsIgnoreCase("default");
     }
 }
