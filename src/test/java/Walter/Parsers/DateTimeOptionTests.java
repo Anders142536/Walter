@@ -28,22 +28,22 @@ public class DateTimeOptionTests {
 
     @Test
     public void setValueFullWithDots() {
-        assertDoesNotThrow(() -> t.setValue("11.11.2020 20:12:12"));
+        assertDoesNotThrow(() -> t.setValue("06.01.2021 01:23:10"));
         assertTrue(t.hasValue());
-        assertEquals("11/11/2020 20:12:12", t.getValue().format(Config.dateFormat));
+        assertEquals("6/1/2021 01:23:10", t.getValue().format(Config.dateFormat));
     }
 
     @Test
     public void setValueNoTime() {
-        assertDoesNotThrow(() -> t.setValue("11/11/2020"));
+        assertDoesNotThrow(() -> t.setValue("1/01/2020"));
         assertTrue(t.hasValue());
-        assertEquals("11/11/2020 00:00:00", t.getValue().format(Config.dateFormat));
+        assertEquals("1/1/2020 00:00:00", t.getValue().format(Config.dateFormat));
     }
 
     @Test
     public void setValueNoSeconds() {
-        assertDoesNotThrow(() -> t.setValue("11/11/2020 13:37"));
+        assertDoesNotThrow(() -> t.setValue("1/1/2020 13:37"));
         assertTrue(t.hasValue());
-        assertEquals("11/11/2020 13:37:00", t.getValue().format(Config.dateFormat));
+        assertEquals("1/1/2020 13:37:00", t.getValue().format(Config.dateFormat));
     }
 }

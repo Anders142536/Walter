@@ -18,7 +18,8 @@ public abstract class EventSetting implements Runnable {
 
     //this is required in order for snakeyaml to be able to load
     public void setStartDate(@Nonnull String value) {
-        startDate = LocalDateTime.parse(value, Config.dateFormat);
+        if (value.equals("Undefined")) startDate = null;
+        else startDate = LocalDateTime.parse(value, Config.dateFormat);
     }
 
     public void setStartDate(LocalDateTime value) { this.startDate = value; }
@@ -44,7 +45,7 @@ public abstract class EventSetting implements Runnable {
     public abstract String toString();
 
     public String shortToString() {
-        return String.format("`| %-29s | %-10s |` %s",
+        return String.format("`| %-30s | %-10s |` %s",
                 (hasStartDate() ? getStartDate()  + " (" + EventScheduler.instance.getEventState(this) + ")" : "Undefined"),
                 getType(), getName());
     }

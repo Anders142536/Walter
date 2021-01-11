@@ -113,6 +113,8 @@ public class CommandParserTests {
                 return new StringOption(name, null);
             case INT:
                 return new IntegerOption(name, null);
+            case DATETIME:
+                return new DateTimeOption(name, null);
             case FLUSH:
                 return new FlushOption(name, null);
         }
@@ -229,6 +231,22 @@ public class CommandParserTests {
         assertTrue(testIntOption.hasValue());
         assertEquals(testIntOption.getValue(), 2);
         assertFalse(testFlag.isGiven());
+    }
+
+    @Test
+    public void parseDateTimeOptionNoFlags() {
+        List<Option> options = new ArrayList<>();
+
+        DateTimeOption testDateOption = (DateTimeOption) getTestOption(OptionType.DATETIME);
+
+        options.add(testDateOption);
+
+        t.setStringToParse("!test \"10/01/2020 23:59:04\"");
+
+        assertDoesNotThrow(() -> t.parse(options, null));
+        assertTrue(testDateOption.hasValue());
+        //TODO this
+        assertEquals("", testDateOption.getValue());
     }
 
     @Test
@@ -412,7 +430,6 @@ public class CommandParserTests {
         assertEquals("test", testStringOption.getValue());
         assertTrue(testFlag.isGiven());
         assertEquals("testFlagRequirement", ((StringOption)testFlag.getParameter()).getValue());
-
     }
 
 }

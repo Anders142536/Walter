@@ -7,6 +7,7 @@ import Walter.Helper;
 import Walter.entities.BlackRole;
 import Walter.exceptions.ReasonedException;
 import net.dv8tion.jda.api.entities.Icon;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -24,7 +25,7 @@ public class SeasonSetting extends EventSetting {
     private final ColorSetting memberColor;
 
     public SeasonSetting() {
-        String directory = "/events/";
+        String directory = "events/";
         serverLogoFile = new FileSetting(directory);
         walterLogoFile = new FileSetting(directory);
         memberColor = new ColorSetting();
@@ -107,6 +108,8 @@ public class SeasonSetting extends EventSetting {
         } catch (IOException e) {
             Helper.logError("There was an exception when trying to change to the walterlogo defined " +
                     "in the " + name + " event:\n" + e.getMessage());
+        } catch (ErrorResponseException e) {
+            //TODO find out and a way to deal with rate limits
         }
     }
 

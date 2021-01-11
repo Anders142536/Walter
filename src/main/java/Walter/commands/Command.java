@@ -28,35 +28,35 @@ public abstract class Command {
     }
 
     //returns the help string
-    public String getDescription(Language lang) {
+    public final String getDescription(Language lang) {
         if (description.length <= lang.index) return description[0];
         return description[lang.index];
     }
 
-    public String[][] getKeywords() {
+    public final String[][] getKeywords() {
         return keywords;
     }
 
-    public String[] getKeywords(Language lang) {
+    public final String[] getKeywords(Language lang) {
         if (keywords.length <= lang.index) return keywords[0];
         return keywords[lang.index];
     }
 
-    public BlackRole getMinimumRequiredRole() {
+    public final BlackRole getMinimumRequiredRole() {
         return minimumRequiredRole;
     }
 
-    public boolean hasOptions() {
-        return options != null;
+    public final boolean hasOptions() {
+        return options != null && !options.isEmpty();
     }
 
-    public boolean hasFlags() {
-        return flags != null;
+    public final boolean hasFlags() {
+        return flags != null && !flags.isEmpty();
     }
 
-    public List<Option> getOptions() { return options; }
+    public final List<Option> getOptions() { return options; }
 
-    public List<Flag> getFlags() { return flags; }
+    public final List<Flag> getFlags() { return flags; }
 
     //executes the command with the given parameters
     public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {

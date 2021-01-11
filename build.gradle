@@ -20,10 +20,10 @@ dependencies {
 
     testCompile('org.junit.jupiter:junit-jupiter:5.6.2')
 //    testImplementation 'junit:junit:5.6.2'
-    compile ('net.dv8tion:JDA:4.2.0_204') {
+    compile ('net.dv8tion:JDA:4.2.0_227') {
         exclude module: 'opus-java'
     }
-    compile("club.minnced:discord-webhooks:0.3.0")
+    compile("club.minnced:discord-webhooks:0.5.4-rc")
     compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.12.1'
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.12.1'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'

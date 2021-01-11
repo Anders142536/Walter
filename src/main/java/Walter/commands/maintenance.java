@@ -18,6 +18,7 @@ public class maintenance extends Command {
         if (event.getAuthor().getIdLong() == 151010441043116032L) { // if Anders
             BlackChannel.NEWS.getInstance().sendMessage("I will shut down shortly for maintenance.").queue();
             event.getJDA().shutdown();
+            System.out.println("Shutdown due to maintenance");
         } else {
             Helper.respond(event.getMember(), event.getChannel(),
                     "Es tut mir Leid, doch dieser Command steht nur Anders zu Verfügung",

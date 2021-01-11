@@ -22,7 +22,7 @@ public class delEvent extends Command {
                 {"löscheEvent", "entferneEvent"}
         };
 
-        eventname = new StringOption(new String[] {"event name", "Eventname"},
+        eventname = new StringOption(new String[] {"eventName", "Eventname"},
                 new String[] {"Name of the event to delete",
                         "Name des zu löschenden Events"}
         );

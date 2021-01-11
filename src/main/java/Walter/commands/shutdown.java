@@ -21,6 +21,7 @@ public class shutdown extends Command {
     public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
         if (event.getAuthor().getIdLong() == 151010441043116032L) { // if Anders
             event.getJDA().shutdown();
+            System.out.println("Shutdown");
         } else {
             Helper.respond(event.getMember(), event.getChannel(),
                     "Es tut mir Leid, doch dieser Command steht nur Anders zu Verfügung",

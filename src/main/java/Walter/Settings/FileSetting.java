@@ -28,9 +28,11 @@ public class FileSetting extends Setting {
             return;
         }
 
+        if (fileName.contains(directoryPath)) fileName = fileName.substring(directoryPath.length());
+
         if (!fileName.isBlank() && fileExists(fileName)) this.fileName = fileName;
         //TODO: make this return a list of available files
-        else throw new ReasonedException("File not found under path: " + directoryPath + fileName);
+        //else throw new ReasonedException("File not found under path: " + directoryPath + fileName);
     }
 
     private boolean fileExists(String filename) {

@@ -4,6 +4,7 @@ package Walter;
 
 import Walter.Parsers.*;
 import Walter.commands.*;
+import Walter.entities.BlackChannel;
 import Walter.entities.Language;
 import Walter.exceptions.*;
 import net.dv8tion.jda.api.entities.*;
@@ -34,7 +35,7 @@ public class CommandProcessor {
         for (Command command : createListOfCommands()) {
             for (String[] keywords : command.getKeywords()) {
                 for (String keyword : keywords) {
-                    commands.put(keyword, command);
+                    commands.put(keyword.toLowerCase(), command);
                 }
             }
         }
@@ -90,16 +91,17 @@ public class CommandProcessor {
         MessageChannel channel = event.getChannel();
         String messageContent = event.getMessage().getContentRaw();
 
-        Helper.logCommand(author, channel, messageContent);
+        if (channel.getIdLong() != BlackChannel.TESTING.ID)
+            Helper.logCommand(author, channel, messageContent);
 
         parser.setStringToParse(messageContent);
         String commandName = parser.parseCommandName();
-        if (!commands.containsKey(commandName))
+        if (!commands.containsKey(commandName.toLowerCase()))
             throw new ParseException(new String[] {
                     "There is no command called " + commandName,
                     "Es gibt keinen Command namens " + commandName});
 
-        Command toExecute = commands.get(commandName);
+        Command toExecute = commands.get(commandName.toLowerCase());
         if (messageContent.charAt(0) == '!') {      //command
             if (RoleHandler.hasMinimumRequiredRole(author, toExecute.getMinimumRequiredRole())) {
                 parser.parse(toExecute.getOptions(), toExecute.getFlags());

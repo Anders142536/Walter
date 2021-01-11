@@ -3,7 +3,6 @@ package Walter;
 import Walter.Settings.*;
 import Walter.entities.BlackChannel;
 import Walter.entities.BlackWebhook;
-import Walter.exceptions.CommandExecutionException;
 import Walter.exceptions.ReasonedException;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -21,12 +20,11 @@ import java.util.*;
 
 public class Config {
     public static final DateTimeFormatter dateFormat = new DateTimeFormatterBuilder()
-            .appendPattern("dd/MM/yyyy[ HH:mm[:ss]]")
+            .appendPattern("d/M/yyyy[ HH:mm[:ss]]")
             .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
             .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
             .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
             .toFormatter();
-//    public static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/y HH:mm:ss");
 
     private static Yaml config = new Yaml();
 
@@ -75,11 +73,11 @@ public class Config {
     private static void initializeGeneralSettings() throws ReasonedException {
         general = new ArrayList<>();
 
-        defaultServerLogoFile = new FileSetting("/defaults/");
+        defaultServerLogoFile = new FileSetting("defaults/");
         defaultServerLogoFile.setName("defaultServerLogo");
         general.add(defaultServerLogoFile);
 
-        defaultWalterLogoFile = new FileSetting("/defaults/");
+        defaultWalterLogoFile = new FileSetting("defaults/");
         defaultWalterLogoFile.setName("defaultWalterLogo");
         general.add(defaultWalterLogoFile);
 
@@ -117,10 +115,10 @@ public class Config {
         System.out.println("Config.yaml file not found in folder");
 
         //if the list of events is empty we add one that can be printed to make it easier to add one in the file
-        if (EventScheduler.instance.hasEvents()) {
+        if (!EventScheduler.instance.hasEvents()) {
             SeasonSetting template = new SeasonSetting();
             template.setName("TemplateSetting");
-            template.setStartDate(LocalDateTime.now());
+//            template.setStartDate(LocalDateTime.now());
             EventScheduler.instance.addEvent(template);
         }
 
@@ -167,7 +165,7 @@ public class Config {
         if (!yaml.containsKey("lastEventExecution")) throw new ReasonedException(
                 "The config file does not contain a \"lastEventExecution\" setting!");
         String lastEventExecution = String.valueOf(yaml.get("lastEventExecution"));
-        EventScheduler.instance.setLastEventExecution(lastEventExecution.equals("Undefined") ? null : LocalDateTime.parse(lastEventExecution));
+        EventScheduler.instance.setLastEventExecution(lastEventExecution.equals("Undefined") ? null : LocalDateTime.parse(lastEventExecution, Config.dateFormat));
 
         EventScheduler.instance.resetAndScheduleEvents((List<EventSetting>)yaml.get("EVENTS"));
 
@@ -241,7 +239,7 @@ public class Config {
             tempLength = x.getName().length();
             if (tempLength > maxLength) maxLength = tempLength;
         }
-        return maxLength + 1;
+        return maxLength;
     }
 
 }

@@ -23,8 +23,8 @@ public class ColorSetting extends Setting {
         }
                         //# followed by 6 hexadecimal digits 0-9 and a-f, both upper and lowercase
         if (!value.matches("^#[0-9a-fA-F]{6}$"))
-            throw new ReasonedException("The color value has to be given in hexadecimal format with " +
-                    "no alpha channel like this: #00ffad");
+            throw new ReasonedException("The given color value " + value + " does not match the " +
+                    "hexadecimal format with no alpha channel like this: #00ffad");
         try {
             this.value = Color.decode(value);
         } catch (NumberFormatException e) {

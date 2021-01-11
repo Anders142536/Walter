@@ -12,13 +12,8 @@ import Walter.entities.Language;
 import Walter.exceptions.CommandExecutionException;
 import Walter.exceptions.ReasonedException;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
 
 public class editEvent extends Command {
     StringOption eventname;
@@ -75,31 +70,31 @@ public class editEvent extends Command {
                 {"editiereEvent", "bearbeiteEvent"}
         };
 
-        eventname = new StringOption(new String[] {"event name", "Eventname"},
+        eventname = new StringOption(new String[] {"eventName", "Eventname"},
                 new String[] {"Name of event to edit",
                 "Name des zu editierenden Events"});
         options = new ArrayList<>();
         options.add(eventname);
 
-        startDateOption = new DateTimeOption(new String[] {"start date", "Startdatum"},
+        startDateOption = new DateTimeOption(new String[] {"startDate", "Startdatum"},
                 new String[] {"Date and time for the event", "Datum und Uhrzeit für das Event"});
         startdate = new Flag('d', "startdate", new String[] {
                 "Date and time for the event", "Datum und Uhrzeit für das Event"},
                 startDateOption);
 
-        serverLogoOption = new StringOption(new String[] {"server logo file", "Serverlogo-Datei"},
+        serverLogoOption = new StringOption(new String[] {"serverLogoFile", "Serverlogo-Datei"},
                 new String[] {"file to use as server logo", "Datei, die als Serverlogo genutzt wird"});
         serverLogo = new Flag('s', "serverlogo", new String[] {
                 "file to use as server logo", "Datei, die als Serverlogo genutzt wird"},
                 serverLogoOption);
 
-        walterLogoOption = new StringOption(new String[] {"walter logo file", "Walterlogo-Datei"},
+        walterLogoOption = new StringOption(new String[] {"walterLogoFile", "Walterlogo-Datei"},
                 new String[] {"file to use as walter logo", "Datei, die als Walterlogo genutzt wird"});
         walterLogo = new Flag('w', "walterlogo", new String[] {
                 "file to use as walter logo", "Datei, die als Walterlogo genutzt wird"},
                 walterLogoOption);
 
-        memberColorOption = new StringOption(new String[] {"member color", "Member-Farbe"},
+        memberColorOption = new StringOption(new String[] {"memberColor", "Member-Farbe"},
                 new String[] {"color for the member role", "Farbe für die Member-Rolle"});
         memberColor = new Flag('m', "membercolor", new String[] {
                 "color for the member role", "Farbe für die Member-Rolle"},

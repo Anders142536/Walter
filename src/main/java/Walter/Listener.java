@@ -130,7 +130,9 @@ public class Listener extends ListenerAdapter {
             else if (channelID == BlackChannel.DROPZONE.ID && !messageContent.matches("[$%].*")) //$ and % are prefixes that should be ignoredcd
                 mentionVoiceChat(member, channel);
 
-            if (channelID == BlackChannel.DROPZONE.ID) Helper.deleteUnpinnedMessagesOlderThan(channel, 50, 10);
+            if (channelID == BlackChannel.DROPZONE.ID) Helper.deleteUnpinnedMessagesOlderThan(channel, 50);
+
+            if (channelID == BlackChannel.CONFIG.ID) Helper.deleteUnpinnedMessagesOlderThan(channel, 5);
 
             if (channelID == BlackChannel.NEWS.ID) {
                 List<Attachment> attachments = event.getMessage().getAttachments();
@@ -176,6 +178,7 @@ public class Listener extends ListenerAdapter {
             System.out.println("Walter launched successfully");
         } catch (ReasonedException e) {
             Helper.logException(e.getReason(Language.ENGLISH));
+            e.printStackTrace();
             jda.shutdown();
         } catch (Exception e) {
             System.out.println("> ERROR An exception was thrown!" +

@@ -27,7 +27,7 @@ public class newEvent extends Command {
                 {"neuesEvent", "kreiereEvent", "erzeugeEvent"}
         };
 
-        eventname = new StringOption(new String[] {"event name", "Eventname"},
+        eventname = new StringOption(new String[] {"eventName", "Eventname"},
                 new String[] {"Name of the new event",
                 "Name des neuen Events"}
         );

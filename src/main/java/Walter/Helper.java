@@ -15,6 +15,7 @@ import net.dv8tion.jda.api.managers.AccountManager;
 import net.dv8tion.jda.api.managers.GuildManager;
 import net.dv8tion.jda.api.managers.Presence;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -184,22 +185,19 @@ public class Helper {
         e.printStackTrace();
     }
 
-    static void deleteUnpinnedMessagesOlderThan(MessageChannel channel, int limit, int catchAmount) {
+    static void deleteUnpinnedMessagesOlderThan(MessageChannel channel, int limit) {
 
         //getting the message history in the given channel
         //unfortunately retrievePast() does not terminate .complete() if more messages are asked for than there are,
         //therefore the forced return after 1 seconds.
         List<Message> pinned = channel.retrievePinnedMessages().completeAfter(1, TimeUnit.SECONDS);  //TODO see if the wait on time basis can be avoided
-        List<Message> history = channel.getHistory().retrievePast(Math.min(limit + pinned.size() + catchAmount, 100)).completeAfter(1, TimeUnit.SECONDS);
-
+        List <Message> history = getChannelHistory(channel);
 
         //if the number of messages in a channel has surpassed the allowed limit
         if (history.size() > limit) {
-            for (int i = limit; i < history.size(); i++) {
-                if (!history.get(i).isPinned()) {
-                    history.get(i).delete().complete();
-                }
-            }
+            history.subList(limit, history.size()).forEach((x) -> {
+                if (!x.isPinned()) x.delete().queue();
+            });
         }
     }
 
@@ -212,13 +210,10 @@ public class Helper {
         int lastSize;
 
         do {
-            System.out.println("new enter in the loop, history length: " + history.size());
             lastSize = history.size();
             history.retrievePast(100).completeAfter(1, TimeUnit.SECONDS);
         } while (history.size() != lastSize);
 
-
-        System.out.println("final size: " + history.size());
         return history.getRetrievedHistory();
     }
 
@@ -259,6 +254,19 @@ public class Helper {
 
     public static void sortListByDate(List<EventSetting> list) {
         list.sort((x, y) -> {
+            LocalDateTime xTime = x.getStartDateValue();
+            LocalDateTime yTime = y.getStartDateValue();
+
+            //if none have a start date defined
+            if (xTime == null && yTime == null) {
+                return x.getName().compareToIgnoreCase(y.getName());
+            }
+
+            //the one having no start date defined comes first
+            if (xTime == null) return -1;
+            if (yTime == null) return 1;
+
+            //if both have a start date defined
             if (x.getStartDateValue().equals(y.getStartDateValue())) return 0;
             return (x.getStartDateValue().isBefore(y.getStartDateValue()) ? -1 : 1);
         });

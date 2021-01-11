@@ -1,0 +1,13 @@
+name: Seasons Update
+New Features:
+  - title: Added `!save` and `!load` commands
+    description: Those are meant for admins to manually trigger saving and loading from or to the config file. This is necessary to accept changes done to the config file manually and to be able to get a current state of walter in a file.
+Optimizations:
+  - title: The <#403266783844237323> channel is now limited to 4 messages and will delete older messages, like the dropzone does
+  - title: Commands sent in <#410471376328196097> will no longer trigger logs to be sent as that is quite spammy
+Bug Fixes:
+  - title: Walter is now stable again
+  - title: Fixed various spacing and formatting issues
+Known Issues:
+  - title: The !react command is still broken
+  - title: Walter tags admins in case of errors in pms as well

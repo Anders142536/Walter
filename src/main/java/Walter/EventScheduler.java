@@ -2,9 +2,7 @@ package Walter;
 
 import Walter.Settings.EventSetting;
 import Walter.Settings.SeasonSetting;
-import Walter.entities.Language;
 import Walter.exceptions.ReasonedException;
-import jdk.jfr.Event;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -199,7 +197,7 @@ public class EventScheduler {
                 eventSettingList.size() + " defined, " + scheduledEvents.size() + " scheduled"
         );
         for (EventSetting event : getEventSettingList()) {
-            builder.append(String.format("", event.toString()));
+            builder.append(String.format("\n%s", event.shortToString()));
         }
 
         return builder.toString();
