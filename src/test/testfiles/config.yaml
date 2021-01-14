@@ -1,0 +1,16 @@
+defaultWalterLogo: /home/badmin/walter/defaults/defaultwalterlogo.png
+configMessageID: '407190659741646861'
+servernews: https://discord.com/api/webhooks/712022038067413012/9OzsRwqK96aMoc_ekVk-f1Sf0lZY2yWGLlQKSOWPt69ZnGxc86f-TxcEWhooRtycAU0H
+lastEventExecution: 06/01/2021 01:23:10
+patchnotes: https://discord.com/api/webhooks/712022240287391794/-4gaVn89DpnSVpxV6iOTCZGQb5tDtfeRZJnMrRS04VrCZVn_A6AbzlrrVcWktrYV2JG3
+EVENTS:
+- !!Walter.Settings.SeasonSetting
+  memberColor: Undefined
+  name: TemplateSetting
+  serverLogoFile: Undefined
+  startDate: 11/11/2021 00:00:00
+  walterLogoFile: Undefined
+defaultServerLogo: /home/badmin/walter/defaults/defaultserverlogo.png
+defaultMemberColor: '#77d82b'
+isLockdown: 'false'
+dropZoneLimit: '100'
