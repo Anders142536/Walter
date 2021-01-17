@@ -60,6 +60,7 @@ public class CommandProcessor {
         commandList.add(new hello());
         commandList.add(new help());
         commandList.add(new listening());
+        commandList.add(new load());
         commandList.add(new lockdown());
         commandList.add(new maintenance());
         commandList.add(new member());
@@ -70,6 +71,7 @@ public class CommandProcessor {
         commandList.add(new react());
         commandList.add(new reprint());
         commandList.add(new roll());
+        commandList.add(new save());
         commandList.add(new say());
         commandList.add(new shutdown());
         commandList.add(new test());
