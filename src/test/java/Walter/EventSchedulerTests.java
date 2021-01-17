@@ -241,14 +241,17 @@ public class EventSchedulerTests extends WalterTest {
 
         assertDoesNotThrow(() -> t.editEvent(newFutureEvent));
 
+
+        assertDoesNotThrow(() -> Thread.sleep(100));
+
         assertTrue(t.hasEvents());
         assertEquals("1 defined, 1 scheduled\n" +
                 "type:         Season\n" +
                 "name:         futureEvent\n" +
                 "start date:   " + newFutureEvent.getStartDate() + " (Scheduled)\n" +
                 "member color: #000000\n" +
-                "server logo:  " + Walter.location + "/events/server.png\n" +
-                "walter logo:  " + Walter.location + "/events/walter.png", t.getFormattedListOfEvents());
+                "server logo:  " + Walter.location + "events/server.png\n" +
+                "walter logo:  " + Walter.location + "events/walter.png", t.getFormattedListOfEvents());
     }
 
     @Test

@@ -12,6 +12,6 @@ public class WalterTest {
     @BeforeAll
     public static void prepare() {
                         // returns the path to the project ../git/walter
-        Walter.location = System.getProperty("user.dir") + "/src/test/testfiles";
+        Walter.location = System.getProperty("user.dir") + "/src/test/testfiles/";
     }
 }

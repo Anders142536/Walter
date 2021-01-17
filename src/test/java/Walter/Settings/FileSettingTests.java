@@ -42,9 +42,16 @@ public class FileSettingTests extends WalterTest {
     }
 
     @Test
+    public void setValueEmpty() {
+        assertDoesNotThrow(() -> t.setValue(""));
+
+        assertFalse(t.hasValue());
+        assertNull(t.getValue());
+        assertEquals("Undefined", t.getValueString());
+    }
+
+    @Test
     public void setInvalidFilename() {
-        assertThrows(ReasonedException.class, () -> t.setValue(""));
-        assertThrows(ReasonedException.class, () -> t.setValue("         \n   "));
         assertThrows(ReasonedException.class, () -> t.setValue("nonexistent.png"));
 
         assertFalse(t.hasValue());

@@ -1,9 +1,11 @@
 package Walter.Parsers;
 
+import Walter.Config;
 import Walter.exceptions.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class CommandParserTests {
 
         //normal text argument
         assertTrue(CommandParser.isCommand("!test täßtöÜ"));
+        assertTrue(CommandParser.isCommand("!listening aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
 
         //number argument
         assertTrue(CommandParser.isCommand("!test 42"));
@@ -65,7 +68,7 @@ public class CommandParserTests {
         assertTrue(CommandParser.isCommand("!test \"test\""));
         assertTrue(CommandParser.isCommand("!test \"test\ntest\""));
         assertTrue(CommandParser.isCommand("!test \"-a 9.2.1 \""));
-        assertFalse(CommandParser.isCommand("!test \""));
+        assertFalse(CommandParser.isCommand("!test \"höre"));
         assertFalse(CommandParser.isCommand("!test \"\"\""));
 
         //several arguments and flags combined
@@ -243,10 +246,12 @@ public class CommandParserTests {
 
         t.setStringToParse("!test \"10/01/2020 23:59:04\"");
 
+        LocalDateTime expected = LocalDateTime.parse("10/01/2020 23:59:04", Config.dateFormat);
+
         assertDoesNotThrow(() -> t.parse(options, null));
         assertTrue(testDateOption.hasValue());
         //TODO this
-        assertEquals("", testDateOption.getValue());
+        assertEquals(expected, testDateOption.getValue());
     }
 
     @Test

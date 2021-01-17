@@ -52,7 +52,7 @@ public class SeasonSettingTests extends WalterTest {
                 "name:         Unnamed\n" +
                 "start date:   Undefined\n" +
                 "member color: #0dead0\n" +
-                "server logo:  " + Walter.location + "/events/server.png\n" +
-                "walter logo:  " + Walter.location + "/events/walter.png", t.toString());
+                "server logo:  " + Walter.location + "events/server.png\n" +
+                "walter logo:  " + Walter.location + "events/walter.png", t.toString());
     }
 }
