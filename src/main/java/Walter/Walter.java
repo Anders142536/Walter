@@ -11,7 +11,7 @@ import java.io.FileReader;
 
 public class Walter {
 
-    final public static String VERSION = "2.7.1";   //REWRITES . NEW FEATURES . PURE BUGFIX
+    final public static String VERSION = "2.7.2";   //REWRITES . NEW FEATURES . PURE BUGFIX
     public static String location;
 
     public static void main(String[] args) {

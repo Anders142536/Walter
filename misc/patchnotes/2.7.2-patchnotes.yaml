@@ -1,0 +1,20 @@
+name: Seasons Update
+Optimizations:
+  - title: The commands `!listening`, `!watching` and `!playing` now use Flush Options instead of String Options. Kinda found by <@313756822735552522>
+    description: This means instead of `!watching "you cry"` you can now write `!watching you cry`
+  - title: Using `!help` now also points you at using ? for commands
+    description: The way <@313756822735552522> interacted with the help pages showed that a user might not intuitively use the `?` pages but use the `!help` command. Now it says there that for commands the `?` pages exist.
+  - title: Walter will no longer tag bots in the dropzone if they are in the voice channel as well.
+  - title: When using `!help` the name of the help page is now case insensitive and whitespace can be ignored for convenience.
+Bug Fixes:
+  - title: Fixed issue of Walter trying to delete the command message on `!say` in private messages (which he cannot). Bug found by <@313756822735552522>
+  - title: Fixed issue of certain error messages being given in english even if the user decided to use german when interacting with walter.
+  - title: Fixed issue of Walter not being able to handle invalid message IDs in both `!getmsg` and `!editmsg`. Bug found by <@313756822735552522>
+  - title: Fixed issue of some commands not working in private messages. Bug found by <@313756822735552522>
+    description: For Discord a user and a server member are two distinct entities. A user is a discord account and holds information like the profile pic, the username, the currently played game... A member is the user on a server, holding information like the assigned roles, the server specific nickname etc. As a private message is not a channel on a server the triggered onMessageReceived event does not hold any information about the member of the user on our server. Those commands failed due to expecting this information. Now Walter does a manual check on the server, wether or not the user is a member of our server.
+  - title: Fixed issue of CommandParser not recognizing given dates like "10/10/2020 13:37"
+Known Issues:
+  - title: The !react command is still broken
+  - title: Walter tags admins in case of errors in pms as well
+  - title: Writing `!watching "things` is still not recognized as a command
+    description: This will stay this way, as " is used to group arguments that have white space in them. Recognizing arguments that have just one " in them might be confusing to users and is a shitload of work for me to do, as that would require me to change very complicated stuff and making it even more complicated than it already is. So this will stay reserved for that purpose.
