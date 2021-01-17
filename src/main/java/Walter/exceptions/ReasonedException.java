@@ -24,7 +24,7 @@ public class ReasonedException extends Exception {
     }
 
     public String getReason(Language lang) {
-        if (reasons.length >=lang.index) return reasons[0];
+        if (reasons.length <=lang.index) return reasons[0];
         return reasons[lang.index];
     }
 
