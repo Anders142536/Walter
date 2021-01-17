@@ -31,6 +31,7 @@ public class say extends Command {
     @Override
     public void execute(String usedKeyword, MessageReceivedEvent event) {
         event.getChannel().sendMessage(text.getValue()).queue();
-        event.getMessage().delete().queue();
+        if (event.getChannelType().isGuild())
+            event.getMessage().delete().queue();
     }
 }
