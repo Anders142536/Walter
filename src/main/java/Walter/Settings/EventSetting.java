@@ -45,7 +45,8 @@ public abstract class EventSetting implements Runnable {
     public abstract String toString();
 
     public String shortToString() {
-        return String.format("`| %-30s | %-10s |` %s",
+        //| 11/11/2021 00:00:00 (Scheduled) |
+        return String.format("`| %-31s | %-10s |` %s",
                 (hasStartDate() ? getStartDate()  + " (" + EventScheduler.instance.getEventState(this) + ")" : "Undefined"),
                 getType(), getName());
     }
