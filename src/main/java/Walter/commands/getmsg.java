@@ -6,6 +6,7 @@ import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.internal.utils.Checks;
 
 import java.util.ArrayList;
 
@@ -37,30 +38,38 @@ public class getmsg extends Command {
 
     @Override
     public void execute(String commandName, MessageReceivedEvent event) throws CommandExecutionException {
-        event.getChannel().retrieveMessageById(messageID.getValue()).queue(
-                success -> {
-                    //we first send a message we will edit immediatly. On edit the mention tag does not push a notification
-                    event.getChannel().sendMessage(new EmbedBuilder().setTitle("Metainfo").build()).queue(
-                            mes -> {
-                                EmbedBuilder metaInfo = new EmbedBuilder();
-                                metaInfo.setTitle("Metainfo");
-                                metaInfo.addField("Id", success.getId(), false);
-                                String authorName = success.getAuthor().getName();
-                                String memberName = Helper.getMember(success.getAuthor()).getEffectiveName();
-                                metaInfo.addField("Author", success.getAuthor().getId() + "   " + success.getAuthor().getAsMention() +
-                                        (authorName.equals(memberName) ? "" : " (" + memberName + ")"), false);
-                                mes.editMessage(metaInfo.build()).queue();
-                                event.getChannel().sendMessage("```\n" + success.getContentRaw().replaceAll("```", "") + "```").queue();
-                                event.getMessage().delete().queue();
-                            }
-                    );
-                },
-                error -> {
-                    Helper.respondError(event, new CommandExecutionException(new String[]{
-                            "Couldn't get the given message. It has to be in the same channel as your " + commandName + " command!",
-                            "Konnte die gegebene Nachricht nicht finden. Sie muss im selben Kanal sein wie dein " + commandName + " Befehl!"
-                    }));}
-        );
+        try {
+            event.getChannel().retrieveMessageById(messageID.getValue()).queue(
+                    success -> {
+                        //we first send a message we will edit immediatly. On edit the mention tag does not push a notification
+                        event.getChannel().sendMessage(new EmbedBuilder().setTitle("Metainfo").build()).queue(
+                                mes -> {
+                                    EmbedBuilder metaInfo = new EmbedBuilder();
+                                    metaInfo.setTitle("Metainfo");
+                                    metaInfo.addField("Id", success.getId(), false);
+                                    String authorName = success.getAuthor().getName();
+                                    String memberName = Helper.getMember(success.getAuthor()).getEffectiveName();
+                                    metaInfo.addField("Author", success.getAuthor().getId() + "   " + success.getAuthor().getAsMention() +
+                                            (authorName.equals(memberName) ? "" : " (" + memberName + ")"), false);
+                                    mes.editMessage(metaInfo.build()).queue();
+                                    event.getChannel().sendMessage("```\n" + success.getContentRaw().replaceAll("```", "") + "```").queue();
+                                    event.getMessage().delete().queue();
+                                }
+                        );
+                    },
+                    error -> {
+                        Helper.respondError(event, new CommandExecutionException(new String[]{
+                                "Couldn't get the given message. It has to be in the same channel as your " + commandName + " command!",
+                                "Konnte die gegebene Nachricht nicht finden. Sie muss im selben Kanal sein wie dein " + commandName + " Befehl!"
+                        }));
+                    }
+            );
+        } catch (IllegalArgumentException e) {
+            throw new CommandExecutionException(new String[] {
+                    String.format("\"%s\" is not a message ID", messageID.getValue()),
+                    String.format("\"%s\" ist keine message ID", messageID.getValue())
+            });
+        }
 
     }
 }

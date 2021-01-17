@@ -39,22 +39,31 @@ public class editmsg extends Command {
 
     @Override
     public void execute(String commandName, MessageReceivedEvent event) throws CommandExecutionException {
-        event.getChannel().retrieveMessageById(messageID.getValue()).queue(
-                success -> {
-                    success.editMessage(newContent.getValue()).queue(
-                            editSuccess -> {
-                                event.getMessage().delete().queue();
-                            },
-                            editError -> {
-                                Helper.respondException(event, new CommandExecutionException(new String[]{
-                                    "Something went wrong on editing the message:\n" + editError.getMessage()
-                            }));}
-                    );
-                },
-                error -> {
-                    Helper.respondException(event, new CommandExecutionException(new String[]{
-                            "Couldn't get the given message:\n" + error.getMessage()
-                    }));}
-        );
+        try {
+            event.getChannel().retrieveMessageById(messageID.getValue()).queue(
+                    success -> {
+                        success.editMessage(newContent.getValue()).queue(
+                                editSuccess -> {
+                                    event.getMessage().delete().queue();
+                                },
+                                editError -> {
+                                    Helper.respondException(event, new CommandExecutionException(new String[]{
+                                            "Something went wrong on editing the message:\n" + editError.getMessage()
+                                    }));
+                                }
+                        );
+                    },
+                    error -> {
+                        Helper.respondException(event, new CommandExecutionException(new String[]{
+                                "Couldn't get the given message:\n" + error.getMessage()
+                        }));
+                    }
+            );
+        } catch (IllegalArgumentException e) {
+            throw new CommandExecutionException(new String[] {
+                    String.format("\"%s\" is not a message ID", messageID),
+                    String.format("\"%s\" ist keine message ID", messageID)
+            });
+        }
     }
 }

@@ -26,7 +26,7 @@ public class german extends Command {
 
     @Override
     public void execute(String usedKeyword, MessageReceivedEvent event) throws CommandExecutionException {
-        Member author = event.getMember();
+        Member author = Helper.getMember(event.getAuthor());
         MessageChannel channel = event.getChannel();
 
         if (RoleHandler.hasRole(author, BlackRole.ENGLISH)) {

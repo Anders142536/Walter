@@ -1,7 +1,7 @@
 package Walter.commands;
 
 import Walter.Parsers.Flag;
-import Walter.Parsers.StringOption;
+import Walter.Parsers.FlushOption;
 import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
 import net.dv8tion.jda.api.entities.Activity;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class watching extends Command {
     Flag clear;
-    StringOption source;
+    FlushOption source;
 
     public watching() {
         super(new String[] {
@@ -27,7 +27,7 @@ public class watching extends Command {
                 "Clears the current activity",
                 "Löscht die aktuelle Aktivität"
         });
-        source = new StringOption(new String[] {"media source", "Medienquelle"},
+        source = new FlushOption(new String[] {"media source", "Medienquelle"},
                 new String[] {"What I should watch, given as text", "Was ich schauen soll, gegeben als Text"}, false
         );
         options = new ArrayList<>();
@@ -47,8 +47,14 @@ public class watching extends Command {
                         "If you don't want to clear my activity a source is required",
                         "Wenn du meine Aktivität nicht löschen willst ist eine Quelle erforderlich"
                 });
-            event.getJDA().getPresence().setActivity(Activity.watching(source.getValue()));
-
+            try {
+                event.getJDA().getPresence().setActivity(Activity.watching(source.getValue()));
+            } catch (IllegalArgumentException e) {
+                throw new CommandExecutionException(new String[] {
+                        "The source must not be longer than 128 characters",
+                        "Die Quelle darf nicht länger als 128 Zeichen sein"
+                });
+            }
         }
     }
 }

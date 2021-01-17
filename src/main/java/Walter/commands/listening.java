@@ -1,6 +1,7 @@
 package Walter.commands;
 
 import Walter.Parsers.Flag;
+import Walter.Parsers.FlushOption;
 import Walter.Parsers.StringOption;
 import Walter.entities.BlackRole;
 import Walter.exceptions.CommandExecutionException;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 
 public class listening extends Command {
     Flag clear;
-    StringOption source;
+    FlushOption source;
 
     public listening() {
         super(new String[] {
@@ -27,7 +28,7 @@ public class listening extends Command {
                 "Clears the current activity",
                 "Löscht die aktuelle Aktivität"
         });
-        source = new StringOption(new String[] {"soundsource", "tonquelle"},
+        source = new FlushOption(new String[] {"soundsource", "tonquelle"},
                 new String[] {"What I should listen to, given as text", "Was ich hören soll, gegeben als Text"}, false
         );
         options = new ArrayList<>();
@@ -42,13 +43,19 @@ public class listening extends Command {
         if (clear.isGiven()) {
             event.getJDA().getPresence().setActivity(null);
         } else {
-            if (!source.hasValue() || source.getValue().trim().equals(""))
+            if (!source.hasValue() || source.getValue().isBlank())
                 throw new CommandExecutionException(new String[] {
                         "If you don't want to clear my activity a source is required",
                         "Wenn du meine Aktivität nicht löschen willst ist eine Quelle erforderlich"
                 });
-            event.getJDA().getPresence().setActivity(Activity.listening(source.getValue()));
-
+            try {
+                event.getJDA().getPresence().setActivity(Activity.listening(source.getValue()));
+            } catch (IllegalArgumentException e) {
+                throw new CommandExecutionException(new String[] {
+                        "The source must not be longer than 128 characters",
+                        "Die Quelle darf nicht länger als 128 Zeichen sein"
+                });
+            }
         }
     }
 }
