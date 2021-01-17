@@ -9,6 +9,10 @@ public class FlushOption extends Option{
         super(OptionType.FLUSH, name, description);
     }
 
+    public FlushOption(@Nonnull String[] name, String[] description, boolean required) {
+        super(OptionType.FLUSH, name, description, required);
+    }
+
     @Override
     public void setValue (String argument) {
         this.value = argument;

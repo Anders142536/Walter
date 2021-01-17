@@ -81,14 +81,16 @@ public class CommandParser extends Parser {
                 if (flag.hasParameter()) requiresParameter = flag;
             } else {    //is option
                 Option option;
+                if (argument.matches("\"[^\"]*\""))
+                    argument = argument.substring(1, argument.length() - 1);
                 if (requiresParameter != null) {
                     option = requiresParameter.getParameter();
                     requiresParameter = null;
                 } else {
                     if (options == null || optionsIndex >= options.size())
                         throw new ParseException(new String[] {
-                                "Argument " + argument + " was not expected.",
-                                "Argument " + argument + " wurde nicht erwartet."});
+                                "Argument \"" + argument + "\" was not expected.",
+                                "Argument \"" + argument + "\" wurde nicht erwartet."});
                     option = options.get(optionsIndex++);
                 }
                 if (option.getType() == OptionType.FLUSH) {
