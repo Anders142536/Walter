@@ -111,7 +111,7 @@ public class Listener extends ListenerAdapter {
         MessageChannel channel = event.getChannel();
         Member member = event.getMember();
 
-        //check if member of server
+        //check if member of server, triggers in dms
         if (member == null) {
             member = Helper.getMember(author);
             if (member == null) {
@@ -157,10 +157,10 @@ public class Listener extends ListenerAdapter {
         //get a list of all the members that are in the same voice channel as the author of the message
         if (author.getVoiceState().inVoiceChannel()) {
             VoiceChannel voice = author.getVoiceState().getChannel();
-            List<Member> vmembers = voice.getMembers();
-            for (Member temp : vmembers) {
-                if (author != temp) mentions.append(temp.getAsMention() + " ");
-            }
+            voice.getMembers().forEach((x) -> {
+                if (x != author && !x.getUser().isBot())
+                    mentions.append(x.getAsMention()).append(" ");
+            });
             if (mentions.length() > 0) channel.sendMessage(mentions).queue();
         }
     }
@@ -175,6 +175,7 @@ public class Listener extends ListenerAdapter {
         try {
             CommandProcessor.instance = new CommandProcessor();
             Config.initialize();
+            HelpPages.instance.loadPages();
             System.out.println("Walter launched successfully");
         } catch (ReasonedException e) {
             Helper.logException(e.getReason(Language.ENGLISH));
