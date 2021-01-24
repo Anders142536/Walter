@@ -1,0 +1,38 @@
+%FILE:roles.png%
+%FILE:roles_overview.png%
+<@&254264388209475584>         There for you
+<@&254264987294498817>     Comes here more often
+<@&401876564154777620>          For guests that probably won't come again. (e.g. stream viewers)
+%FILE:categories.png%
+**CATS & MEMES**                                          General text-channels
+**MEOW & PURR PURR**                               General voice-channels
+**GAME & CAT-TOY DISCUSSIONS**        Game-related text-channels
+**DO NOT DISTURB**                                     Game-related voice-channels
+**MINECAT**                                                      Minecraft-related text-channels
+
+<#402875839131156501>                Only channel users without a role can see.
+<#405462316470108160>                Here changes to the server and general news will be announced.
+<#391292051712638987>        Special textchannel for when you in a voice channel.
+%FILE:rules.png%
+```markdown
+# REGELN #
+
+* Use Channels accordingly.
+* No Shitposting (Racism, Sexism, general hatespeech...). The line between humour and bullshit is a fine one.
+* No gore, snuff or other disgusting shit.
+* No usage of everyone- or here-tags if avoidable.
+* Follow the Admins requests.```
+%FILE:commands.png%
+Let me introduce myself again. My name is Walter, I am the Butler Bot on this server. <@!151010441043116032> wrote me, if you ever encounter any problems with me please notify him immediately!
+I take care of some functionalities like the <#391292051712638987> and commands.
+You can use commands everywhere, but you should use them in the <#391292051712638987> or in a direct message to me.
+For a list of commands that are available for you, write `!commands`.
+To show a help-page of a certain command replace the `!` with a `?`.
+%FILE:gdrive.png%
+Our server has a Google Drive. With the link below you have full access to the Drive.
+
+https://drive.google.com/drive/folders/1WQSxSAslLrbSXfU30nvSySFQHLmuSggC?usp=sharing
+%FILE:invite.png%
+Here is the invite-link you need to add friends to our server.
+Keep in mind that users can see no channels if they have no roles. To learn how you can give roles to members have a look at <#435061241942245376>.
+https://discord.gg/3YVdDVq
